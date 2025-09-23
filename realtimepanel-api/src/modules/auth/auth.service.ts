@@ -1,9 +1,11 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtPayload } from './interfaces/jwt-payload';
 import { JwtService } from '@nestjs/jwt';
 import { User } from './entities/user.entity';
+import { LoginUserDto } from './dto/login-user.dto';
+import bcryptjs from 'node_modules/bcryptjs';
 
 @Injectable()
 export class AuthService {
@@ -13,25 +15,21 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  // async login(loginUserDto: LoginUserDto) {
-  //   const { email, password } = loginUserDto;
-
-  //   const user = await this.userRepository.findOne({ where: { email } });
-  //   if (!user) {
-  //     throw new UnauthorizedException('Not valid credentials - email');
-  //   }
-
-  //   if (!user.password || !(await bcryptjs.compare(password, user.password))) {
-  //     throw new UnauthorizedException('Not valid credentials - password');
-  //   }
-
-  //   const { password: _, ...userWithoutPassword } = user;
-
-  //   return {
-  //     user: userWithoutPassword,
-  //     token: this.getJwtToken({ id: user.id }),
-  //   };
-  // }
+  async login(loginUserDto: LoginUserDto) {
+    const { email, password } = loginUserDto;
+    const user = await this.userRepository.findOne({ where: { email } });
+    if (!user) {
+      throw new UnauthorizedException('Not valid credentials - email');
+    }
+    if (!user.password || !(await bcryptjs.compare(password, user.password))) {
+      throw new UnauthorizedException('Not valid credentials - password');
+    }
+    const { password: _, ...userWithoutPassword } = user;
+    return {
+      user: userWithoutPassword,
+      token: this.getJwtToken({ id: user.id }),
+    };
+  }
 
   // async create(createAuthDto: CreateAuthDto) {
   //   try {
