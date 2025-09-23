@@ -3,12 +3,14 @@ import { Header } from './components/header';
 import { RouterOutlet } from '@angular/router';
 import { Footer } from "./components/footer";
 import { Sidebar } from "./components/sidebar";
+import { SidebarOffcanvas } from "./components/sidebar-offcanvas";
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, Header, Footer, Sidebar],
+  imports: [RouterOutlet, Header, Footer, Sidebar, SidebarOffcanvas],
   template: `
     <app-sidebar />
+    <app-sidebar-offcanvas />
     <main class="col p-0">
       <app-header />
       <section class="container-fluid pt-3 pb-5" style="height: 84vh; overflow-y: auto;">

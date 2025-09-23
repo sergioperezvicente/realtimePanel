@@ -19,7 +19,7 @@ app-login {
 }
 
 app-sidebar,
-app-offcanvas-sidebar,
+app-sidebar-offcanvas,
 app-chat {
   min-width: 80px;
   z-index: 1;
@@ -41,6 +41,11 @@ app-footer {
   z-index: 0;
 }
 
+.span-btn:hover {
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  transform: scale(1.1);
+  transform-origin: center;
+}
 
 .fade-in-up {
   animation: fade-in-up 0.6s ease-out forwards;

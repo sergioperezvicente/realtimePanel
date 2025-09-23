@@ -7,8 +7,8 @@ import { Component } from '@angular/core';
     class: "material-symbols-outlined span-btn",
     type: "button",
     'data-bs-toggle': "offcanvas",
-    'data-bs-target': "#offcanvasSidebar",
-    'aria-controls': "offcanvasSidebar",
+    'data-bs-target': "#sidebar",
+    'aria-controls': "sidebar",
     title: "Mostrar menu",
   },
 })
