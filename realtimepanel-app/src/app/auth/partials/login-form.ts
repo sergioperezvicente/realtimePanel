@@ -10,7 +10,7 @@ import { AuthService } from '../services/auth';
   imports: [ReactiveFormsModule, InputControl],
   template: `
     <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="card-body">
-      <h5 class="text-center mb-3">{{ header }}</h5>
+      <h5 class="text-center mb-3">{{ this.app.description }}</h5>
       <div class="mb-3">
         <app-input
           formControlName="username"
@@ -42,12 +42,10 @@ import { AuthService } from '../services/auth';
   `,
 })
 export class LoginForm {
-  @Input() header?: string;
-
   private readonly fb = inject(FormBuilder);
-  private readonly app = inject(App);
   private readonly router = inject(Router);
   private readonly authService = inject(AuthService);
+  protected readonly app = inject(App);
 
   protected error = signal<boolean>(false);
 

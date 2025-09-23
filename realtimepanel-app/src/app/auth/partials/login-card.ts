@@ -14,7 +14,7 @@ import { LoginForm } from './login-form';
     @if (this.app.status() === 'offline') {
     <section class="card-body">body status app</section>
     } @else {
-    <app-login-form header="authApp login form"/>
+    <app-login-form />
     }
   `,
   host: {

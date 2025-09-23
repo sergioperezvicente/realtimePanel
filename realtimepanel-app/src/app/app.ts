@@ -7,6 +7,7 @@ import { AuthService } from './auth/services/auth';
 import { WsService } from '@core/services/ws';
 import { AuthStatus } from '@enums/auth-status';
 import { WsStatus } from '@enums/ws-status';
+import packageInfo from '../../package.json'
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,10 @@ export class App {
   private readonly router = inject(Router);
   private readonly _status = signal<AppStatus>(AppStatus.disconnected);
 
+  public version: string = packageInfo.version;
+  public year: string = packageInfo.copyright;
+  public website: string = packageInfo.website;
+  public description: string = packageInfo.description;
   public status = computed(() => this._status());
 
   public authStatusChangedEffect = effect(() => {
