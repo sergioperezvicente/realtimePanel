@@ -1,4 +1,4 @@
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { InputControl } from '@shared/controls/input';
@@ -50,8 +50,8 @@ export class LoginForm {
   protected error = signal<boolean>(false);
 
   protected loginForm: FormGroup = this.fb.group({
-    username: ['admin@admin.com', [Validators.required, Validators.email]],
-    password: ['123456', [Validators.required, Validators.minLength(6)]],
+    username: ['', [Validators.required, Validators.email]],
+    password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
   onLogin(): void {

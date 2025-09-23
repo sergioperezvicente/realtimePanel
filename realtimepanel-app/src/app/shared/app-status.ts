@@ -1,15 +1,16 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { App } from '@app/app';
 
 @Component({
   selector: 'app-status',
-  imports: [],
   template: `
-    <p>
-      app-status works!
-    </p>
+    <div class="spinner-border align-content-center text-warning" role="status"></div>
+    <span class="display-6 ms-3"> {{ this.app.status() }} ...</span>
   `,
-  styles: ``
+  host: {
+    class: 'modal-backdrop fade show d-flex justify-content-center align-items-center',
+  },
 })
 export class AppStatus {
-
+  protected readonly app = inject(App);
 }
