@@ -1,15 +1,22 @@
 import { Component } from '@angular/core';
+import { Header } from './components/header';
+import { RouterOutlet } from '@angular/router';
+import { Footer } from "./components/footer";
 
 @Component({
   selector: 'app-layout',
-  imports: [],
+  imports: [RouterOutlet, Header, Footer],
   template: `
-    <p>
-      layout works!
-    </p>
+    <main class="col p-0">
+      <app-header />
+      <section class="container-fluid pt-3 pb-5" style="height: 84vh; overflow-y: auto;">
+        <router-outlet />
+      </section>
+      <app-footer />
+    </main>
   `,
-  styles: ``
+  host: {
+    class: 'row',
+  },
 })
-export class Layout {
-
-}
+export class Layout {}

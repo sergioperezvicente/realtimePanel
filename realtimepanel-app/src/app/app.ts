@@ -41,7 +41,7 @@ export class App {
         return;
       case AuthStatus.notAuthenticated:
         this._status.set(AppStatus.disconnected);
-        this.router.navigate(['/auth/login']);
+        //this.router.navigate(['/auth/login']);
         return;
     }
   });

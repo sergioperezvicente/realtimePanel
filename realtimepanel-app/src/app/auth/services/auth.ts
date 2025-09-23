@@ -8,13 +8,13 @@ import { User } from '@app/data/models/user';
 import { AuthStatus } from '@app/data/enums/auth-status';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
   private readonly apiUrl: string = environment.apiUrl;
   private readonly http = inject(HttpClient);
-  private readonly ws = inject(WsService)
-  
+  private readonly ws = inject(WsService);
+
   private _currentUser = signal<User | null>(null);
   private _authStatus = signal<AuthStatus>(AuthStatus.checking);
 
@@ -28,12 +28,10 @@ export class AuthService {
   login(email: string, password: string): Observable<boolean> {
     const body = { email, password };
 
-    return this.http
-      .post<LoginResponse>(`${this.apiUrl}/auth/login`, body)
-      .pipe(
-        map(({ user, token }) => this.setAuthentication(user, token)),
-        catchError((err) => throwError(() => err.error.message))
-      );
+    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`, body).pipe(
+      map(({ user, token }) => this.setAuthentication(user, token)),
+      catchError((err) => throwError(() => err.error.message))
+    );
   }
 
   logout(): void {
@@ -54,25 +52,23 @@ export class AuthService {
 
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
 
-    return this.http
-      .get<CheckTokenResponse>(`${this.apiUrl}/auth/check-token`, { headers })
-      .pipe(
-        map(({ user, token }) => this.setAuthentication(user, token)),
-        catchError(() => {
-          this._currentUser.set(null);
-          this._authStatus.set(AuthStatus.notAuthenticated);
-          sessionStorage.removeItem('token');
+    return this.http.get<CheckTokenResponse>(`${this.apiUrl}/auth/check-token`, { headers }).pipe(
+      map(({ user, token }) => this.setAuthentication(user, token)),
+      catchError(() => {
+        this._currentUser.set(null);
+        this._authStatus.set(AuthStatus.notAuthenticated);
+        sessionStorage.removeItem('token');
 
-          return of(false);
-        })
-      );
+        return of(false);
+      })
+    );
   }
 
   private setAuthentication(user: User, token: string): boolean {
     this._currentUser.set(user);
     this._authStatus.set(AuthStatus.authenticated);
     sessionStorage.setItem('token', token);
-    this.ws.connect(token)
+    this.ws.connect(token);
     return true;
   }
 }

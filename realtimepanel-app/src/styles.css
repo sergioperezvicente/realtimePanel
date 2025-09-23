@@ -11,3 +11,54 @@ app-login {
   background-repeat: no-repeat;
   height: 100vh;
 }
+
+app-header,
+app-brand-button,
+app-offcanvas-brand-button {
+  height: 8vh;
+  min-height: 75px;
+}
+
+app-footer {
+  height: 8vh;
+  min-height: 40px;
+  text-align: right;
+  z-index: 0;
+}
+
+
+.fade-in-up {
+  animation: fade-in-up 0.6s ease-out forwards;
+  /* opcional: oculto al inicio si el elemento ya está en el DOM */
+  opacity: 0;
+}
+
+.fade-in-down {
+  animation: fade-in-down 0.6s ease-out forwards;
+  /* opcional: para que empiece invisible hasta que arranque la animación */
+  opacity: 0;
+}
+
+/* ANIMATIONS */
+
+@keyframes fade-in-down {
+  0% {
+    transform: translateY(-20px); /* empieza 20px más arriba */
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);     /* posición final */
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  0% {
+    transform: translateY(20px); /* empieza 20px más abajo */
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0); /* posición final */
+    opacity: 1;
+  }
+}
