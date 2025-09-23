@@ -17,7 +17,7 @@ import { App } from '@app/app';
     </div>
   `,
   host: {
-    class: 'fixed-bottom bg-body-tertiary border-top align-content-center',
+    class: 'fixed-bottom z-0 bg-body-tertiary border-top align-content-center',
     'animate.enter': 'fade-in-up',
   },
 })

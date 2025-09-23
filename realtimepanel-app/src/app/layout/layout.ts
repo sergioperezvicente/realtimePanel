@@ -2,11 +2,13 @@ import { Component } from '@angular/core';
 import { Header } from './components/header';
 import { RouterOutlet } from '@angular/router';
 import { Footer } from "./components/footer";
+import { Sidebar } from "./components/sidebar";
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, Header, Footer],
+  imports: [RouterOutlet, Header, Footer, Sidebar],
   template: `
+    <app-sidebar />
     <main class="col p-0">
       <app-header />
       <section class="container-fluid pt-3 pb-5" style="height: 84vh; overflow-y: auto;">

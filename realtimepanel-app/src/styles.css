@@ -4,12 +4,27 @@ html {
   overflow-y: hidden;
 }
 
+nav > ul {
+  list-style: none;
+  margin: 0;
+  padding-left: 0;
+}
+
 app-login {
   background-image: url(/assets/background-login.jpg);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   height: 100vh;
+}
+
+app-sidebar,
+app-offcanvas-sidebar,
+app-chat {
+  min-width: 80px;
+  z-index: 1;
+  background-image: url(/assets/background.png);
+  background-repeat: repeat;
 }
 
 app-header,

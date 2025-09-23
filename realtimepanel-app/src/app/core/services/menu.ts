@@ -14,12 +14,12 @@ export class MenuService {
   ];
 
   getMenuItems() {
-    const currentUser = this.authService.currentUser();
-    if (currentUser && currentUser.isAdmin) {
+    // const currentUser = this.authService.currentUser();
+    // if (currentUser && currentUser.isAdmin) {
       return this.menuItems;
-    }
+    // }
 
-    return this.menuItems.filter((item) => currentUser && currentUser.access.includes(item.route));
+    // return this.menuItems.filter((item) => currentUser && currentUser.access.includes(item.route));
   }
 
   // getMenuInitial() {
