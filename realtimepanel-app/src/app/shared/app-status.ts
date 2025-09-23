@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
-  selector: 'app-app-status',
+  selector: 'app-status',
   imports: [],
   template: `
     <p>

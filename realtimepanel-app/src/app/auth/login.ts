@@ -1,15 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { App } from '@app/app';
+import { AppStatus } from "@shared/app-status";
+import { LoginCard } from "./partials/login-card";
+import { LoginFooter } from "./partials/login-footer";
 
 @Component({
   selector: 'app-login',
-  imports: [],
+  imports: [LoginCard, LoginFooter, AppStatus],
   template: `
-    <p>
-      login works!
-    </p>
+    <app-login-card />
+    <app-login-footer />
+    @if (app.status() === 'offline') {
+      <app-status />
+    }
   `,
-  styles: ``
+  host: {
+    class: 'row',
+  },
 })
 export class LoginView {
-
+  protected readonly app = inject(App)
 }
