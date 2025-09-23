@@ -5,16 +5,33 @@ import { LoginView } from './auth/login';
 import { Layout } from '@layout/layout';
 
 export const routes: Routes = [
-    {
+  {
+    path: '',
+    canActivateChild: [privateGuard],
+    component: Layout,
+    children: [
+      {
         path: '',
-        component: Layout,
-        canActivate: [privateGuard]
-    },
-    {
-        path: 'auth/login',
-        canActivate: [publicGuard],
-        component: LoginView,
-        title: 'Acceso'
-    },
-    { path: '**', redirectTo: '' },
+        title: 'realtimePanel - Dashboard',
+        loadComponent: () => import('@views/dashboard/dashboard').then((m) => m.DashboardView),
+      },
+      {
+        path: 'settings',
+        title: 'realtimePanel - Configuración',
+        loadComponent: () => import('@views/settings/settings').then((m) => m.SettingsView),
+      },
+      {
+        path: 'users',
+        title: 'realtimePanel - Usuarios',
+        loadComponent: () => import('@views/users/users').then((m) => m.UsersView),
+      },
+    ],
+  },
+  {
+    path: 'auth/login',
+    canActivate: [publicGuard],
+    component: LoginView,
+    title: 'realtimePanel - Acceso',
+  },
+  { path: '**', redirectTo: '' },
 ];

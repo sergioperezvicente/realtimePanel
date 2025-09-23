@@ -9,19 +9,8 @@ export class MenuService {
 
   private menuItems = [
     { name: 'General', icon: 'dashboard', route: '/' },
-    // { name: 'Calendario', icon: 'calendar_month', route: '/calendar' },
-    // { name: 'Diario', icon: 'menu_book', route: '/diary' },
-    // { name: 'Riego', icon: 'water_drop', route: '/irrigation' },
-    // { name: 'Finca', icon: 'landscape', route: '/farm' },
-    // { name: 'Dotación', icon: 'water', route: '/watersupply' },
-    // { name: 'Productos', icon: 'inventory_2', route: '/products' },
-    // { name: 'Maquinaria', icon: 'agriculture', route: '/machinery' },
-    // { name: 'Sanidad Vegetal', icon: 'medical_services', route: '/health' },
-    // { name: 'Abonaje', icon: 'atr', route: '/fertilization' },
     { name: 'Usuarios', icon: 'Group', route: '/users' },
-    // { name: 'Recolecta', icon: 'Nutrition', route: '/harvest' },
-    // { name: 'Ajustes', icon: 'settings', route: '/settings' },
-    // { name: 'Testing', icon: 'checklist', route: '/testing' },
+    { name: 'Configuración', icon: 'settings', route: '/settings' },
   ];
 
   getMenuItems() {
@@ -33,7 +22,7 @@ export class MenuService {
     return this.menuItems.filter((item) => currentUser && currentUser.access.includes(item.route));
   }
 
-  getMenuInitial() {
-    return [{ name: 'Finca', icon: 'landscape', route: '/farm' }];
-  }
+  // getMenuInitial() {
+  //   return [{ name: 'Finca', icon: 'landscape', route: '/farm' }];
+  // }
 }
