@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
-import { App } from '../../app';
-import { Brand } from '../../shared/brand';
+import { App } from '@app/app';
+import { Brand } from '@app/shared/brand';
 import { LoginForm } from './login-form';
 
 @Component({

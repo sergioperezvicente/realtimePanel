@@ -1,11 +1,11 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { AuthStatus } from '../../data/enums/auth-status';
-import { User } from '../../data/models/user';
-import { environment } from '../../../environments/environment';
 import { catchError, map, Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CheckTokenResponse, LoginResponse } from '../interfaces/auth';
-import { WsService } from '../../core/services/ws';
+import { environment } from '@env/environment';
+import { WsService } from '@core/services/ws';
+import { User } from '@app/data/models/user';
+import { AuthStatus } from '@app/data/enums/auth-status';
 
 @Injectable({
   providedIn: 'root'

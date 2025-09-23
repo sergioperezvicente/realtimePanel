@@ -1,9 +1,8 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { InputControl } from '../../../shared/controls/input';
-import { MaterialButton } from '../../../shared/controls/material-button';
-import { WsService } from '../../../core/services/ws';
-import { Room } from '../../../data/models/room';
+import { InputControl } from '@app/shared/controls/input';
+import { MaterialButton } from '@app/shared/controls/material-button';
+import { WsService } from '@core/services/ws';
 
 @Component({
   selector: 'app-chat-send-message-form',

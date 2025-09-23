@@ -17,11 +17,13 @@
     "module": "preserve",
     "paths": {
       "@core/*": ["src/app/core/*"],
+      "@app/*": ["src/app/*"],
       "@shared/*":["src/app/shared/*"],
       "@directives/*":["src/app/shared/directives/*"],
       "@pipes/*":["src/app/shared/pipes/*"],
       "@env/*":["src/environments/*"],
       "@data/*":["src/app/data/*"],
+      "@enums/*":["src/app/data/enums/*"],
       "@layout/*":["src/app/layout/*"],
     },
   },

@@ -1,7 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { WsService } from '../../../core/services/ws';
-import { style } from '@angular/animations';
-import { ChatService } from '../../../core/services/chat';
+import { ChatService } from '@core/services/chat';
 
 @Component({
   selector: 'chat-button',

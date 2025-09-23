@@ -1,15 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'app-material-button',
-  imports: [],
-  template: `
-    <p>
-      material-button works!
-    </p>
-  `,
-  styles: ``
+  template: `<button
+    class="material-symbols-outlined"
+    [class]="color + ' ' + 'display-' + display"
+    [attr.title]="title"
+    [disabled]="disabled"
+  >
+    {{ icon }}
+  </button>`,
 })
 export class MaterialButton {
-
+  @Input() title?: string;
+  @Input() icon!: string;
+  @Input() display?: string;
+  @Input() color?: string;
+  @Input() disabled: boolean = false;
 }
