@@ -1,8 +1,8 @@
 import { Component, inject } from '@angular/core';
 import { App } from '@app/app';
-import { AppStatus } from "@shared/app-status";
-import { LoginCard } from "./partials/login-card";
-import { LoginFooter } from "./partials/login-footer";
+import { AppStatus } from '@shared/app-status';
+import { LoginCard } from './partials/login-card';
+import { LoginFooter } from './partials/login-footer';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +11,7 @@ import { LoginFooter } from "./partials/login-footer";
     <app-login-card />
     <app-login-footer />
     @if (app.status() === 'offline') {
-      <app-status />
+    <app-status />
     }
   `,
   host: {
@@ -19,5 +19,5 @@ import { LoginFooter } from "./partials/login-footer";
   },
 })
 export class LoginView {
-  protected readonly app = inject(App)
+  protected readonly app = inject(App);
 }

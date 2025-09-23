@@ -13,7 +13,6 @@ import packageInfo from '../../package.json'
   selector: 'app-root',
   imports: [RouterOutlet],
   template: `<router-outlet />`,
-  styleUrl: './app.css'
 })
 export class App {
   private readonly apiUrl = environment.apiUrl;

@@ -1,5 +1,5 @@
 import { ApplicationConfig, provideAppInitializer, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { provideRouter, withViewTransitions } from '@angular/router';
 import packageInfo from '../../package.json';
 
 import { routes } from './app.routes';
@@ -11,7 +11,7 @@ export const appConfig: ApplicationConfig = {
     provideAppInitializer(() => console.log(`${packageInfo.name + ' - version: ' + packageInfo.version}`)),
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
-    provideRouter(routes),
+    provideRouter(routes, withViewTransitions()),
     provideHttpClient(withInterceptors([AuthInterceptor])),
   ]
 };
