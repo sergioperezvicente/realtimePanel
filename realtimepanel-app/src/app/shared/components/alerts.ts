@@ -8,7 +8,7 @@ import { AlertsService } from '@core/services/alerts';
   template: `{{ this.alertService.alert()?.message || message }}`,
   host: {
     class: 'alert shadow fade',
-    '[class]': 'this.alertService.alert()?.color',
+    '[class]': 'this.alertService.alert()?.color || color',
     '[class.show]': 'this.alertService.alert()',
     'animate.enter': 'pop-in',
   },

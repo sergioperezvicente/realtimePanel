@@ -19,9 +19,9 @@ import { Alerts } from '@shared/components/alerts';
       <section class="container-fluid pt-3 pb-5" style="height: 84vh; overflow-y: auto;">
         <router-outlet />
       </section>
-      
       <app-footer />
-    </main><app-alerts />
+    </main>
+    <app-alerts />
   `,
   host: {
     class: 'row',
