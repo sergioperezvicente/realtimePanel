@@ -41,6 +41,19 @@ app-footer {
   z-index: 0;
 }
 
+app-alerts {
+  position: fixed !important;
+  width: fit-content !important;
+  bottom: 50px;
+  right: 20px;
+  z-index: 9999;
+  opacity: 0;
+}
+
+app-alerts.show {
+  opacity: 1;
+}
+
 .span-btn:hover {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   transform: scale(1.1);
@@ -79,6 +92,22 @@ app-footer {
   }
   100% {
     transform: translateY(0); /* posición final */
+    opacity: 1;
+  }
+}
+
+@keyframes pop-in {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+
+  100% {
+    transform: scale(1);
     opacity: 1;
   }
 }
