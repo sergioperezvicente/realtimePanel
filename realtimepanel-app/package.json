@@ -1,6 +1,11 @@
 {
   "name": "realtimepanel-app",
-  "version": "0.0.0",
+  "version": "Alpha 0.0.1",
+  "description": "Panel de administración para la gestión de usuarios",
+  "author": "Sergio Pérez",
+  "copyright": "2025",
+  "website": "https://realtimepanel.com",
+  "private": true,
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
@@ -20,8 +25,8 @@
       }
     ]
   },
-  "private": true,
   "dependencies": {
+    "@angular/animations": "^20.3.1",
     "@angular/common": "^20.2.0",
     "@angular/compiler": "^20.2.0",
     "@angular/core": "^20.2.0",
@@ -29,6 +34,7 @@
     "@angular/platform-browser": "^20.2.0",
     "@angular/router": "^20.2.0",
     "rxjs": "~7.8.0",
+    "socket.io-client": "^4.8.1",
     "tslib": "^2.3.0"
   },
   "devDependencies": {
