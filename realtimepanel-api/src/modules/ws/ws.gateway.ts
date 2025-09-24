@@ -7,30 +7,63 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
+import { JwtPayload } from '../auth/interfaces/jwt-payload';
+import { AuthService } from '../auth/auth.service';
+import { Room } from './models/room';
 
 @WebSocketGateway({
   cors: { origin: 'http://localhost:4200', methods: ['GET', 'POST'] },
 })
 export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect {
-  constructor(private readonly jwtService: JwtService,) {}
-
+  constructor(
+    private readonly jwtService: JwtService,
+    private readonly authService: AuthService,
+  ) {}
+  private rooms: Room[] = [];
 
   @WebSocketServer() server: Server;
 
   async handleConnection(client: any, ...args: any[]) {
-    throw new Error('Method not implemented.');
+    const payload: JwtPayload = this.jwtService.verify<JwtPayload>(
+      client.handshake.auth.token,
+      {
+        secret: process.env.JWT_SEED,
+      },
+    );
+    if (!payload) return;
+    const user = await this.authService.findUserById(payload.id);
+    if (!user) return;
+    this.rooms.push({
+      socketId: client.id,
+      user: user,
+    });
+    console.log('Usuarios Online:', this.rooms.length);
+    if (this.rooms.length > 1) {
+      this.broadcastAll('chat-on', { message: 'Chat habilitado' });
+      this.broadcastAll('chat-rooms', { chatrooms: this.rooms });
+    }
   }
 
   async handleDisconnect(client: any) {
-    throw new Error('Method not implemented.');
+    this.rooms = this.rooms.filter((socket) => socket.socketId !== client.id);
+    console.log('Usuarios Online:', this.rooms.length);
+    if (this.rooms.length <= 1) {
+      this.broadcastAll('chat-off', { message: 'Chat inabilitado' });
+    }
+    this.broadcastAll('chat-rooms', { chatrooms: this.rooms });
   }
 
   public broadcastAll(event: string, payload: any) {
     this.server.emit(event, payload);
   }
 
-  @SubscribeMessage('message')
-  handleMessage(client: any, payload: any): string {
+  @SubscribeMessage('chat')
+  handleChat(client: any, payload: any): string {
+    return 'Hello world!';
+  }
+
+  @SubscribeMessage('broadcast')
+  handleBroadcast(client: any, payload: any): string {
     return 'Hello world!';
   }
 }

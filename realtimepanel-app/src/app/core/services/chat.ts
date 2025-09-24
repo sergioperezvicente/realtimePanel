@@ -22,7 +22,7 @@ export class ChatService {
         this._chatStatus.set(ChatStatus.on);
         return;
       case WsStatus.off:
-        this._chatStatus.set(ChatStatus.on);
+        this._chatStatus.set(ChatStatus.off);
         return;
     }
   });

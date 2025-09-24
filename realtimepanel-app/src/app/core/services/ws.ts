@@ -44,8 +44,9 @@ export class WsService {
     //     this._chatStatus.set(ChatStatus.off);
     //     this.alertsService.showAlert(data.message, AlertColour.dark);
     //   }),
-    this.socket.on('chat-room', (data) => {
-      this.rooms.set(data.chatroom);
+    this.socket.on('chat-rooms', (data) => {
+      this.rooms.set(data.chatrooms);
+      
     });
     // this.socket.on('chat-broadcast', (data) => {
     //    //console.log(data);
