@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { Header } from './components/header';
 import { RouterOutlet } from '@angular/router';
 import { Footer } from './components/footer';
@@ -7,12 +7,15 @@ import { SidebarOffcanvas } from './components/sidebar-offcanvas';
 import { AppStatus } from '@shared/app-status';
 import { Alerts } from '@shared/components/alerts';
 import { Chat } from './components/chat';
+import { App } from '@app/app';
 
 @Component({
   selector: 'app-layout',
   imports: [RouterOutlet, Header, Footer, Sidebar, SidebarOffcanvas, AppStatus, Alerts, Chat],
   template: `
-    <!-- <app-status /> -->
+    <!-- @if (this.app.status() !== 'syncronized') {
+    <app-status />
+    } -->
     <app-sidebar />
     <app-sidebar-offcanvas />
     <main class="col p-0">
@@ -29,4 +32,6 @@ import { Chat } from './components/chat';
     class: 'row',
   },
 })
-export class Layout {}
+export class Layout {
+  protected readonly app = inject(App);
+}

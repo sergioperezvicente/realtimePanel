@@ -34,7 +34,7 @@ import { WsService } from '@core/services/ws';
 export class ChatSendMessageForm {
   @Input() to!: string | undefined;
   @Input() chatMode!: ChatMode;
-  @Output() messageSent = new EventEmitter<{ to: string | undefined; message: string }>();
+  @Output() messageSent = new EventEmitter<{ to: string ; message: string }>();
 
   private readonly fb = inject(FormBuilder);
   private readonly ws = inject(WsService);
@@ -52,14 +52,14 @@ export class ChatSendMessageForm {
       switch (this.chatMode) {
         case ChatMode.unicast:
           this.ws.send(this.to, message);
+          this.messageSent.emit({ to: this.to, message });
           break;
         case ChatMode.broadcast:
           this.ws.sendBroadcast(message);
+          this.messageSent.emit({ to: 'broadcast', message });
           break;
       }
     }
-    this.messageSent.emit({ to: this.to, message });
-
     this.messageForm.reset();
   }
 }

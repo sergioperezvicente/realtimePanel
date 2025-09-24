@@ -1,11 +1,11 @@
 import { Component, Input } from '@angular/core';
 
 @Component({
-  selector: 'app-chat-message-outgoing',
+  selector: 'app-broadcast-message-incoming',
   template: `
-    <div class="text-end mb-1">
+    <div class="text-center mb-1">
       <span
-        class="chat-bubble-outgoing badge position-relative text-bg-success shadow fs-6 fw-light text-start text-wrap text-break p-2 pe-5"
+        class="badge position-relative text-bg-dark shadow fs-6 fw-light text-start text-wrap p-2 pe-5"
       >
         {{ message }}
         <small class="position-absolute bottom-0 end-0 text-muted" style="margin-right: 5px">
@@ -15,7 +15,7 @@ import { Component, Input } from '@angular/core';
     </div>
   `,
 })
-export class ChatMessageOutgoing {
+export class BroadcastMessageIncoming {
   @Input() message!: string;
   createdAt: string;
 

@@ -99,6 +99,48 @@ app-alerts.show {
   line-height: 1;
 }
 
+chat-outgoing {
+  text-align: right !important;
+}
+
+.chat-bubble-outgoing {
+  position: relative;
+  max-width: 90%;
+  line-height: 1.2; /* necesario para posicionar el ::after */
+}
+
+.chat-bubble-outgoing::after {
+  content: '';
+  position: absolute;
+  top: 15px; /* verticalmente centrado */
+  right: -8px; /* mueve el triángulo a la derecha del badge */
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent; /* lado superior transparente */
+  border-bottom: 8px solid transparent; /* lado inferior transparente */
+  border-left: 8px solid #198754; /* color de la “punta” (mismo verde de text-bg-success) */
+}
+
+.chat-bubble-incoming {
+  position: relative;
+  max-width: 90%;
+  line-height: 1.2; /* necesario para posicionar el ::after */
+}
+
+.chat-bubble-incoming::after {
+  content: '';
+  position: absolute;
+  top: 15px; /* verticalmente centrado */
+  left: -8px; /* mueve el triángulo a la derecha del badge */
+  transform: translateY(-50%);
+  width: 0;
+  height: 0;
+  border-top: 8px solid transparent; /* lado superior transparente */
+  border-bottom: 8px solid transparent; /* lado inferior transparente */
+  border-right: 8px solid #6c757d; /* color de la “punta” (mismo verde de text-bg-success) */
+}
+
 .fade-in-up {
   animation: fade-in-up 0.6s ease-out forwards;
   /* opcional: oculto al inicio si el elemento ya está en el DOM */

@@ -34,7 +34,7 @@ export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect {
     const user = await this.authService.findUserById(payload.id);
     if (!user) return;
     this.rooms.push({
-      socketId: client.id,
+      socket: client.id,
       user: user,
     });
     console.log('Usuarios Online:', this.rooms.length);
@@ -45,7 +45,7 @@ export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   async handleDisconnect(client: any) {
-    this.rooms = this.rooms.filter((socket) => socket.socketId !== client.id);
+    this.rooms = this.rooms.filter((socket) => socket.socket !== client.id);
     console.log('Usuarios Online:', this.rooms.length);
     if (this.rooms.length <= 1) {
       this.broadcastAll('chat-off', { message: 'Chat inabilitado' });

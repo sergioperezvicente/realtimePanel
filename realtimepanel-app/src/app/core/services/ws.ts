@@ -6,16 +6,16 @@ import { environment } from '@env/environment';
 import { io, Socket } from 'socket.io-client';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class WsService {
   private socket?: Socket;
 
   private _status = signal<WsStatus>(WsStatus.off);
-  //private _chatIncoming = signal<MsgIncoming | undefined>(undefined)
+  private _broadcastIncoming = signal<string | undefined>(undefined);
 
   public status = computed(() => this._status());
-  // public chatIncoming = computed(() => this._chatIncoming())
+  public broadcastIncoming = computed(() => this._broadcastIncoming());
 
   public rooms = signal<ChatRoom[]>([]);
 
@@ -46,12 +46,11 @@ export class WsService {
     //   }),
     this.socket.on('chat-rooms', (data) => {
       this.rooms.set(data.chatrooms);
-      
     });
-    // this.socket.on('chat-broadcast', (data) => {
-    //    //console.log(data);
-    //    this._chatIncoming.set(data)
-    // });
+    this.socket.on('broadcast', (message) => {
+      //console.log(message);
+      this._broadcastIncoming.set(message);
+    });
 
     // this.socket.on('db:update', (data) => {
     //   this._dbUpdated.set(data.message);
@@ -66,7 +65,7 @@ export class WsService {
   }
 
   public sendBroadcast(message: string) {
-    this.socket?.emit('broadcast', message)
+    this.socket?.emit('broadcast', message);
   }
 
   public disconnect() {

@@ -15,6 +15,7 @@ export class ChatService {
 
   public chatStatus = computed(() => this._chatStatus());
   public rooms = computed(() => this.ws.rooms());
+  public broadcast = signal<string | undefined>(undefined)
 
   public wsStatusChangedEffect = effect(() => {
     switch (this.ws.status()) {
@@ -26,6 +27,10 @@ export class ChatService {
         return;
     }
   });
+
+  public incomingBroadcastEffect = effect(()=>{
+    this.broadcast.set(this.ws.broadcastIncoming())
+  })
 
   // public incomings = signal<MsgIncoming | undefined>(undefined)
 
