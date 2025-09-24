@@ -1,4 +1,4 @@
-import { Component, Input, ViewChild, ViewContainerRef } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild, ViewContainerRef } from '@angular/core';
 import { User } from '@app/data/models/user';
 
 @Component({
@@ -24,4 +24,6 @@ export class ChatRoomView {
   @Input() socket?: string;
   @Input() user?: User;
   @ViewChild('room', { read: ViewContainerRef }) room!: ViewContainerRef;
+
+  constructor(public elementRef: ElementRef<HTMLElement>) {}
 }

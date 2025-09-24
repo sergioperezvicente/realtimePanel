@@ -11,7 +11,7 @@ import { App } from '@app/app';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, Header, Footer, Sidebar, SidebarOffcanvas, AppStatus, Alerts, Chat],
+  imports: [RouterOutlet, Header, Footer, Sidebar, SidebarOffcanvas, Alerts, Chat],
   template: `
     <!-- @if (this.app.status() !== 'syncronized') {
     <app-status />

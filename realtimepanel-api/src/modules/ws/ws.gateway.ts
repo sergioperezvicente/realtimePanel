@@ -58,8 +58,18 @@ export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('chat')
-  handleChat(client: any, payload: any): string {
-    return 'Hello world!';
+  handleChat(client: any, payload: any) {
+    console.log('Chat-from:', client.id, 'to:', payload.to , 'message: ', payload.message);
+    const target = this.rooms.find((u) => u.socket === payload.to);
+    if (target) {
+      // Enviar solo al socket de destino
+      this.server.to(target.socket).emit('chat-incoming', {
+        from: client.id,
+        message: payload.message,
+      });
+    } else {
+      console.log('Destino no encontrado:', payload.to);
+    }
   }
 
   @SubscribeMessage('broadcast')

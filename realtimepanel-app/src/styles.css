@@ -157,6 +157,16 @@ chat-outgoing {
   /* opcional: si quieres que empiece invisible hasta que se aplique la animación */
   opacity: 0;
 }
+.pop-in-from-left,
+.pop-in-from-right {
+  animation-duration: 0.2s;                  /* un poco más lento */
+  animation-timing-function: cubic-bezier(.4,0,.2,1); /* curva suave estilo material design */
+  animation-fill-mode: forwards;
+  opacity: 0; /* para que no se vea antes de animar */
+}
+
+.pop-in-from-left  { animation-name: pop-in-from-left; }
+.pop-in-from-right { animation-name: pop-in-from-right; }
 
 /* ANIMATIONS */
 
@@ -197,6 +207,28 @@ chat-outgoing {
   }
   100% {
     transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pop-in-from-left {
+  0% {
+    transform: translateX(-10px) scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes pop-in-from-right {
+  0% {
+    transform: translateX(10px) scale(0.9);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0) scale(1);
     opacity: 1;
   }
 }

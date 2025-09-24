@@ -13,9 +13,11 @@ export class WsService {
 
   private _status = signal<WsStatus>(WsStatus.off);
   private _broadcastIncoming = signal<string | undefined>(undefined);
+  private _chatIncoming = signal<string | undefined>(undefined);
 
   public status = computed(() => this._status());
   public broadcastIncoming = computed(() => this._broadcastIncoming());
+  public chatIncoming = computed(() => this._chatIncoming());
 
   public rooms = signal<ChatRoom[]>([]);
 
@@ -34,18 +36,16 @@ export class WsService {
       this._status.set(WsStatus.off);
     });
 
-    // this.socket.on('chat-on', (data) => {
-    //   this._chatStatus.set(ChatStatus.on);
-    //   if (this._chatUsers().length <= 1) {
-    //     this.alertsService.showAlert(data.message, AlertColour.success);
-    //   }
-    // }),
     //   this.socket.on('chat-off', (data) => {
     //     this._chatStatus.set(ChatStatus.off);
     //     this.alertsService.showAlert(data.message, AlertColour.dark);
     //   }),
     this.socket.on('chat-rooms', (data) => {
       this.rooms.set(data.chatrooms);
+    });
+    this.socket.on('chat-incoming', (data) => {
+      this._chatIncoming.set(data)
+      console.log(data)
     });
     this.socket.on('broadcast', (message) => {
       //console.log(message);
