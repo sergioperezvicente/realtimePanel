@@ -1,5 +1,6 @@
 import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { ChatMode } from '@app/data/enums/chat-mode';
 import { InputControl } from '@app/shared/controls/input';
 import { MaterialButton } from '@app/shared/controls/material-button';
 import { WsService } from '@core/services/ws';
@@ -32,6 +33,7 @@ import { WsService } from '@core/services/ws';
 })
 export class ChatSendMessageForm {
   @Input() to!: string | undefined;
+  @Input() chatMode!: ChatMode;
   @Output() messageSent = new EventEmitter<{ to: string | undefined; message: string }>();
 
   private readonly fb = inject(FormBuilder);
@@ -47,13 +49,17 @@ export class ChatSendMessageForm {
 
     // Envía por websocket si corresponde
     if (this.to !== undefined) {
-      this.ws.send(this.to, message);
+      switch (this.chatMode) {
+        case ChatMode.unicast:
+          this.ws.send(this.to, message);
+          break;
+        case ChatMode.broadcast:
+          this.ws.sendBroadcast(message);
+          break;
+      }
     }
-
-    // ✅ Emite el mensaje al componente padre
     this.messageSent.emit({ to: this.to, message });
 
-    // Limpia el input
     this.messageForm.reset();
   }
 }

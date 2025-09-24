@@ -65,6 +65,10 @@ export class WsService {
     this.socket?.emit('chat', data);
   }
 
+  public sendBroadcast(message: string) {
+    this.socket?.emit('broadcast', message)
+  }
+
   public disconnect() {
     if (this.socket) {
       this.socket.disconnect();

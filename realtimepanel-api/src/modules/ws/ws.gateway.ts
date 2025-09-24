@@ -63,7 +63,8 @@ export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   }
 
   @SubscribeMessage('broadcast')
-  handleBroadcast(client: any, payload: any): string {
-    return 'Hello world!';
+  handleBroadcast(client: any, payload: any) {
+    console.log('Difusion de mensaje:', payload, 'from client:', client.id);
+    this.broadcastAll('broadcast', payload)
   }
 }
