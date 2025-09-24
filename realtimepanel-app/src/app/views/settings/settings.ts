@@ -3,6 +3,7 @@ import { AlertColor } from '@app/data/enums/alert-color';
 import { AlertsService } from '@core/services/alerts';
 
 @Component({
+  selector: 'settings-view',
   imports: [],
   template: `
     <p>

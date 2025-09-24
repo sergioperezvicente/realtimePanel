@@ -7,7 +7,7 @@ import { Layout } from '@layout/layout';
 export const routes: Routes = [
   {
     path: '',
-    canActivateChild: [publicGuard],
+    canActivateChild: [privateGuard],
     component: Layout,
     children: [
       {

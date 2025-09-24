@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 
 @Component({
+  selector: 'dashboard-view',
   imports: [],
   template: `
     <p>

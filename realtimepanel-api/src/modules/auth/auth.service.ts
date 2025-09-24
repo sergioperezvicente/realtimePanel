@@ -1,4 +1,9 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { JwtPayload } from './interfaces/jwt-payload';
@@ -6,6 +11,7 @@ import { JwtService } from '@nestjs/jwt';
 import { User } from './entities/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import bcryptjs from 'node_modules/bcryptjs';
+import { CreateAuthDto } from './dto/create-auth.dto';
 
 @Injectable()
 export class AuthService {
@@ -13,7 +19,9 @@ export class AuthService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
-  ) {}
+  ) {
+    this.createInitialUser()
+  }
 
   async login(loginUserDto: LoginUserDto) {
     const { email, password } = loginUserDto;
@@ -31,32 +39,32 @@ export class AuthService {
     };
   }
 
-  // async create(createAuthDto: CreateAuthDto) {
-  //   try {
-  //     const { password, ...userData } = createAuthDto;
+  async create(createAuthDto: CreateAuthDto) {
+    try {
+      const { password, ...userData } = createAuthDto;
 
-  //     const user = this.userRepository.create({
-  //       password: await bcryptjs.hash(password, 10),
-  //       ...userData,
-  //     });
-  //     await this.userRepository.save(user);
-  //     const { password: _, ...userWithoutPassword } = user;
+      const user = this.userRepository.create({
+        password: await bcryptjs.hash(password, 10),
+        ...userData,
+      });
+      await this.userRepository.save(user);
+      const { password: _, ...userWithoutPassword } = user;
 
-  //     return userWithoutPassword;
-  //   } catch (error) {
-  //     if (error.code === '23505') {
-  //       throw new BadRequestException(`${createAuthDto.email} already exists`);
-  //     }
-  //     throw new InternalServerErrorException('Something terrible happened!!');
-  //   }
-  // }
+      return userWithoutPassword;
+    } catch (error) {
+      if (error.code === '23505') {
+        throw new BadRequestException(`${createAuthDto.email} already exists`);
+      }
+      throw new InternalServerErrorException('Something terrible happened!!');
+    }
+  }
 
-  // async findAll(): Promise<Partial<User>[]> {
-  //   const users = await this.userRepository.find();
-  //   return users.map(
-  //     ({ password, ...userWithoutPassword }) => userWithoutPassword,
-  //   );
-  // }
+  async findAll(): Promise<Partial<User>[]> {
+    const users = await this.userRepository.find();
+    return users.map(
+      ({ password, ...userWithoutPassword }) => userWithoutPassword,
+    );
+  }
 
   async findUserById(id: string) {
     const user = await this.userRepository.findOne({ where: { id } });
@@ -66,10 +74,6 @@ export class AuthService {
     const { password, ...userWithoutPassword } = user;
     return userWithoutPassword;
   }
-
-  // findOne(id: number) {
-  //   return `This action returns a #${id} auth`;
-  // }
 
   // update(id: number, updateAuthDto: UpdateAuthDto) {
   //   return `This action updates a #${id} auth`;
@@ -100,6 +104,21 @@ export class AuthService {
 
   //   await this.userRepository.delete(id);
   // }
+  async createInitialUser() {
+    const users = await this.findAll();
+    if (users.length !== 0) return;
+    this.create({
+      name: 'Administrador',
+      lastName: '',
+      email: 'admin@admin.com',
+      password: 'admin1234',
+      job: 'Administrador del sistema',
+      imageUrl: '',
+      phone: '',
+      isAdmin: true,
+      access: ['/']
+    })
+  }
 
   getJwtToken(payload: JwtPayload) {
     const token = this.jwtService.sign(payload);

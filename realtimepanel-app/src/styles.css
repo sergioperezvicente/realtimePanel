@@ -10,7 +10,7 @@ nav > ul {
   padding-left: 0;
 }
 
-app-login {
+login-view {
   background-image: url(/assets/background-login.jpg);
   background-size: cover;
   background-position: center;

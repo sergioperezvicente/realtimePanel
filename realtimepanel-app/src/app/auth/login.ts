@@ -5,7 +5,7 @@ import { LoginCard } from './partials/login-card';
 import { LoginFooter } from './partials/login-footer';
 
 @Component({
-  selector: 'app-login',
+  selector: 'login-view',
   imports: [LoginCard, LoginFooter, AppStatus],
   template: `
     <app-login-card />

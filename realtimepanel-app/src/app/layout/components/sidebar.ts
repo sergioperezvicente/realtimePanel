@@ -30,6 +30,7 @@ import { MenuService } from '@core/services/menu';
   host: {
     class: 'col-lg-3 col-sm-1 d-none d-md-block vh-100 shadow p-0',
     style: 'max-width: 300px',
+    'animate.enter': 'fade-in-down'
   },
 })
 export class Sidebar {

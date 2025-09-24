@@ -50,8 +50,8 @@ export class LoginForm {
   protected error = signal<boolean>(false);
 
   protected loginForm: FormGroup = this.fb.group({
-    username: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.minLength(6)]],
+    username: ['admin@admin.com', [Validators.required, Validators.email]],
+    password: ['admin1234', [Validators.required, Validators.minLength(6)]],
   });
 
   onLogin(): void {
