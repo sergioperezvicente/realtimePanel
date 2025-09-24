@@ -12,10 +12,10 @@ export class WsService {
   private socket?: Socket;
 
   private _status = signal<WsStatus>(WsStatus.off);
-  private _chatIncoming = signal<MsgIncoming | undefined>(undefined)
+  //private _chatIncoming = signal<MsgIncoming | undefined>(undefined)
 
   public status = computed(() => this._status());
-  public chatIncoming = computed(() => this._chatIncoming())
+  // public chatIncoming = computed(() => this._chatIncoming())
 
   public rooms = signal<ChatRoom[]>([]);
 
@@ -47,10 +47,10 @@ export class WsService {
     this.socket.on('chat-room', (data) => {
       this.rooms.set(data.chatroom);
     });
-    this.socket.on('chat-broadcast', (data) => {
-       //console.log(data);
-       this._chatIncoming.set(data)
-    });
+    // this.socket.on('chat-broadcast', (data) => {
+    //    //console.log(data);
+    //    this._chatIncoming.set(data)
+    // });
 
     // this.socket.on('db:update', (data) => {
     //   this._dbUpdated.set(data.message);

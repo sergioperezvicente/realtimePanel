@@ -8,7 +8,13 @@ import { Component } from '@angular/core';
       chat works!
     </p>
   `,
-  styles: ``
+  host: {
+    class: 'offcanvas offcanvas-end p-0',
+    'data-bs-scroll': 'true',
+    style: 'max-width: 450px',
+    tabindex: '-1',
+    id: 'chat',
+  },
 })
 export class Chat {
 

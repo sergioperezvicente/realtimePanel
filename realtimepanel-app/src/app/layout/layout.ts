@@ -6,10 +6,11 @@ import { Sidebar } from './components/sidebar';
 import { SidebarOffcanvas } from './components/sidebar-offcanvas';
 import { AppStatus } from '@shared/app-status';
 import { Alerts } from '@shared/components/alerts';
+import { Chat } from './components/chat';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, Header, Footer, Sidebar, SidebarOffcanvas, AppStatus, Alerts],
+  imports: [RouterOutlet, Header, Footer, Sidebar, SidebarOffcanvas, AppStatus, Alerts, Chat],
   template: `
     <!-- <app-status /> -->
     <app-sidebar />
@@ -21,6 +22,7 @@ import { Alerts } from '@shared/components/alerts';
       </section>
       <app-footer />
     </main>
+    <app-chat />
     <app-alerts />
   `,
   host: {

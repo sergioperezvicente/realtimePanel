@@ -20,7 +20,7 @@ export class AuthService {
     private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
   ) {
-    this.createInitialUser()
+    this.createInitialUsers()
   }
 
   async login(loginUserDto: LoginUserDto) {
@@ -104,7 +104,7 @@ export class AuthService {
 
   //   await this.userRepository.delete(id);
   // }
-  async createInitialUser() {
+  async createInitialUsers() {
     const users = await this.findAll();
     if (users.length !== 0) return;
     this.create({
@@ -118,6 +118,18 @@ export class AuthService {
       isAdmin: true,
       access: ['/']
     })
+    this.create({
+      name: 'Usuario',
+      lastName: '',
+      email: 'user@user.com',
+      password: 'user1234',
+      job: 'Usuario del sistema',
+      imageUrl: '',
+      phone: '',
+      isAdmin: false,
+      access: ['/','/settings']
+    })
+    console.log('Usuarios iniciales creados')
   }
 
   getJwtToken(payload: JwtPayload) {

@@ -11,8 +11,8 @@ import { ChatService } from '@core/services/chat';
     '[class.d-none]': 'this.chat.chatStatus() !== "on"',
     type: "button",
     'data-bs-toggle': "offcanvas",
-    'data-bs-target': "#offcanvasChat",
-    'aria-controls': "offcanvasChat",
+    'data-bs-target': "#chat",
+    'aria-controls': "chat",
     title: "Mostrar chat",
   },
 })
