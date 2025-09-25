@@ -6,6 +6,7 @@ import { Component, Input } from '@angular/core';
     <div class="mb-1">
       <span
         class="chat-bubble-incoming badge position-relative text-bg-secondary shadow fs-6 fw-light text-start text-wrap p-2 pe-5"
+        animate.enter="pop-in-from-left"
       >
         {{ message }}
         <small class="position-absolute bottom-0 end-0 text-muted" style="margin-right: 5px">

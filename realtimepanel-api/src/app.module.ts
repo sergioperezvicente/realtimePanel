@@ -31,7 +31,7 @@ import { AuthGuard } from './common/guards/auth.guard';
     JwtModule.register({
       global: true,
       secret: process.env.JWT_SEED,
-      signOptions: { expiresIn: '15m' },
+      signOptions: { expiresIn: '1h' },
     }),
     AuthModule,
     FilesModule,

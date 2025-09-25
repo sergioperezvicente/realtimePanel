@@ -20,7 +20,7 @@ export class App {
   private readonly authService = inject(AuthService);
   private readonly ws = inject(WsService);
   private readonly router = inject(Router);
-  private readonly _status = signal<AppStatus>(AppStatus.disconnected);
+  private readonly _status = signal<AppStatus>(AppStatus.loading);
 
   public version: string = packageInfo.version;
   public year: string = packageInfo.copyright;
@@ -28,14 +28,17 @@ export class App {
   public description: string = packageInfo.description;
   public status = computed(() => this._status());
 
+  constructor(){
+    this.checkServer()        
+  }
+
   public authStatusChangedEffect = effect(() => {
-    this.checkServer();
     switch (this.authService.authStatus()) {
       case AuthStatus.checking:
         this._status.set(AppStatus.loading);
         return;
       case AuthStatus.authenticated:
-        this._status.set(AppStatus.connected);
+        this._status.set(AppStatus.syncronized);
         const url = this.authService.currentUser()?.access[0];
         this.router.navigate([sessionStorage.getItem('lastUrl') || url]);
         return;
@@ -53,6 +56,7 @@ export class App {
         return;
       case WsStatus.off:
         this.checkServer()
+        this.router.navigate(['/auth/login'])
         return;
     }
   });

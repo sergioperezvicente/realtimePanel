@@ -15,7 +15,8 @@ export class ChatService {
 
   public chatStatus = computed(() => this._chatStatus());
   public rooms = computed(() => this.ws.rooms());
-  public broadcast = signal<string | undefined>(undefined)
+  public broadcast = computed(()=> this.ws.broadcastIncoming())
+  public incoming = computed(() => this.ws.chatIncoming())
 
   public wsStatusChangedEffect = effect(() => {
     switch (this.ws.status()) {
@@ -27,29 +28,4 @@ export class ChatService {
         return;
     }
   });
-
-  public incomingBroadcastEffect = effect(()=>{
-    this.broadcast.set(this.ws.broadcastIncoming())
-  })
-
-  // public incomings = signal<MsgIncoming | undefined>(undefined)
-
-  // public wsStatusChangedEffect = effect(() => {
-  //   switch (this.ws.status()) {
-  //     case WsStatus.syncronized:
-  //       this._chatStatus.set(ChatStatus.on);
-  //       return;
-  //     case WsStatus.off:
-  //       this._chatStatus.set(ChatStatus.off);
-  //       return;
-  //   }
-  // });
-
-  // public roomsChangedEffect = effect(()=>{
-  //   this.rooms.set(this.ws.rooms())
-  // })
-
-  // public incomingMessageEffect = effect(()=>{
-  //   this.incomings.set(this.ws.chatIncoming())
-  // })
 }

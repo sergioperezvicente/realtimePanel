@@ -10,6 +10,11 @@ import { Server } from 'socket.io';
 import { JwtPayload } from '../auth/interfaces/jwt-payload';
 import { AuthService } from '../auth/auth.service';
 import { Room } from './models/room';
+import { Logger } from '@nestjs/common';
+
+const ws = new Logger('WebSocketGateway');
+const chat = new Logger('ChatGateway');
+const broadcast = new Logger('BroadcastGateway');
 
 @WebSocketGateway({
   cors: { origin: 'http://localhost:4200', methods: ['GET', 'POST'] },
@@ -30,14 +35,22 @@ export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         secret: process.env.JWT_SEED,
       },
     );
-    if (!payload) return;
+    if (!payload) {
+      this.server.to(client).emit('not-authorized')
+      this.handleDisconnect(client);
+      return;
+    };
     const user = await this.authService.findUserById(payload.id);
-    if (!user) return;
+    if (!user) {
+      this.server.to(client).emit('disconected')
+      this.handleDisconnect(client);
+      return;
+    };
     this.rooms.push({
       socket: client.id,
       user: user,
     });
-    console.log('Usuarios Online:', this.rooms.length);
+    ws.log(`Usuarios Online: ${this.rooms.length}`);
     if (this.rooms.length > 1) {
       this.broadcastAll('chat-on', { message: 'Chat habilitado' });
       this.broadcastAll('chat-rooms', { chatrooms: this.rooms });
@@ -46,7 +59,7 @@ export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   async handleDisconnect(client: any) {
     this.rooms = this.rooms.filter((socket) => socket.socket !== client.id);
-    console.log('Usuarios Online:', this.rooms.length);
+    ws.log(`Usuarios Online: ${this.rooms.length}`);
     if (this.rooms.length <= 1) {
       this.broadcastAll('chat-off', { message: 'Chat inabilitado' });
     }
@@ -59,22 +72,31 @@ export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect {
 
   @SubscribeMessage('chat')
   handleChat(client: any, payload: any) {
-    console.log('Chat-from:', client.id, 'to:', payload.to , 'message: ', payload.message);
+    const fromUser = this.rooms
+      .filter((r) => r.socket === client.id)
+      .map((r) => r.user.email);
+    const toUser = this.rooms
+      .filter((r) => r.socket === payload.to)
+      .map((r) => r.user.email);
     const target = this.rooms.find((u) => u.socket === payload.to);
+
+    chat.log(`Chat-from: ${fromUser} to: ${toUser} => ${payload.message}`);
     if (target) {
-      // Enviar solo al socket de destino
       this.server.to(target.socket).emit('chat-incoming', {
         from: client.id,
         message: payload.message,
       });
     } else {
-      console.log('Destino no encontrado:', payload.to);
+      ws.warn(`Destino no encontrado: ${payload.to}`);
     }
   }
 
   @SubscribeMessage('broadcast')
-  handleBroadcast(client: any, payload: any) {
-    console.log('Difusion de mensaje:', payload, 'from client:', client.id);
-    this.broadcastAll('broadcast', payload)
+  handleBroadcast(client: any, message: string) {
+    const fromUser = this.rooms
+      .filter((r) => r.socket === client.id)
+      .map((r) => r.user.email);
+    broadcast.warn(`Broadcast-from: ${fromUser} => ${message}`);
+    this.broadcastAll('broadcast', message);
   }
 }

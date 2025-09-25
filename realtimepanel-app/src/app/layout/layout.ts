@@ -11,11 +11,11 @@ import { App } from '@app/app';
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, Header, Footer, Sidebar, SidebarOffcanvas, Alerts, Chat],
+  imports: [RouterOutlet, Header, Footer, Sidebar, SidebarOffcanvas, Alerts, Chat, AppStatus],
   template: `
-    <!-- @if (this.app.status() !== 'syncronized') {
+    @if (this.app.status() !== 'syncronized') {
     <app-status />
-    } -->
+    }
     <app-sidebar />
     <app-sidebar-offcanvas />
     <main class="col p-0">

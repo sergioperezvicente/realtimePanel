@@ -1,4 +1,6 @@
-import { computed, Injectable, signal } from '@angular/core';
+import { computed, inject, Injectable, signal } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from '@app/auth/services/auth';
 import { WsStatus } from '@app/data/enums/ws-status';
 import { ChatRoom } from '@app/data/models/chat-room';
 import { MsgIncoming } from '@app/data/models/msg-incoming';
@@ -9,11 +11,13 @@ import { io, Socket } from 'socket.io-client';
   providedIn: 'root',
 })
 export class WsService {
+  private readonly router = inject(Router)
+
   private socket?: Socket;
 
-  private _status = signal<WsStatus>(WsStatus.off);
+  private _status = signal<WsStatus>(WsStatus.syncronized);
   private _broadcastIncoming = signal<string | undefined>(undefined);
-  private _chatIncoming = signal<string | undefined>(undefined);
+  private _chatIncoming = signal<MsgIncoming | undefined>(undefined);
 
   public status = computed(() => this._status());
   public broadcastIncoming = computed(() => this._broadcastIncoming());
@@ -30,23 +34,28 @@ export class WsService {
     this.socket.on('connect', () => {
       this._status.set(WsStatus.syncronized);
     });
+    this.socket.on('not-authorized', () => {
+      this._status.set(WsStatus.off)
+      this.router.navigate(['/auth/login'])
+    });
 
     this.socket.on('disconnect', (reason) => {
       console.log('Socket desconectado', reason);
       this._status.set(WsStatus.off);
     });
 
-    //   this.socket.on('chat-off', (data) => {
-    //     this._chatStatus.set(ChatStatus.off);
-    //     this.alertsService.showAlert(data.message, AlertColour.dark);
-    //   }),
+    this.socket.on('chat-off', (data) => {
+      this._status.set(WsStatus.off);
+    });
+
     this.socket.on('chat-rooms', (data) => {
       this.rooms.set(data.chatrooms);
     });
+
     this.socket.on('chat-incoming', (data) => {
-      this._chatIncoming.set(data)
-      console.log(data)
+      this._chatIncoming.set(data);
     });
+
     this.socket.on('broadcast', (message) => {
       //console.log(message);
       this._broadcastIncoming.set(message);

@@ -76,6 +76,15 @@ app-alerts.show {
   opacity: 1;
 }
 
+app-chat-room {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+app-chat-room::-webkit-scrollbar {
+  display: none;
+}
+
 .span-btn:hover {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   transform: scale(1.1);
@@ -99,9 +108,9 @@ app-alerts.show {
   line-height: 1;
 }
 
-chat-outgoing {
+/* chat-outgoing {
   text-align: right !important;
-}
+} */
 
 .chat-bubble-outgoing {
   position: relative;

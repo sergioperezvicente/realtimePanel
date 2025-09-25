@@ -8,10 +8,11 @@ import { ChatMode } from '@enums/chat-mode';
 import { AuthService } from '@app/auth/services/auth';
 import { ChatMessageOutgoing } from './partials/chat-message-outgoing';
 import { BroadcastMessageIncoming } from './partials/broadcast-message-incoming';
+import { ChatMessageIncoming } from './partials/chat-message-incoming';
 
 @Component({
   selector: 'app-chat',
-  imports: [ChatHeader, ChatRoomView, ChatSendMessageForm, ChatMessageOutgoing],
+  imports: [ChatHeader, ChatRoomView, ChatSendMessageForm],
   template: `
     <app-chat-header
       [mode]="chatMode()"
@@ -97,19 +98,30 @@ export class Chat {
     const message = this.chat.broadcast();
     if (!message) return;
 
-    this.chatRooms.forEach(room => {
-      room.room
-        .createComponent(BroadcastMessageIncoming)
-        .instance.message = message;
-      this.downscroll(room)
-    })
+    this.chatRooms.forEach((room) => {
+      room.room.createComponent(BroadcastMessageIncoming).instance.message = message;
+      this.downscroll(room);
+    });
+  });
+
+  onIncomingEffect = effect(() => {
+    const msgIncoming = this.chat.incoming();
+    if (!msgIncoming) return;
+
+    const target = this.chatRooms.find((room) => room.socket === msgIncoming.from);
+    if (!target) {
+      console.warn(`No se encontró el room "${msgIncoming.from}"`);
+      return;
+    }
+    target.room.createComponent(ChatMessageIncoming).instance.message = msgIncoming.message
+    this.downscroll(target)
   });
 
   private downscroll(room: ChatRoomView) {
     const container = room.elementRef.nativeElement;
 
-  requestAnimationFrame(() => {
-    container.scrollTop = container.scrollHeight;
-  });
+    requestAnimationFrame(() => {
+      container.scrollTop = container.scrollHeight;
+    });
   }
 }
