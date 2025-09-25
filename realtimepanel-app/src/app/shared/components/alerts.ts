@@ -7,10 +7,11 @@ import { AlertsService } from '@core/services/alerts';
   imports: [],
   template: `{{ this.alertService.alerts()?.message || message }}`,
   host: {
-    class: 'alert shadow fade',
+    class: 'alert shadow',
     '[class]': 'this.alertService.alerts()?.color || color',
     '[class.show]': 'this.alertService.alerts()',
     'animate.enter': 'pop-appear',
+    'animate.leave': 'fade-out'
   },
 })
 export class Alerts {

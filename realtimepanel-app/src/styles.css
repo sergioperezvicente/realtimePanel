@@ -135,7 +135,7 @@ app-chat-room::-webkit-scrollbar {
 
 .alert-theme {
   border-color: rgb(var(--color-theme-light));
-  background-color: rgba(var(--color-theme-rgb), 0.95);
+  background-color: rgba(var(--color-theme-rgb), 0.85);
   color: var(--color-theme-text);
 }
 
@@ -161,10 +161,6 @@ app-chat-room::-webkit-scrollbar {
   padding: 2px 5px;          /* espacio interno para el badge */
   line-height: 1;
 }
-
-/* chat-outgoing {
-  text-align: right !important;
-} */
 
 .chat-bubble-outgoing {
   position: relative;
@@ -204,6 +200,10 @@ app-chat-room::-webkit-scrollbar {
   border-right: 8px solid #6c757d; /* color de la “punta” (mismo verde de text-bg-success) */
 }
 
+.fade-out {
+  animation: fade-out 0.2s ease-out forwards;
+}
+
 .fade-in-up {
   animation: fade-in-up 0.6s ease-out forwards;
   /* opcional: oculto al inicio si el elemento ya está en el DOM */
@@ -233,7 +233,10 @@ app-chat-room::-webkit-scrollbar {
 
 /* ANIMATIONS */
 
-
+@keyframes fade-out {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}
 
 @keyframes fade-in-down {
   0% {
