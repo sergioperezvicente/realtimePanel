@@ -107,6 +107,8 @@ app-material-button button:hover {
   display: none;
 }
 
+
+
 .btn-theme {
   background-color: rgb(var(--color-theme-rgb));
   border-color: rgb(var(--color-theme-rgb));
@@ -149,6 +151,44 @@ app-material-button button:hover {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   transform: scale(1.1);
   transform-origin: center;
+}
+
+.card-btn {
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.card-btn::before,
+.card-btn::after {
+  position: absolute;
+  z-index: 0;
+}
+
+.card-btn::before {
+  content: '';
+  inset: 0;
+  background-color: rgba(var(--color-theme-rgb), 0.8);
+  border-radius: 5px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.card-btn::after {
+  content: 'Agregar usuario';
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 2rem;
+  font-weight: bold;
+  color: #212529;
+  opacity: 0;
+  transition: opacity 0.2s ease;
+}
+
+.card-btn:hover::before,
+.card-btn:hover::after {
+  opacity: 1;
 }
 
 .icon-badge {

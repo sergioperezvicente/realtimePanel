@@ -35,11 +35,14 @@ import { ModalColor } from '@app/data/enums/modal-color';
           <div class="card-body">
             <p class="text-truncate">&#9993; {{ user.email }}</p>
             @if (user.phone) {
-            <p>&#9742; {{ user.phone }}</p>
-            } @if (user.isAdmin) {
-            <span class="badge text-bg-warning me-2"> Administrador </span>
+              <p>&#9742; {{ user.phone }}</p>
             } @else {
-            <span class="badge text-bg-secondary me-2"> Usuario </span>
+              <p><br/></p>
+            }
+            @if (user.isAdmin) {
+              <span class="badge text-bg-warning me-2"> Administrador </span>
+            } @else {
+              <span class="badge text-bg-secondary me-2"> Usuario </span>
             }
           </div>
         </div>
@@ -51,28 +54,24 @@ import { ModalColor } from '@app/data/enums/modal-color';
         icon="phone_in_talk"
         color="text-success"
         title="Llamar a contacto"
-        spacer="2"
         (click)="callUser()"
       />
       }
       <app-material-button
         icon="mail"
         title="Enviar correo a contacto"
-        spacer="2"
         (click)="mailToUser()"
       />
       <app-material-button
         icon="contact_phone"
         color="text-primary"
         title="Exportar vCard"
-        spacer="2"
         (click)="generateVCard()"
       />
       <app-material-button
         icon="edit"
         color="text-warning"
         title="Editar"
-        spacer="2"
         (click)="selectedUserToEdit(user)"
       />
       <app-material-button
