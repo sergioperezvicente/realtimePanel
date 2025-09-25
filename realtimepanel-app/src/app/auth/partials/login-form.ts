@@ -36,7 +36,7 @@ import { AuthService } from '../services/auth';
       </div>
       }
       <div class="d-flex justify-content-center">
-        <button class="btn btn-warning col-9" [disabled]="loginForm.invalid">Iniciar</button>
+        <button class="btn btn-theme col-9" [disabled]="loginForm.invalid">Iniciar</button>
       </div>
     </form>
   `,

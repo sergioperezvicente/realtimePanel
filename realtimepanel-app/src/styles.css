@@ -1,4 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+  --color-theme-rgb: 255, 191, 0;
+  --color-theme-rgba25: rgba(255, 191, 0, 0.25);
+  --color-theme-light: #ffda4c; /* hover fallback */
+  --color-theme-dark: #e0a800;  /* active fallback */
+}
+
 body,
 html {
   overflow-y: hidden;
@@ -23,13 +30,13 @@ button:disabled {
 }
 
 input.form-control:focus {
-  border-color: #ffc107;
-  box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+  border-color: rgb(var(--color-theme-rgb));
+  box-shadow: 0 0 0 0.25rem rgba(var(--color-theme-rgb), 0.25);
 }
 
 select.form-select:focus {
-  border-color: #ffc107;
-  box-shadow: 0 0 0 0.25rem rgba(255, 193, 7, 0.25);
+  border-color: rgb(var(--color-theme-rgb));
+  box-shadow: 0 0 0 0.25rem rgba(var(--color-theme-rgb), 0.25);
 }
 
 login-view {
@@ -85,6 +92,26 @@ app-chat-room::-webkit-scrollbar {
   display: none;
 }
 
+.btn-theme {
+  background-color: rgb(var(--color-theme-rgb));
+  border-color: rgb(var(--color-theme-rgb));
+  color: var(--color-theme-text);
+  transition: background-color .15s ease-in-out, border-color .15s ease-in-out;
+}
+
+.btn-theme:hover {
+  background-color: var(--color-theme-light);
+  border-color: var(--color-theme-light);
+  color: var(--color-theme-text-light);
+}
+
+.btn-theme:active,
+.btn-theme:focus:active {
+  background-color: var(--color-theme-dark);
+  border-color: var(--color-theme-dark);
+  color: var(--color-theme-text-dark);
+}
+
 .span-btn:hover {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   transform: scale(1.1);
@@ -100,7 +127,7 @@ app-chat-room::-webkit-scrollbar {
   position: absolute;
   top: -6px;                 /* ajusta según el tamaño del icono */
   right: -6px;               /* ajusta para centrar/pegar en la esquina */
-  background: #ffc107;           /* opcional: círculo de color */
+  background: rgb(var(--color-theme-rgb));           /* opcional: círculo de color */
   color: white;
   font-size: 0.7rem;         /* tamaño del número */
   border-radius: 50%;

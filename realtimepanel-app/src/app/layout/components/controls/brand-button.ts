@@ -13,7 +13,7 @@ import { RouterLink } from '@angular/router';
     />
     <h3 class="d-inline d-none d-lg-block">panel</h3>`,
   host: {
-    class: 'btn btn-warning d-flex align-items-center justify-content-center shadow rounded-0',
+    class: 'btn-theme d-flex align-items-center justify-content-center shadow rounded-0',
     role: 'button',
   },
 })

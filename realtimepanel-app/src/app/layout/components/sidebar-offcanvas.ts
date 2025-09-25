@@ -6,7 +6,7 @@ import { MenuService } from '@core/services/menu';
   selector: 'app-sidebar-offcanvas',
   imports: [RouterLink, RouterLinkActive],
   template: ` <section
-      class="btn btn-warning d-flex align-items-center justify-content-center shadow"
+      class="btn-theme btn d-flex align-items-center justify-content-center shadow"
       routerLink="/"
       style="border-radius: 0px; min-height: 75px; height: 8vh"
       role="button"

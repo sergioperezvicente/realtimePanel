@@ -9,7 +9,7 @@ import { AuthService } from '@app/auth/services/auth';
   selector: 'app-chat-header',
   imports: [MaterialButton],
   template: `
-    <div class="btn btn-warning shadow rounded-0 d-flex">
+    <div class="btn-theme p-3 shadow rounded-0 d-flex">
       @if (mode === "broadcast") {
       <div
         class="col-10 text-start"
