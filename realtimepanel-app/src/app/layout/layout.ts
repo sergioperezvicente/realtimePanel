@@ -8,10 +8,11 @@ import { AppStatus } from '@shared/app-status';
 import { Alerts } from '@shared/components/alerts';
 import { Chat } from './components/chat';
 import { App } from '@app/app';
+import { Modals } from "@app/shared/components/modals";
 
 @Component({
   selector: 'app-layout',
-  imports: [RouterOutlet, Header, Footer, Sidebar, SidebarOffcanvas, Alerts, Chat, AppStatus],
+  imports: [RouterOutlet, Header, Footer, Sidebar, SidebarOffcanvas, Alerts, Chat, AppStatus, Modals],
   template: `
     @if (this.app.status() !== 'syncronized') {
     <app-status />
@@ -27,6 +28,7 @@ import { App } from '@app/app';
     </main>
     <app-chat />
     <app-alerts />
+    <app-modals />
   `,
   host: {
     class: 'row',

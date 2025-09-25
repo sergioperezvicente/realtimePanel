@@ -1,6 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { AlertColor } from '@app/data/enums/alert-color';
+import { ModalColor } from '@app/data/enums/modal-color';
+import { ModalSize } from '@app/data/enums/modal-size';
 import { AlertsService } from '@core/services/alerts';
+import { ModalsService } from '@core/services/modals';
+import { TestModal1 } from './modals/test-modal-1';
 
 @Component({
   selector: 'settings-view',
@@ -10,14 +14,23 @@ import { AlertsService } from '@core/services/alerts';
     <button class="btn-theme btn" (click)="mostraralerta()">mostrar mensaje</button>
     <p>cambiar color de enfasis</p>
     <input type="color" value="#ffc107" (input)="applyColor($event)" />
+    <h2>modals</h2>
+    <button class="btn btn-primary me-2" type="button" (click)="openmodal()">open modal 1</button>
+    <button class="btn btn-primary" type="button" (click)="openmodal()">open modal 2</button>
+    <br />
   `,
   styles: ``,
 })
 export class SettingsView {
   private readonly alertService = inject(AlertsService);
+  private readonly modalsService = inject(ModalsService)
 
   mostraralerta() {
     this.alertService.showAlert('hola que tal', AlertColor.primary);
+  }
+
+  openmodal(){
+this.modalsService.open('titulo 1', TestModal1, ModalSize.lg, ModalColor.primary);
   }
 
   protected applyColor(event: Event) {
