@@ -1,15 +1,13 @@
 import { Component } from '@angular/core';
+import { SectionHeader } from '@app/shared/partials/section-header';
 
 @Component({
   selector: 'users-view',
-  imports: [],
+  imports: [SectionHeader],
   template: `
-    <p>
-      users works!
-    </p>
+    <app-section-header [title]="'Usuarios'" />
+    <p>users works!</p>
   `,
-  styles: ``
+  styles: ``,
 })
-export class UsersView {
-
-}
+export class UsersView {}

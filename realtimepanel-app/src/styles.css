@@ -92,6 +92,17 @@ app-chat-room::-webkit-scrollbar {
   display: none;
 }
 
+#main {
+  height: 84vh; 
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+#main::-webkit-scrollbar {
+  display: none;
+}
+
 .btn-theme {
   background-color: rgb(var(--color-theme-rgb));
   border-color: rgb(var(--color-theme-rgb));
@@ -111,6 +122,15 @@ app-chat-room::-webkit-scrollbar {
   background-color: var(--color-theme-dark);
   border-color: var(--color-theme-dark);
   color: var(--color-theme-text-dark);
+}
+
+.bg-theme {
+  background-color: rgb(var(--color-theme-rgb));
+  color: var(--color-theme-text);
+}
+
+.text-theme {
+  color: rgb(var(--color-theme-rgb));
 }
 
 .span-btn:hover {

@@ -62,10 +62,12 @@ export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect {
         ws.log(`Usuarios Online: ${this.rooms.length}`);
       }
     } catch (error) {
-      console.warn(error)
-      if (error = TokenExpiredError) {
+      
+      if (error === TokenExpiredError) {
+        ws.error(`Token de usuario expirado: ${client.id}`)
         this.server.to(client).emit('expired');
       }
+      ws.error(`Conexion de cliente no autorizada: ${client.id}`)
       this.server.to(client).emit('not-authorized');
       this.handleDisconnect(client);
     }

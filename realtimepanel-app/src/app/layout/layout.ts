@@ -21,7 +21,7 @@ import { Modals } from "@app/shared/components/modals";
     <app-sidebar-offcanvas />
     <main class="col p-0">
       <app-header />
-      <section class="container-fluid pt-3 pb-5" style="height: 84vh; overflow-y: auto;">
+      <section class="container-fluid pt-3 pb-5" id="main">
         <router-outlet />
       </section>
       <app-footer />

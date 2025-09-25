@@ -14,13 +14,13 @@ export class ModalsService {
 
   public readonly state = signal<boolean>(false)
 
-  public open(title: string, component?: Type<any>, size?: ModalSize, colour?: ModalColor) {
+  public open(title: string, component?: Type<any>, size?: ModalSize, color?: ModalColor) {
     const modal = document.getElementById('modalRoot');
     if (!modal) return;
 
     this.title.set(title);
     this.size.set(size);
-    this.colour.set(colour);
+    this.colour.set(color);
 
     if (component) {
       this.component.set(component);

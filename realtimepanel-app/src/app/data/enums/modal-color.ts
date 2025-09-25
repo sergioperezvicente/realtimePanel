@@ -1,4 +1,5 @@
 export enum ModalColor {
+  theme = 'bg-theme',
   primary = 'bg-primary',
   secondary = 'bg-secondary',
   success = 'bg-success',
