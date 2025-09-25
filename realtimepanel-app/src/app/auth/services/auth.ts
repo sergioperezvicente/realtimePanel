@@ -58,7 +58,7 @@ export class AuthService {
         this._currentUser.set(null);
         this._authStatus.set(AuthStatus.notAuthenticated);
         sessionStorage.removeItem('token');
-
+        this.ws.disconnect()
         return of(false);
       })
     );

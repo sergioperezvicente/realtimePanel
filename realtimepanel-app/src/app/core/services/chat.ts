@@ -11,21 +11,9 @@ import { WsService } from './ws';
 export class ChatService {
   private readonly ws = inject(WsService);
 
-  private _chatStatus = signal<ChatStatus>(ChatStatus.off);
-
-  public chatStatus = computed(() => this._chatStatus());
+  public chatStatus = computed(() => this.ws.chatStatus());
   public rooms = computed(() => this.ws.rooms());
   public broadcast = computed(()=> this.ws.broadcastIncoming())
   public incoming = computed(() => this.ws.chatIncoming())
 
-  public wsStatusChangedEffect = effect(() => {
-    switch (this.ws.status()) {
-      case WsStatus.syncronized:
-        this._chatStatus.set(ChatStatus.on);
-        return;
-      case WsStatus.off:
-        this._chatStatus.set(ChatStatus.off);
-        return;
-    }
-  });
 }

@@ -7,7 +7,7 @@ import { AuthService } from './auth/services/auth';
 import { WsService } from '@core/services/ws';
 import { AuthStatus } from '@enums/auth-status';
 import { WsStatus } from '@enums/ws-status';
-import packageInfo from '../../package.json'
+import packageInfo from '../../package.json';
 
 @Component({
   selector: 'app-root',
@@ -28,9 +28,9 @@ export class App {
   public description: string = packageInfo.description;
   public status = computed(() => this._status());
 
-  constructor(){
-    this.checkServer()        
-  }
+  // constructor() {
+  //   this.checkServer();
+  // }
 
   public authStatusChangedEffect = effect(() => {
     switch (this.authService.authStatus()) {
@@ -54,9 +54,13 @@ export class App {
       case WsStatus.syncronized:
         this._status.set(AppStatus.syncronized);
         return;
+      case WsStatus.expired:
+        this._status.set(AppStatus.disconnected);
+        this.authService.logout();
+        return;
       case WsStatus.off:
-        this.checkServer()
-        this.router.navigate(['/auth/login'])
+        this._status.set(AppStatus.disconnected)
+        //this.checkServer()
         return;
     }
   });
@@ -65,10 +69,13 @@ export class App {
     this.http.get<void>(`${this.apiUrl}`).subscribe({
       next: () => this._status.set(AppStatus.connected),
       error: (err: HttpErrorResponse) => {
-        if (err.status === 401) {
-          this._status.set(AppStatus.disconnected);
-        } else {
-          this._status.set(AppStatus.offline);
+        switch (err.status) {
+          case 401:
+            this._status.set(AppStatus.disconnected);
+            break;
+          default:
+            this._status.set(AppStatus.offline);
+            break;
         }
       },
     });

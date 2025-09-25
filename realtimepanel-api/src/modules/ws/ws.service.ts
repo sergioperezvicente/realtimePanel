@@ -1,7 +1,13 @@
 import { Injectable } from '@nestjs/common';
+import { User } from '../auth/entities/user.entity';
+import { WsGateway } from './ws.gateway';
 
 @Injectable()
 export class WsService {
+
+
+    handleDisconnectUser(user: User){
+    }
 //     create(createWDto: CreateWDto) {
 //     return 'This action adds a new w';
 //   }

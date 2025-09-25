@@ -97,6 +97,7 @@ app-chat-room::-webkit-scrollbar {
   border-color: rgb(var(--color-theme-rgb));
   color: var(--color-theme-text);
   transition: background-color .15s ease-in-out, border-color .15s ease-in-out;
+  cursor: pointer;
 }
 
 .btn-theme:hover {

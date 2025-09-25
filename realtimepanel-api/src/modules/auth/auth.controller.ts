@@ -14,6 +14,7 @@ import { UpdateAuthDto } from './dto/update-auth.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { Public } from 'src/common/decorators/public.decorator';
 import { User } from './entities/user.entity';
+import { WsGateway } from '../ws/ws.gateway';
 
 @Controller('auth')
 export class AuthController {
@@ -34,7 +35,13 @@ export class AuthController {
       token: this.authService.getJwtToken({ id: user.id }),
     };
   }
-  
+
+  @Post('logout')
+  logout(@Request() req: Request) {
+    const user = req['user'] as User;
+    this.authService.logout(user);
+  }
+
   // @Post('users')
   // create(@Body() createAuthDto: CreateAuthDto) {
   //   return this.authService.create(createAuthDto);

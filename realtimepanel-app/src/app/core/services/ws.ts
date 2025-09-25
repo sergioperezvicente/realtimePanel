@@ -6,20 +6,22 @@ import { ChatRoom } from '@app/data/models/chat-room';
 import { MsgIncoming } from '@app/data/models/msg-incoming';
 import { environment } from '@env/environment';
 import { io, Socket } from 'socket.io-client';
+import { ChatService } from './chat';
+import { ChatStatus } from '@app/data/enums/chat-status';
 
 @Injectable({
   providedIn: 'root',
 })
 export class WsService {
-  private readonly router = inject(Router)
-
   private socket?: Socket;
 
-  private _status = signal<WsStatus>(WsStatus.syncronized);
+  private _status = signal<WsStatus>(WsStatus.off);
+  private _chatStatus = signal<ChatStatus>(ChatStatus.off);
   private _broadcastIncoming = signal<string | undefined>(undefined);
   private _chatIncoming = signal<MsgIncoming | undefined>(undefined);
 
   public status = computed(() => this._status());
+  public chatStatus = computed(()=> this._chatStatus())
   public broadcastIncoming = computed(() => this._broadcastIncoming());
   public chatIncoming = computed(() => this._chatIncoming());
 
@@ -35,17 +37,25 @@ export class WsService {
       this._status.set(WsStatus.syncronized);
     });
     this.socket.on('not-authorized', () => {
-      this._status.set(WsStatus.off)
-      this.router.navigate(['/auth/login'])
+      this._status.set(WsStatus.off);
+      //this.router.navigate(['/auth/login']);
+    });
+    this.socket.on('expired', () => {
+      this._status.set(WsStatus.expired);
+      console.warn('expired');
     });
 
     this.socket.on('disconnect', (reason) => {
-      console.log('Socket desconectado', reason);
+      console.warn('Socket desconectado', reason);
       this._status.set(WsStatus.off);
     });
 
+    this.socket.on('chat-on', (data) => {
+      this._chatStatus.set(ChatStatus.on);
+    });
+
     this.socket.on('chat-off', (data) => {
-      this._status.set(WsStatus.off);
+      this._chatStatus.set(ChatStatus.off);
     });
 
     this.socket.on('chat-rooms', (data) => {

@@ -12,6 +12,8 @@ import { User } from './entities/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import bcryptjs from 'node_modules/bcryptjs';
 import { CreateAuthDto } from './dto/create-auth.dto';
+import { WsGateway } from '../ws/ws.gateway';
+import { WsService } from '../ws/ws.service';
 
 @Injectable()
 export class AuthService {
@@ -19,6 +21,7 @@ export class AuthService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
     private readonly jwtService: JwtService,
+    private readonly wsService: WsService,
   ) {
     this.createInitialUsers()
   }
@@ -57,6 +60,10 @@ export class AuthService {
       }
       throw new InternalServerErrorException('Something terrible happened!!');
     }
+  }
+
+  logout(user: User): void {
+    this.wsService.handleDisconnectUser(user)
   }
 
   async findAll(): Promise<Partial<User>[]> {
