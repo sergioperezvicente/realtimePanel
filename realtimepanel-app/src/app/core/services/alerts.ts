@@ -8,7 +8,7 @@ import { Alert } from '@app/data/models/alert';
 export class AlertsService {
   private _alert = signal<Alert | undefined>(undefined);
 
-  public alert = computed(()=> this._alert())
+  public alerts = computed(()=> this._alert())
 
   public showAlert(message: string, color: AlertColor) {
     this._alert.set({ message, color });

@@ -1,4 +1,5 @@
 export enum AlertColor {
+  theme = 'alert-theme',
   primary = 'alert-primary',
   secondary = 'alert-secondary',
   success = 'alert-success',

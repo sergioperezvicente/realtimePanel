@@ -133,6 +133,12 @@ app-chat-room::-webkit-scrollbar {
   color: rgb(var(--color-theme-rgb));
 }
 
+.alert-theme {
+  border-color: rgb(var(--color-theme-light));
+  background-color: rgba(var(--color-theme-rgb), 0.95);
+  color: var(--color-theme-text);
+}
+
 .span-btn:hover {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   transform: scale(1.1);

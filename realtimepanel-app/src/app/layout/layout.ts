@@ -9,6 +9,7 @@ import { Alerts } from '@shared/components/alerts';
 import { Chat } from './components/chat';
 import { App } from '@app/app';
 import { Modals } from "@app/shared/components/modals";
+import { AlertsService } from '@core/services/alerts';
 
 @Component({
   selector: 'app-layout',
@@ -27,7 +28,9 @@ import { Modals } from "@app/shared/components/modals";
       <app-footer />
     </main>
     <app-chat />
-    <app-alerts />
+    @if (this.alertsService.alerts()){
+      <app-alerts />
+    }
     <app-modals />
   `,
   host: {
@@ -36,4 +39,5 @@ import { Modals } from "@app/shared/components/modals";
 })
 export class Layout {
   protected readonly app = inject(App);
+  protected readonly alertsService = inject(AlertsService)
 }

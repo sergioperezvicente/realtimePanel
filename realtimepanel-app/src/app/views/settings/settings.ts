@@ -13,7 +13,7 @@ import { SectionHeader } from "@app/shared/partials/section-header";
   template: `
     <app-section-header [title]="'Configuración'" />
     <p>settings works!</p>
-    <button class="btn-theme btn" (click)="mostraralerta()">mostrar mensaje</button>
+    <button class="btn-theme btn" (click)="mostraralerta()">mostrar alerta</button>
     <p>cambiar color de enfasis</p>
     <input type="color" value="#ffc107" (input)="applyColor($event)" />
     <h2>modals</h2>
@@ -69,7 +69,7 @@ export class SettingsView {
   private readonly modalsService = inject(ModalsService);
 
   mostraralerta() {
-    this.alertService.showAlert('hola que tal', AlertColor.primary);
+    this.alertService.showAlert('hola que tal', AlertColor.theme);
   }
 
   openModal() {

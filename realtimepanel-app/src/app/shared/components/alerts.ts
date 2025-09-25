@@ -5,12 +5,12 @@ import { AlertsService } from '@core/services/alerts';
 @Component({
   selector: 'app-alerts',
   imports: [],
-  template: `{{ this.alertService.alert()?.message || message }}`,
+  template: `{{ this.alertService.alerts()?.message || message }}`,
   host: {
     class: 'alert shadow fade',
-    '[class]': 'this.alertService.alert()?.color || color',
-    '[class.show]': 'this.alertService.alert()',
-    'animate.enter': 'pop-in',
+    '[class]': 'this.alertService.alerts()?.color || color',
+    '[class.show]': 'this.alertService.alerts()',
+    'animate.enter': 'pop-appear',
   },
 })
 export class Alerts {
