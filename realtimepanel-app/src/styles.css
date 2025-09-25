@@ -92,6 +92,10 @@ app-chat-room::-webkit-scrollbar {
   display: none;
 }
 
+app-material-button button:hover {
+  color: rgb(var(--color-theme-rgb));
+}
+
 #main {
   height: 84vh; 
   overflow-y: auto;
@@ -128,6 +132,8 @@ app-chat-room::-webkit-scrollbar {
   background-color: rgb(var(--color-theme-rgb));
   color: var(--color-theme-text);
 }
+
+
 
 .text-theme {
   color: rgb(var(--color-theme-rgb));

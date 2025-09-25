@@ -1,10 +1,9 @@
 import { Component, inject, Input } from '@angular/core';
-import { AlertColor } from '@app/data/enums/alert-color';
+import { AlertColor } from '@enums/alert-color';
 import { AlertsService } from '@core/services/alerts';
 
 @Component({
   selector: 'app-alerts',
-  imports: [],
   template: `{{ this.alertService.alerts()?.message || message }}`,
   host: {
     class: 'alert shadow',

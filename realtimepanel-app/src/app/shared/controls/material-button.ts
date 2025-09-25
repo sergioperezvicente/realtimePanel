@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-material-button',
   template: `<button
-    class="material-symbols-outlined"
+    class="material-symbols-outlined span-btn"
     [class]="color + ' ' + 'display-' + display"
     [attr.title]="title"
     [disabled]="disabled"
