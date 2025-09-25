@@ -42,6 +42,11 @@ export class AuthController {
     this.authService.logout(user);
   }
 
+  @Get('users')
+  findAll() {
+    return this.authService.findAll();
+  }
+
   // @Post('users')
   // create(@Body() createAuthDto: CreateAuthDto) {
   //   return this.authService.create(createAuthDto);
