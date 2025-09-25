@@ -207,6 +207,8 @@ app-chat-room::-webkit-scrollbar {
 
 /* ANIMATIONS */
 
+
+
 @keyframes fade-in-down {
   0% {
     transform: translateY(-20px); /* empieza 20px más arriba */
@@ -268,4 +270,14 @@ app-chat-room::-webkit-scrollbar {
     transform: translateX(0) scale(1);
     opacity: 1;
   }
+}
+
+@keyframes roll-up {
+  from { transform: scaleY(1); }
+  to   { transform: scaleY(0); }
+}
+
+@keyframes roll-down {
+  from { transform: scaleY(0); }
+  to   { transform: scaleY(1); }
 }

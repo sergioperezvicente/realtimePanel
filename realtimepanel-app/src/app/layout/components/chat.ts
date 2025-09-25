@@ -5,7 +5,6 @@ import { ChatSendMessageForm } from './partials/chat-send-message-form';
 import { ChatService } from '@core/services/chat';
 import { ChatRoom } from '@data/models/chat-room';
 import { ChatMode } from '@enums/chat-mode';
-import { AuthService } from '@app/auth/services/auth';
 import { ChatMessageOutgoing } from './partials/chat-message-outgoing';
 import { BroadcastMessageIncoming } from './partials/broadcast-message-incoming';
 import { ChatMessageIncoming } from './partials/chat-message-incoming';
@@ -19,15 +18,15 @@ import { ChatMessageIncoming } from './partials/chat-message-incoming';
       (selected)="onSelected($event)"
       (changed)="onChangeMode($event)"
     />
-
-    @for (chatroom of this.chat.rooms(); track chatroom.socket) { @if (chatroom.user.id !==
-    this.authService.currentUser()?.id) {
+    @for (room of this.chatService.rooms(); track room.socket) {
     <app-chat-room
-      [class.d-none]="chatroom.socket !== selectedRoom()?.socket || chatMode() === 'broadcast'"
-      [socket]="chatroom.socket"
-      [user]="chatroom.user"
+      [class.d-none]="room.socket !== selectedRoom()?.socket || chatMode() === 'broadcast'"
+      [socket]="room.socket"
+      [user]="room.user"
+      animate.enter="pop-appear"
+      animate.leave="roll-up"
     />
-    } }
+    }
 
     <app-chat-room [class.d-none]="chatMode() === 'unicast'" [socket]="'broadcast'" />
     @if (selectedRoom() !== undefined || chatMode() === 'broadcast' ){
@@ -48,8 +47,7 @@ import { ChatMessageIncoming } from './partials/chat-message-incoming';
 export class Chat {
   @ViewChildren(ChatRoomView) chatRooms!: QueryList<ChatRoomView>;
 
-  protected readonly chat = inject(ChatService);
-  protected readonly authService = inject(AuthService);
+  protected readonly chatService = inject(ChatService);
 
   protected selectedRoom = signal<ChatRoom | undefined>(undefined);
   protected chatMode = signal<ChatMode>(ChatMode.unicast);
@@ -95,7 +93,7 @@ export class Chat {
   }
 
   onBroadcastEffect = effect(() => {
-    const message = this.chat.broadcast();
+    const message = this.chatService.broadcast();
     if (!message) return;
 
     this.chatRooms.forEach((room) => {
@@ -105,7 +103,7 @@ export class Chat {
   });
 
   onIncomingEffect = effect(() => {
-    const msgIncoming = this.chat.incoming();
+    const msgIncoming = this.chatService.incoming();
     if (!msgIncoming) return;
 
     const target = this.chatRooms.find((room) => room.socket === msgIncoming.from);
@@ -113,8 +111,8 @@ export class Chat {
       console.warn(`No se encontró el room "${msgIncoming.from}"`);
       return;
     }
-    target.room.createComponent(ChatMessageIncoming).instance.message = msgIncoming.message
-    this.downscroll(target)
+    target.room.createComponent(ChatMessageIncoming).instance.message = msgIncoming.message;
+    this.downscroll(target);
   });
 
   private downscroll(room: ChatRoomView) {

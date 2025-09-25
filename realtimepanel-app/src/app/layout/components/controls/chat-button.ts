@@ -6,8 +6,8 @@ import { ChatService } from '@core/services/chat';
   imports: [],
   template: `
     <div class="col material-symbols-outlined span-btn">chat_bubble</div>
-    @if (this.chat.rooms() && this.chat.rooms().length > 1) {
-    <small class="fw-bold" animate.enter="pop-appear">{{ this.chat.rooms().length - 1 }}</small>
+    @if (this.chat.rooms()) {
+    <small class="fw-bold" animate.enter="pop-appear">{{ this.chat.rooms().length }}</small>
     }
   `,
   host: {
