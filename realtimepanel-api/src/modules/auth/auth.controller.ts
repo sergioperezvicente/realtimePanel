@@ -14,7 +14,6 @@ import { UpdateAuthDto } from './dto/update-auth.dto';
 import { LoginUserDto } from './dto/login-user.dto';
 import { Public } from 'src/common/decorators/public.decorator';
 import { User } from './entities/user.entity';
-import { WsGateway } from '../ws/ws.gateway';
 
 @Controller('auth')
 export class AuthController {
@@ -36,26 +35,22 @@ export class AuthController {
     };
   }
 
-  @Post('logout')
-  logout(@Request() req: Request) {
-    const user = req['user'] as User;
-    this.authService.logout(user);
-  }
+  // @Post('logout')
+  // logout(@Request() req: Request) {
+  //   const user = req['user'] as User;
+  //   this.authService.logout(user);
+  // }
 
   @Get('users')
   findAll() {
     return this.authService.findAll();
   }
 
-  // @Post('users')
-  // create(@Body() createAuthDto: CreateAuthDto) {
-  //   return this.authService.create(createAuthDto);
-  // }
+  @Post('users')
+  create(@Body() createAuthDto: CreateAuthDto) {
+    return this.authService.create(createAuthDto);
+  }
 
-  // @Get('users')
-  // findAll() {
-  //   return this.authService.findAll();
-  // }
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {
@@ -67,8 +62,8 @@ export class AuthController {
   //   return this.authService.update(+id, updateAuthDto);
   // }
 
-  // @Delete('users/:id')
-  // remove(@Param('id') id: string) {
-  //   return this.authService.remove(id);
-  // }
+  @Delete('users/:id')
+  remove(@Param('id') id: string) {
+    return this.authService.remove(id);
+  }
 }

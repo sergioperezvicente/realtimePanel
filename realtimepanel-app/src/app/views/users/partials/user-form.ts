@@ -155,7 +155,7 @@ import { AlertColor } from '@app/data/enums/alert-color';
       >
         Eliminar</button
       >} @default {<button
-        class="btn btn-primary"
+        class="btn btn-theme"
         [disabled]="userForm.invalid"
         (click)="createUser()"
       >

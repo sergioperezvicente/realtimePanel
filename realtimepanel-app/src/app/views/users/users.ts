@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { SectionHeader } from '@app/shared/partials/section-header';
 import { SectionUsersMenu } from './partials/section-users-menu';
 import { ViewMode } from '@app/data/enums/view-mode';
@@ -11,10 +11,11 @@ import { UsersListView } from './partials/users-list-view';
   template: `
     <app-section-header [title]="'Usuarios'" />
     <app-section-users-menu (selected)="onSelected($event)" />
-    @switch (modeView()) { 
-      @case ("card") { <app-users-cards-view /> } 
-      @case ("list") { <app-users-list-view /> }
-    } 
+      @switch (modeView()) { 
+        @case ("card") { <app-users-cards-view /> }
+        @case ("list") { <app-users-list-view /> } 
+        @default { <app-users-cards-view /> }
+      } 
   `,
 })
 export class UsersView {

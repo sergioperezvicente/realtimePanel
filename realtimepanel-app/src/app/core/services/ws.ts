@@ -15,15 +15,19 @@ import { ChatStatus } from '@app/data/enums/chat-status';
 export class WsService {
   private socket?: Socket;
 
+  private readonly router = inject(Router);
+
   private _status = signal<WsStatus>(WsStatus.off);
   private _chatStatus = signal<ChatStatus>(ChatStatus.off);
   private _broadcastIncoming = signal<string | undefined>(undefined);
   private _chatIncoming = signal<MsgIncoming | undefined>(undefined);
+  
 
   public status = computed(() => this._status());
-  public chatStatus = computed(()=> this._chatStatus())
+  public chatStatus = computed(() => this._chatStatus());
   public broadcastIncoming = computed(() => this._broadcastIncoming());
   public chatIncoming = computed(() => this._chatIncoming());
+  public dbUpdated = signal<string | undefined>(undefined)
 
   public rooms = signal<ChatRoom[]>([]);
 
@@ -38,7 +42,7 @@ export class WsService {
     });
     this.socket.on('not-authorized', () => {
       this._status.set(WsStatus.off);
-      //this.router.navigate(['/auth/login']);
+      this.router.navigate(['/auth/login']);
     });
     this.socket.on('expired', () => {
       this._status.set(WsStatus.expired);
@@ -71,10 +75,10 @@ export class WsService {
       this._broadcastIncoming.set(message);
     });
 
-    // this.socket.on('db:update', (data) => {
-    //   this._dbUpdated.set(data.message);
-    //   //   console.log('valor db', this.updates());
-    // });
+    this.socket.on('db:updated:', (data) => {
+      this.dbUpdated.set(data);
+      console.warn(data);
+    });
   }
 
   public send(to: string, message: string) {

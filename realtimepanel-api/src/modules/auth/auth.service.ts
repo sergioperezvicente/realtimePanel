@@ -1,5 +1,7 @@
 import {
   BadRequestException,
+  forwardRef,
+  Inject,
   Injectable,
   InternalServerErrorException,
   UnauthorizedException,
@@ -12,7 +14,6 @@ import { User } from './entities/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
 import bcryptjs from 'node_modules/bcryptjs';
 import { CreateAuthDto } from './dto/create-auth.dto';
-import { WsGateway } from '../ws/ws.gateway';
 import { WsService } from '../ws/ws.service';
 
 @Injectable()
@@ -20,8 +21,9 @@ export class AuthService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    private readonly jwtService: JwtService,
+    @Inject(forwardRef(() => WsService))
     private readonly wsService: WsService,
+    private readonly jwtService: JwtService,
   ) {
     this.createInitialUsers()
   }
@@ -51,6 +53,7 @@ export class AuthService {
         ...userData,
       });
       await this.userRepository.save(user);
+      this.wsService.publishDBUpdated(`user-created: ${user.email}`)
       const { password: _, ...userWithoutPassword } = user;
 
       return userWithoutPassword;
@@ -63,7 +66,7 @@ export class AuthService {
   }
 
   logout(user: User): void {
-    this.wsService.handleDisconnectUser(user)
+    
   }
 
   async findAll(): Promise<Partial<User>[]> {
@@ -86,31 +89,33 @@ export class AuthService {
   //   return `This action updates a #${id} auth`;
   // }
 
-  // async remove(id: string): Promise<void> {
-  //   const user = await this.userRepository.findOne({ where: { id } });
-  //   if (!user) {
-  //     throw new Error('Usuario no encontrado');
-  //   }
+  async remove(id: string): Promise<void> {
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new Error('Usuario no encontrado');
+    }
 
-  //   // if (user.imageUrl && !user.imageUrl.includes('default.png')) {
-  //   //   const filename = user.imageUrl.split('/').pop();
-  //   //   const imagePath = join(
-  //   //     __dirname,
-  //   //     '..',
-  //   //     '..',
-  //   //     'public',
-  //   //     'images',
-  //   //     'users',
-  //   //     filename,
-  //   //   );
+    // if (user.imageUrl && !user.imageUrl.includes('default.png')) {
+    //   const filename = user.imageUrl.split('/').pop();
+    //   const imagePath = join(
+    //     __dirname,
+    //     '..',
+    //     '..',
+    //     'public',
+    //     'images',
+    //     'users',
+    //     filename,
+    //   );
 
-  //   //   if (fs.existsSync(imagePath)) {
-  //   //     fs.unlinkSync(imagePath);
-  //   //   }
-  //   // }
+    //   if (fs.existsSync(imagePath)) {
+    //     fs.unlinkSync(imagePath);
+    //   }
+    // }
 
-  //   await this.userRepository.delete(id);
-  // }
+    await this.userRepository.delete(id);
+    this.wsService.publishDBUpdated(`usuario eliminado: ${id}`)
+  }
+
   async createInitialUsers() {
     const users = await this.findAll();
     if (users.length !== 0) return;
