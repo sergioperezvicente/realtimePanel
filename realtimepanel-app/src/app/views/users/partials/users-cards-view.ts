@@ -18,7 +18,7 @@ import { WsService } from '@core/services/ws';
   imports: [UserCard, NewUserButton],
   template: `
     <div class="d-grid gap-3" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));">
-      @for (user of users(); track user.email) {
+      @for (user of users(); track user.id) {
       <app-card-user [user]="user" />
       }
       <app-new-user-button />
@@ -39,20 +39,11 @@ export class UsersCardsView {
   private loadUsers(sorted: boolean): void {
     this.userService.getUsers().subscribe({
       next: (users: User[]) => {
-        console.log('usuarios sin ordenar', users);
+        //console.log('usuarios sin ordenar', users);
         let entries = [...users];
-        console.log(
-          'Antes de sort:',
-          users.length,
-          users.map((u) => u.name)
-        );
         if (sorted) {
           entries.sort((a, b) => a.name.localeCompare(b.name));
-          console.log(
-            'Después de sort:',
-            entries.length,
-            entries.map((u) => u.name)
-          );
+          
         }
 
         this.users.set(entries);

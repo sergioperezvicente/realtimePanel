@@ -9,8 +9,8 @@ import { MaterialButton } from '@shared/controls/material-button';
     <app-material-button
       class="me-2"
       icon="sort_by_alpha"
-      display="6"
-      [color]="color()"
+      display="7"
+      [color]="sortedColor()"
       title="Órden alfabético"
       (click)="onPressedSort()"
     />
@@ -18,37 +18,69 @@ import { MaterialButton } from '@shared/controls/material-button';
       class="me-2"
       icon="id_card"
       display="6"
+      [color]="cardPressed()"
       title="Vista tarjeta"
-      (click)="this.selected.emit('card')"
+      (click)="onSelectedView('card')"
     />
     <app-material-button
       icon="format_list_bulleted"
       display="6"
+      [color]="listPressed()"
       title="Vista lista"
-      (click)="this.selected.emit('list')"
+      (click)="onSelectedView('list')"
     />
   `,
   host: {
-    class: 'd-flex justify-content-end my-2',
+    class: 'd-flex justify-content-end align-items-center my-2',
   },
 })
 export class SectionUsersMenu {
   @Output() selected = new EventEmitter<string>();
 
-  private readonly userService = inject(UserService)
+  private readonly userService = inject(UserService);
 
-  protected color = signal<'text-theme' | ''>('')
-  protected pressed = signal<boolean>(false)
+  protected sortedColor = signal<'text-theme' | 'text-secondary'>('text-secondary');
+  protected sortedPressed = signal<boolean>(false);
+  protected cardPressed = signal<'text-theme' | ''>('text-theme');
+  protected listPressed = signal<'text-theme' | ''>('');
 
-  onPressedSort(){
-    if (!this.pressed()) {
-      this.color.set('text-theme')
-      this.pressed.set(true)
-      this.userService.setSorted(true)
+  onPressedSort() {
+    if (!this.sortedPressed()) {
+      this.sortedColor.set('text-theme');
+      this.sortedPressed.set(true);
+      this.userService.setSorted(true);
     } else {
-      this.color.set('')
-      this.pressed.set(false)
-      this.userService.setSorted(false)
+      this.sortedColor.set('text-secondary');
+      this.sortedPressed.set(false);
+      this.userService.setSorted(false);
+    }
+  }
+
+  // onPressedSort() {
+  //   switch (this.sortedPressed()) {
+  //     case true:
+  //       this.sortedColor.set('text-theme');
+  //       this.userService.setSorted(true);
+  //       break;
+  //     case false:
+  //       this.sortedColor.set('');
+  //       this.userService.setSorted(false);
+  //       break;
+  //   }
+  // }
+
+  onSelectedView(view: 'card' | 'list') {
+    switch (view) {
+      case 'card':
+        this.cardPressed.set('text-theme');
+        this.listPressed.set('');
+        this.selected.emit('card');
+        break;
+      case 'list':
+        this.cardPressed.set('');
+        this.listPressed.set('text-theme');
+        this.selected.emit('list');
+        break;
     }
   }
 }
