@@ -10,13 +10,13 @@ import { ChatButton } from './controls/chat-button';
   selector: 'app-header',
   imports: [MenuButton, SearchInput, FullScreenButton, LogoutButton, DarkModeButton, ChatButton],
   template: `
-    <div class="d-grip d-block d-md-none mt-2">
+    <div class="d-grip d-block d-md-none align-items-center">
       <menu-button />
     </div>
-    <div class="d-grid col-6 mx-auto">
+    <div class="d-grid col-6 ms-3">
       <search-input />
     </div>
-    <div class="d-grip col-5 text-end mt-2">
+    <div class="d-grip col-5 text-end align-items-center">
       <!-- <user-dropdown /> -->
       <chat-button class="me-1" />
       <dark-mode-button class="me-1" />
@@ -25,7 +25,7 @@ import { ChatButton } from './controls/chat-button';
     </div>
   `,
   host: {
-    class: 'navbar shadow-sm z-1 bg-body-secondary p-3 border-bottom',
+    class: 'navbar shadow z-1 p-3 ',
     'animate.enter': 'fade-in-down'
   },
 })

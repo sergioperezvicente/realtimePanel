@@ -62,6 +62,7 @@ import { ModalColor } from '@app/data/enums/modal-color';
         class="me-2"
         display="7"
         icon="mail"
+        color="text-light"
         title="Enviar correo a contacto"
         (click)="mailToUser()"
       />

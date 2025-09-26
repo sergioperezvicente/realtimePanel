@@ -15,7 +15,6 @@ import { MaterialButton } from '@app/shared/controls/material-button';
     <div class="input-group-text" role="button" id="icon">
       <app-material-button
       icon="search"
-      display="7"
       color="text-secondary"
       title="Buscar"
     />
