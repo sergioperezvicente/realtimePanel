@@ -27,22 +27,21 @@ import { ModalColor } from '@app/data/enums/modal-color';
           }"
         ></div>
         <div class="col-8 p-0">
-          <div class="card-header" style="border-radius: 0px 5px 0px 0px; min-height: 110px">
+          <div class="card-header bg-theme-soft" style="border-radius: 0px 5px 0px 0px; min-height: 110px">
             <h2 class="card-title">{{ user.name }}</h2>
-            <h4 class="card-subtitle text-muted">{{ user.lastName }}</h4>
+            <h4 class="card-subtitle text-muted text-truncate">{{ user.lastName }}</h4>
             <small class="mb-2 fst-italic">{{ user.job }}</small>
           </div>
           <div class="card-body">
             <p class="text-truncate">&#9993; {{ user.email }}</p>
             @if (user.phone) {
-              <p>&#9742; {{ user.phone }}</p>
+            <p>&#9742; {{ user.phone }}</p>
             } @else {
-              <p><br/></p>
-            }
-            @if (user.isAdmin) {
-              <span class="badge text-bg-warning me-2"> Administrador </span>
+            <p><br /></p>
+            } @if (user.isAdmin) {
+            <span class="badge text-bg-warning me-2"> Administrador </span>
             } @else {
-              <span class="badge text-bg-secondary me-2"> Usuario </span>
+            <span class="badge text-bg-secondary me-2"> Usuario </span>
             }
           </div>
         </div>
@@ -51,6 +50,8 @@ import { ModalColor } from '@app/data/enums/modal-color';
     <div class="card-footer d-flex py-3 justify-content-end">
       @if(user.phone) {
       <app-material-button
+        class="me-2"
+        display="7"
         icon="phone_in_talk"
         color="text-success"
         title="Llamar a contacto"
@@ -58,17 +59,23 @@ import { ModalColor } from '@app/data/enums/modal-color';
       />
       }
       <app-material-button
+        class="me-2"
+        display="7"
         icon="mail"
         title="Enviar correo a contacto"
         (click)="mailToUser()"
       />
       <app-material-button
+        class="me-2"
+        display="7"
         icon="contact_phone"
         color="text-primary"
         title="Exportar vCard"
         (click)="generateVCard()"
       />
       <app-material-button
+        class="me-2"
+        display="7"
         icon="edit"
         color="text-warning"
         title="Editar"
@@ -76,6 +83,7 @@ import { ModalColor } from '@app/data/enums/modal-color';
       />
       <app-material-button
         icon="delete"
+        display="7"
         color="text-danger"
         title="Eliminar"
         (click)="selectedUserToDelete(user)"
@@ -85,7 +93,7 @@ import { ModalColor } from '@app/data/enums/modal-color';
   host: {
     class: 'card shadow',
     'animate.enter': 'pop-appear',
-    'animate.leave': 'fade-out'
+    
   },
 })
 export class UserCard {
@@ -98,7 +106,7 @@ export class UserCard {
     const title: string = 'Editar ' + user.name;
     this.userService.select(user);
     this.userService.setModeModal(ModalMode.edit);
-    this.modalsService.open(title, UserForm, ModalSize.lg, ModalColor.warning);
+    this.modalsService.open(title, UserForm, ModalSize.xl, ModalColor.warning);
   }
 
   protected selectedUserToDelete(user: User): void {

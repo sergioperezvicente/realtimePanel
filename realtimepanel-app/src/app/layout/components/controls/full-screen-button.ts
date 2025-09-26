@@ -5,7 +5,7 @@ import { Component } from '@angular/core';
   imports: [],
   template: `fullscreen`,
   host: {
-    class: 'material-symbols-outlined span-btn',
+    class: 'material-symbols-outlined display-7 span-btn',
     type: 'button',
     title: 'Ampliar a pantalla completa',
     'data-bs-toggle': 'tooltip',

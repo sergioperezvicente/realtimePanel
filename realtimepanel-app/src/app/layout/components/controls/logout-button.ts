@@ -6,7 +6,7 @@ import { AuthService } from '../../../auth/services/auth';
   imports: [],
   template: `logout`,
   host: { 
-    class: 'material-symbols-outlined span-btn', 
+    class: 'material-symbols-outlined display-7 span-btn', 
     type: 'button', 
     title: 'Cerrar sesión',
     '(click)': 'logout()'

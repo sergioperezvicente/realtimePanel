@@ -83,6 +83,10 @@ app-alerts.show {
   opacity: 1;
 }
 
+app-status {
+  z-index: 9999;
+}
+
 app-chat-room {
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -107,7 +111,11 @@ app-material-button button:hover {
   display: none;
 }
 
-
+.display-7 {
+  font-weight: 300;
+  line-height: 1.2;
+  font-size: calc(1.375rem + 0.55vw);
+}
 
 .btn-theme {
   background-color: rgb(var(--color-theme-rgb));
@@ -135,7 +143,10 @@ app-material-button button:hover {
   color: var(--color-theme-text);
 }
 
-
+.bg-theme-soft {
+  background-color: rgba(var(--color-theme-rgb), 0.30);
+  color: var(--color-theme-text);
+}
 
 .text-theme {
   color: rgb(var(--color-theme-rgb));
@@ -146,6 +157,8 @@ app-material-button button:hover {
   background-color: rgba(var(--color-theme-rgb), 0.85);
   color: var(--color-theme-text);
 }
+
+
 
 .span-btn:hover {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -247,7 +260,7 @@ app-material-button button:hover {
 }
 
 .fade-out {
-  animation: fade-out 0.2s ease-out forwards;
+  animation: fade-out 300ms ease-in;
 }
 
 .fade-in-up {
@@ -262,7 +275,7 @@ app-material-button button:hover {
   opacity: 0;
 }
 .pop-appear {
-  animation: pop-appear 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  animation: pop-appear 0.3s ease-in-out;
   /* opcional: si quieres que empiece invisible hasta que se aplique la animación */
   opacity: 0;
 }
@@ -312,12 +325,12 @@ app-material-button button:hover {
     opacity: 0;
   }
   60% {
-    transform: scale(1.1);
-    opacity: 1;
+    transform: scale(1.005);
+    opacity: 0.5;
   }
   80% {
     transform: scale(0.95);
-    opacity: 1;
+    opacity: 0.7;
   }
   100% {
     transform: scale(1);

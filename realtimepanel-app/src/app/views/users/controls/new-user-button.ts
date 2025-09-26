@@ -40,8 +40,8 @@ import { ModalColor } from '@app/data/enums/modal-color';
       </div>
     </div>
     <div class="card-footer d-flex py-3 justify-content-end">
-      <app-material-button icon="edit" [disabled]="true" />
-      <app-material-button icon="delete" [disabled]="true" />
+      <app-material-button class="me-2" display="7" icon="edit" [disabled]="true" />
+      <app-material-button icon="delete" display="7" [disabled]="true" />
     </div>
   `,
   host: {

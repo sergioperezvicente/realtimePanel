@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { MaterialButton } from '@app/shared/controls/material-button';
 
 @Component({
   selector: 'search-input',
-  imports: [],
+  imports: [MaterialButton],
   template: `<input
       type="text"
       id="generalSearchInput"
@@ -10,13 +11,18 @@ import { Component } from '@angular/core';
       class="form-control bs-warning-border-subtle"
       placeholder="Buscar..."
       aria-label="Buscar..."
-      aria-describedby="icon"
     />
-    <span class="input-group-text" id="icon">
-      <span class="material-symbols-outlined">search</span>
-    </span>`,
+    <div class="input-group-text" role="button" id="icon">
+      <app-material-button
+      icon="search"
+      display="7"
+      color="text-secondary"
+      title="Buscar"
+    />
+</div>`,
   host: {
     class: 'input-group',
   },
 })
-export class SearchInput {}
+export class SearchInput {
+}

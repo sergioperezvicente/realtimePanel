@@ -4,6 +4,7 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
+  Logger,
   UnauthorizedException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -15,6 +16,8 @@ import { LoginUserDto } from './dto/login-user.dto';
 import bcryptjs from 'node_modules/bcryptjs';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { WsService } from '../ws/ws.service';
+
+const auth = new Logger('AuthService');
 
 @Injectable()
 export class AuthService {
@@ -71,6 +74,7 @@ export class AuthService {
 
   async findAll(): Promise<Partial<User>[]> {
     const users = await this.userRepository.find();
+    auth.log(`list of users returned`)
     return users.map(
       ({ password, ...userWithoutPassword }) => userWithoutPassword,
     );
@@ -141,7 +145,7 @@ export class AuthService {
       isAdmin: false,
       access: ['/','/settings']
     })
-    console.log('Usuarios iniciales creados')
+    auth.log('Usuarios iniciales creados')
   }
 
   getJwtToken(payload: JwtPayload) {

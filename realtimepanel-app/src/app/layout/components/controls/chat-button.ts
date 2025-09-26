@@ -5,7 +5,7 @@ import { ChatService } from '@core/services/chat';
   selector: 'chat-button',
   imports: [],
   template: `
-    <div class="col material-symbols-outlined span-btn">chat_bubble</div>
+    <div class="col material-symbols-outlined display-7 span-btn">chat_bubble</div>
     @if (this.chat.rooms().length > 0) {
     <small class="fw-bold" animate.enter="pop-appear">{{ this.chat.rooms().length }}</small>
     }

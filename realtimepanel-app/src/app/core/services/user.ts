@@ -14,9 +14,11 @@ export class UserService {
 
   private _selectedUser = signal<User | null>(null);
   private _modeUserModal = signal<ModalMode | undefined>(undefined);
+  private _sorted = signal<boolean>(false)
 
   public selectedUser = computed(() => this._selectedUser());
   public modeUserForm = computed(() => this._modeUserModal());
+  public sorted = computed(()=> this._sorted())
 
   public select(user: User | null) {
     this._selectedUser.set(user);
@@ -24,6 +26,10 @@ export class UserService {
 
   public setModeModal(mode: ModalMode | undefined) {
     this._modeUserModal.set(mode);
+  }
+
+  public setSorted(mode: boolean){
+    this._sorted.set(mode)
   }
 
   //COMUNICACIÓN CON LA API
