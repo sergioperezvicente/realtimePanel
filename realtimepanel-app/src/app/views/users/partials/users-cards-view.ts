@@ -18,8 +18,8 @@ import { WsService } from '@core/services/ws';
   imports: [UserCard, NewUserButton],
   template: `
     <div class="d-grid gap-3" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));">
-      @for (user of users(); track user.id) {
-      <app-card-user [user]="user" />
+      @for (user of users(); track user.id; let i = $index) {
+      <app-card-user [user]="user" [style.animation-delay.ms]="i * 50" />
       }
       <app-new-user-button />
     </div>

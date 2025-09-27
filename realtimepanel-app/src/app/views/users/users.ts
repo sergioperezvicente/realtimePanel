@@ -10,11 +10,10 @@ import { UsersListView } from './partials/users-list-view';
   imports: [SectionHeader, SectionUsersMenu, UsersCardsView, UsersListView],
   template: `
     <app-section-header [title]="'Usuarios'" />
-    <app-section-users-menu (selected)="onSelected($event)" />
+    <app-section-users-menu (selected)="onSelected($event)" [view]="modeView()" />
       @switch (modeView()) { 
         @case ("card") { <app-users-cards-view /> }
         @case ("list") { <app-users-list-view /> } 
-        @default { <app-users-cards-view /> }
       } 
   `,
 })

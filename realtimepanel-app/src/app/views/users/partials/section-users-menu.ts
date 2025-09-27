@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output, signal } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output, signal } from '@angular/core';
 import { UserService } from '@core/services/user';
 import { MaterialButton } from '@shared/controls/material-button';
 
@@ -6,6 +6,15 @@ import { MaterialButton } from '@shared/controls/material-button';
   selector: 'app-section-users-menu',
   imports: [MaterialButton],
   template: `
+    <app-material-button
+      class="me-2"
+      [class.d-none]="view === 'card'"
+      icon="checklist"
+      display="7"
+      [color]="checkColor()"
+      title="Selección múltiple"
+      (click)="onPressedCheck()"
+    />
     <app-material-button
       class="me-2"
       icon="sort_by_alpha"
@@ -35,12 +44,15 @@ import { MaterialButton } from '@shared/controls/material-button';
   },
 })
 export class SectionUsersMenu {
+  @Input() view!: 'card' | 'list';
   @Output() selected = new EventEmitter<string>();
 
   private readonly userService = inject(UserService);
 
   protected sortedColor = signal<'text-theme' | 'text-secondary'>('text-secondary');
   protected sortedPressed = signal<boolean>(false);
+  protected checkColor = signal<'text-theme' | 'text-secondary'>('text-secondary');
+  protected checkPressed = signal<boolean>(false);
   protected cardPressed = signal<'text-theme' | ''>('text-theme');
   protected listPressed = signal<'text-theme' | ''>('');
 
@@ -56,18 +68,17 @@ export class SectionUsersMenu {
     }
   }
 
-  // onPressedSort() {
-  //   switch (this.sortedPressed()) {
-  //     case true:
-  //       this.sortedColor.set('text-theme');
-  //       this.userService.setSorted(true);
-  //       break;
-  //     case false:
-  //       this.sortedColor.set('');
-  //       this.userService.setSorted(false);
-  //       break;
-  //   }
-  // }
+  onPressedCheck() {
+    if (!this.checkPressed()) {
+      this.checkColor.set('text-theme');
+      this.checkPressed.set(true);
+      this.userService.setMultipleCheck(true);
+    } else {
+      this.checkColor.set('text-secondary');
+      this.checkPressed.set(false);
+      this.userService.setMultipleCheck(false);
+    }
+  }
 
   onSelectedView(view: 'card' | 'list') {
     switch (view) {
