@@ -52,9 +52,9 @@ import { ModalColor } from '@app/data/enums/modal-color';
   },
 })
 export class NewUserButton {
-  private readonly modalsService = inject(ModalsService);
+  private readonly ms = inject(ModalsService);
 
   protected createUser() {
-    this.modalsService.open('Agregar usuario', UserForm, ModalSize.lg, ModalColor.theme);
+    this.ms.open('Agregar usuario', UserForm, ModalSize.lg, ModalColor.theme);
   }
 }

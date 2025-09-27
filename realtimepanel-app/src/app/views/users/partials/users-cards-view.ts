@@ -26,31 +26,15 @@ import { WsService } from '@core/services/ws';
   `,
 })
 export class UsersCardsView {
-  private readonly userService = inject(UserService);
+  private readonly us = inject(UserService);
   private readonly ws = inject(WsService);
 
   protected users = signal<User[]>([]);
 
   status = effect(() => {
     this.ws.dbUpdated();
-    this.loadUsers(this.userService.sorted());
-  });
-
-  private loadUsers(sorted: boolean): void {
-    this.userService.getUsers().subscribe({
-      next: (users: User[]) => {
-        //console.log('usuarios sin ordenar', users);
-        let entries = [...users];
-        if (sorted) {
-          entries.sort((a, b) => a.name.localeCompare(b.name));
-          
-        }
-
-        this.users.set(entries);
-      },
-      error: (err) => {
-        console.error('Error al obtener los usuarios');
-      },
+    this.us.loadUsers(this.us.sorted()).subscribe((users) => {
+      this.users.set(users);
     });
-  }
+  });
 }

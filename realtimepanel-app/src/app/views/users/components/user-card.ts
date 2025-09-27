@@ -1,17 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject, Input } from '@angular/core';
-import { ModalsService } from '@core/services/modals';
+import { Component, Input } from '@angular/core';
 import { User } from '@data/models/user';
-import { ModalSize } from '@data/enums/modal-size';
-import { UserService } from '@core/services/user';
-import { MaterialButton } from '@shared/controls/material-button';
-import { ModalMode } from '@data/enums/modal-mode';
-import { UserForm } from '../partials/user-form';
-import { ModalColor } from '@app/data/enums/modal-color';
+import { UsersActions } from './users-actions';
 
 @Component({
   selector: 'app-card-user',
-  imports: [CommonModule, MaterialButton],
+  imports: [CommonModule, UsersActions],
   template: `
     <div class="card-body p-0">
       <div class="row m-0">
@@ -48,109 +42,17 @@ import { ModalColor } from '@app/data/enums/modal-color';
       </div>
     </div>
     <div class="card-footer bg-body-secondary d-flex py-3 justify-content-end">
-      @if(user.phone) {
-      <app-material-button
-        class="me-2"
-        display="7"
-        icon="phone_in_talk"
-        color="text-success"
-        title="Llamar a contacto"
-        (click)="callUser()"
-      />
-      }
-      <app-material-button
-        class="me-2"
-        display="7"
-        icon="mail"
-        color="text-light"
-        title="Enviar correo a contacto"
-        (click)="mailToUser()"
-      />
-      <app-material-button
-        class="me-2"
-        display="7"
-        icon="contact_phone"
-        color="text-primary"
-        title="Exportar vCard"
-        (click)="generateVCard()"
-      />
-      <app-material-button
-        class="me-2"
-        display="7"
-        icon="edit"
-        color="text-warning"
-        title="Editar"
-        (click)="selectedUserToEdit(user)"
-      />
-      <app-material-button
-        icon="delete"
-        display="7"
-        color="text-danger"
-        title="Eliminar"
-        (click)="selectedUserToDelete(user)"
-      />
+      <app-users-actions [user]="user" [display]="'7'"/>
     </div>
   `,
   host: {
     class: 'card shadow',
     'animate.enter': 'pop-appear',
+    'animate.leave': 'pop-disappear'
     
   },
 })
 export class UserCard {
   @Input() user!: User;
 
-  private readonly modalsService = inject(ModalsService);
-  private readonly userService = inject(UserService);
-
-  protected selectedUserToEdit(user: User): void {
-    const title: string = 'Editar ' + user.name;
-    this.userService.select(user);
-    this.userService.setModeModal(ModalMode.edit);
-    this.modalsService.open(title, UserForm, ModalSize.xl, ModalColor.warning);
-  }
-
-  protected selectedUserToDelete(user: User): void {
-    this.userService.select(user);
-    this.userService.setModeModal(ModalMode.delete);
-    const title: string = '¿Está seguro de eliminar a ' + user.name + '?';
-    this.modalsService.open(title, UserForm, ModalSize.lg, ModalColor.danger);
-  }
-
-  protected callUser(): void {
-    if (this.user?.phone) {
-      window.open('tel:' + this.user.phone);
-    }
-  }
-
-  protected mailToUser(): void {
-    window.open('mailto:' + this.user.email);
-  }
-
-  protected generateVCard(): void {
-    const contactData = {
-      name: this.user.name + ' ' + this.user.lastName,
-      phone: this.user.phone,
-      email: this.user.email,
-      job: this.user.job,
-    };
-
-    const vCardContent = `BEGIN:VCARD
-        VERSION:3.0
-        FN:${contactData.name}
-        TEL;TYPE=CELL:${contactData.phone}
-        EMAIL:${contactData.email}
-        TITLE:${contactData.job}
-        END:VCARD`;
-
-    const blob = new Blob([vCardContent], { type: 'text/vcard' });
-    const url = window.URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${contactData.name}.vcf`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
-  }
 }

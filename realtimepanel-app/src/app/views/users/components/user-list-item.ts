@@ -1,33 +1,33 @@
-import { animate } from '@angular/animations';
-import { Component, inject, Input } from '@angular/core';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
 import { AuthService } from '@app/auth/services/auth';
 import { User } from '@app/data/models/user';
-import { MaterialButton } from '@app/shared/controls/material-button';
 import { UserService } from '@core/services/user';
+import { UsersActions } from './users-actions';
+import { CheckControl } from '@app/shared/controls/check';
 
 @Component({
   selector: 'app-list-item-user',
-  imports: [MaterialButton],
+  imports: [UsersActions, CheckControl],
   template: `
     <div
       class="d-flex align-items-center justify-content-start shadow"
       [class.bg-warning]="user.isAdmin"
       [class.bg-secondary]="!user.isAdmin"
     >
-      <input
-        class="form-check-input display-6 mx-3 mt-0"
-        [class.d-none]="!this.userService.multipleCheck()"
-        [disabled]="this.authService.currentUser()?.id === user.id"
-        type="checkbox"
-        value=""
-        animate.enter="pop-appear"
+      <app-check
+        class="mx-3 mt-0"
+        display="display-6"
+        [class.d-none]="!this.us.multipleCheck()"
+        [isDisabled]="this.as.currentUser()?.id === user.id"
+        [style.animation-delay.ms]="index * 50"
+        (changed)="onTouched($event)"
       />
       <div
         class="fw-semibold pe-3 d-none d-xl-block"
-        [class.ms-3]="!this.userService.multipleCheck()"
+        [class.ms-3]="!this.us.multipleCheck()"
         style="width: 125px;"
       >
-        @if ((this.authService.currentUser()?.id === user.id) ) {
+        @if ((this.as.currentUser()?.id === user.id) ) {
         <strong class="fs-5">Usted</strong>
         } @else { @if (user.isAdmin) { Administrador } @else { Usuario } }
       </div>
@@ -52,48 +52,23 @@ import { UserService } from '@core/services/user';
       <small class="fst-italic">Hace 3 minutos </small>
     </div>
     <div class="d-inline text-end align-content-center bg-body-tertiary px-2">
-      @if(user.phone) {
-      <app-material-button
-        class="me-2"
-        display="7"
-        icon="phone_in_talk"
-        color="text-success"
-        title="Llamar a contacto"
-      />
-      }
-      <app-material-button
-        class="me-2"
-        display="7"
-        icon="mail"
-        color="text-light"
-        title="Enviar correo a contacto"
-      />
-      <app-material-button
-        class="me-2"
-        display="7"
-        icon="contact_phone"
-        color="text-primary"
-        title="Exportar vCard"
-      />
-      <app-material-button
-        class="me-2"
-        display="7"
-        icon="edit"
-        color="text-warning"
-        title="Editar"
-      />
-      <app-material-button icon="delete" display="7" color="text-danger" title="Eliminar" />
+      <app-users-actions [user]="user" [display]="'7'" />
     </div>
   `,
   host: {
     class: 'list-group-item list-group-item-action m-0 p-0 d-flex border-0 shadow',
     'animate.enter': 'fade-in-up',
+    'animate.leave': 'pop-disappear'
   },
 })
-export class UsersListItem {
+export class UserListItem {
   @Input() user!: User;
-  @Input() check?: boolean = false;
+  @Input() index!: number;
 
-  protected readonly authService = inject(AuthService);
-  protected readonly userService = inject(UserService);
+  protected readonly as = inject(AuthService);
+  protected readonly us = inject(UserService);
+
+  onTouched(value: boolean){
+    this.us.selectMultiple(this.user.id!, value)
+  }
 }

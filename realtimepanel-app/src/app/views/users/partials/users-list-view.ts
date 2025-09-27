@@ -2,20 +2,31 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { User } from '@app/data/models/user';
 import { UserService } from '@core/services/user';
 import { WsService } from '@core/services/ws';
-import { UsersListItem } from "../components/users-list-item";
+import { UserListItem } from '../components/user-list-item';
+import { ModalsService } from '@core/services/modals';
+import { UserForm } from './user-form';
+import { ModalSize } from '@app/data/enums/modal-size';
+import { ModalColor } from '@app/data/enums/modal-color';
 
 @Component({
   selector: 'app-users-list-view',
-  imports: [UsersListItem],
+  imports: [UserListItem],
   template: `
     <div class="card">
       <div class="card-header px-2 py-3 text-end">
-        <button class="btn btn-theme">Agregar usuario</button>
+        <button
+          class="btn btn-danger me-2"
+          [class.d-none]="this.us.multipleSelectedUsers().length === 0"
+          (click)="this.us.deleteSelectedUsers()"
+        >
+          Eliminar seleccionados: {{ this.us.multipleSelectedUsers().length }}
+        </button>
+        <button class="btn btn-theme" (click)="createUser()">Agregar usuario</button>
       </div>
       <div class="card-body p-0">
         <div class="list-group list-group-flush">
           @for (user of users(); track user.id; let i = $index ){
-            <app-list-item-user [user]='user' [check]="this.userService.multipleCheck()" [style.animation-delay.ms]="i * 50" />
+          <app-list-item-user [user]="user" [index]="$index" [style.animation-delay.ms]="i * 50" />
           }
         </div>
       </div>
@@ -25,30 +36,20 @@ import { UsersListItem } from "../components/users-list-item";
   styles: ``,
 })
 export class UsersListView {
-  protected readonly userService = inject(UserService);
+  protected readonly us = inject(UserService);
+  private readonly ms = inject(ModalsService);
   private readonly ws = inject(WsService);
 
   protected users = signal<User[]>([]);
 
   status = effect(() => {
     this.ws.dbUpdated();
-    this.loadUsers(this.userService.sorted());
+    this.us.loadUsers(this.us.sorted()).subscribe((users) => {
+      this.users.set(users);
+    });
   });
 
-  private loadUsers(sorted: boolean): void {
-    this.userService.getUsers().subscribe({
-      next: (users: User[]) => {
-        //console.log('usuarios sin ordenar', users);
-        let entries = [...users];
-        if (sorted) {
-          entries.sort((a, b) => a.name.localeCompare(b.name));
-        }
-
-        this.users.set(entries);
-      },
-      error: (err) => {
-        console.error('Error al obtener los usuarios');
-      },
-    });
+  protected createUser() {
+    this.ms.open('Agregar usuario', UserForm, ModalSize.lg, ModalColor.theme);
   }
 }

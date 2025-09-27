@@ -86,6 +86,7 @@ export class SectionUsersMenu {
         this.cardPressed.set('text-theme');
         this.listPressed.set('');
         this.selected.emit('card');
+        this.userService.multipleSelectedUsers.set([])
         break;
       case 'list':
         this.cardPressed.set('');
