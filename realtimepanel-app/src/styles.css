@@ -104,7 +104,7 @@ app-material-button button:hover {
 }
 
 #main {
-  height: 84vh; 
+  height: 84vh;
   overflow-y: auto;
   scrollbar-width: none;
   -ms-overflow-style: none;
@@ -144,6 +144,10 @@ app-material-button button:hover {
   border-color: var(--color-theme-dark);
   color: var(--color-theme-text-dark);
 }
+
+/* .bg-body-theme {
+
+} */
 
 .bg-theme {
   background-color: rgb(var(--color-theme-rgb));

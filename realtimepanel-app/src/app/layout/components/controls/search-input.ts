@@ -12,16 +12,11 @@ import { MaterialButton } from '@app/shared/controls/material-button';
       placeholder="Buscar..."
       aria-label="Buscar..."
     />
-    <div class="input-group-text" role="button" id="icon">
-      <app-material-button
-      icon="search"
-      color="text-secondary"
-      title="Buscar"
-    />
-</div>`,
+    <span class="input-group-text" role="button" id="icon">
+      <app-material-button class="mt-1" icon="search" color="text-secondary" title="Buscar" />
+    </span>`,
   host: {
     class: 'input-group',
   },
 })
-export class SearchInput {
-}
+export class SearchInput {}

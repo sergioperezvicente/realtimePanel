@@ -25,7 +25,7 @@ import { ChatButton } from './controls/chat-button';
     </div>
   `,
   host: {
-    class: 'navbar shadow z-1 p-3 ',
+    class: 'navbar shadow bg-body-secondary z-1 p-3 ',
     'animate.enter': 'fade-in-down'
   },
 })

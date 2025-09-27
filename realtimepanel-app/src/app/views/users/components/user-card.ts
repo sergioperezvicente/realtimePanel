@@ -27,7 +27,7 @@ import { ModalColor } from '@app/data/enums/modal-color';
           }"
         ></div>
         <div class="col-8 p-0">
-          <div class="card-header bg-theme-soft" style="border-radius: 0px 5px 0px 0px; min-height: 110px">
+          <div class="card-header bg-body-secondary" style="border-radius: 0px 5px 0px 0px; min-height: 110px">
             <h2 class="card-title">{{ user.name }}</h2>
             <h4 class="card-subtitle text-muted text-truncate">{{ user.lastName }}</h4>
             <small class="mb-2 fst-italic">{{ user.job }}</small>
@@ -47,7 +47,7 @@ import { ModalColor } from '@app/data/enums/modal-color';
         </div>
       </div>
     </div>
-    <div class="card-footer d-flex py-3 justify-content-end">
+    <div class="card-footer bg-body-secondary d-flex py-3 justify-content-end">
       @if(user.phone) {
       <app-material-button
         class="me-2"
