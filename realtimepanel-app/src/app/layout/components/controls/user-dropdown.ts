@@ -1,6 +1,10 @@
 import { animate } from '@angular/animations';
 import { Component, inject } from '@angular/core';
 import { AuthService } from '@app/auth/services/auth';
+import { ModalsService } from '@core/services/modals';
+import { ChangePasswordForm } from '../partials/change-password-form';
+import { ModalSize } from '@app/data/enums/modal-size';
+import { ModalColor } from '@app/data/enums/modal-color';
 
 @Component({
   selector: 'user-dropdown',
@@ -50,8 +54,11 @@ import { AuthService } from '@app/auth/services/auth';
 })
 export class UserDropdown {
   protected readonly as = inject(AuthService)
+  protected readonly ms = inject(ModalsService)
   
-  openModalChangePassword(){}
+  openModalChangePassword(): void {
+    this.ms.open('Cambiar la contraseña', ChangePasswordForm, undefined, ModalColor.theme);
+  }
 
   protected getGreeting(): string {
     const hour = new Date().getHours();

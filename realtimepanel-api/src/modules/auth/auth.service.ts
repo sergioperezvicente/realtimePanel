@@ -16,6 +16,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 import bcryptjs from 'node_modules/bcryptjs';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { WsService } from '../ws/ws.service';
+import { ChangePasswordDto } from './dto/change-password.dto';
 
 const auth = new Logger('AuthService');
 
@@ -86,6 +87,31 @@ export class AuthService {
     }
     const { password, ...userWithoutPassword } = user;
     return userWithoutPassword;
+  }
+
+  async changePassword(
+    id: string,
+    changePasswordDto: ChangePasswordDto,
+  ): Promise<{ message: string }> {
+    try {
+      const { password } = changePasswordDto;
+
+      const user = await this.userRepository.findOne({ where: { id } });
+
+      if (!user) {
+        return { message: 'user not-found' };
+      }
+
+      user.password = await bcryptjs.hash(password, 10);
+
+      await this.userRepository.save(user);
+      auth.debug(`user ${user.email} change password`)
+
+      return { message: 'password changed success' };
+    } catch (error) {
+      console.error(error);
+      return { message: 'password not changed' };
+    }
   }
 
   // update(id: number, updateAuthDto: UpdateAuthDto) {

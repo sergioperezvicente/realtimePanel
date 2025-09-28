@@ -34,6 +34,12 @@ export class AuthService {
     );
   }
 
+  changePassword(password: string): Observable<void> {
+    const id = this.currentUser()?.id
+    const body = { password: password }
+    return this.http.patch<void>(`${this.apiUrl}/auth/change-password/${id}`, body)
+  }
+
   logout(): void {
     if (this.currentUser() !== null){
       const id = this.currentUser()?.id
