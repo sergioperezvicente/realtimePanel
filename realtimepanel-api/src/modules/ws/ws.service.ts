@@ -20,7 +20,7 @@ export class WsService {
   ) {}
 
   setServer(server: Server) {
-    this.server = server
+    this.server = server;
   }
 
   private server: Server;
@@ -47,7 +47,9 @@ export class WsService {
       rooms.push({
         socket: client.id,
         user: user,
+        connected: new Date(),
       });
+      ws.log(`Chat-Rooms: added client ${user.email}`);
       if (rooms.length >= 1) {
         ws.warn(`connections: ${rooms.length}`);
         this.server.emit('chat-on', { message: 'Chat habilitado' });
@@ -57,17 +59,18 @@ export class WsService {
         });
         ws.log(`connections: ${rooms.length}`);
       }
-      this.server.emit('chat-rooms', { chatrooms: rooms });
-      this.publishDBUpdated('Database ready!')
     } catch (error) {
-      if (error === TokenExpiredError) {
+      if (error instanceof TokenExpiredError) {
         ws.error(`token-expired: ${client.id}`);
         this.server.to(client).emit('expired');
+      } else {
+        ws.error(`unauthorized: ${client.id} - error: ${error}`);
+        this.server.to(client).emit('not-authorized');
+        this.disconnect(client);
       }
-      ws.error(`unauthorized: ${client.id}`);
-      this.server.to(client).emit('not-authorized');
-      this.disconnect(client);
     }
+    this.server.emit('chat-rooms', { chatrooms: rooms });
+    this.publishDBUpdated('Database ready!');
   }
 
   disconnect(client: any) {
@@ -113,8 +116,6 @@ export class WsService {
   publishDBUpdated(payload: any) {
     this.server.emit('db:updated:', payload);
   }
-
-
 
   //   findOne(id: number) {
   //     return `This action returns a #${id} w`;

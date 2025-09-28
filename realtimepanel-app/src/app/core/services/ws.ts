@@ -46,6 +46,7 @@ export class WsService {
     });
     this.socket.on('expired', () => {
       this._status.set(WsStatus.expired);
+      this.router.navigate(['/auth/login']);
       console.warn('expired');
     });
 

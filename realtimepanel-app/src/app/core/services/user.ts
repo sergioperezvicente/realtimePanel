@@ -43,7 +43,6 @@ export class UserService {
     this.multipleSelectedUsers.update((ids) =>
       checked ? [...ids, id] : ids.filter((x) => x !== id)
     );
-    //console.log('USUARIOS SELECCIONADOS:', this.multipleSelectedUsers())
   }
 
   public loadUsers(sorted: boolean): Observable<User[]> {
@@ -66,7 +65,9 @@ export class UserService {
     });
   }
 
-  //COMUNICACIÓN CON LA API
+  
+  
+  // ** COMUNICACIÓN CON LA API
   public getUsers(): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}`);
   }

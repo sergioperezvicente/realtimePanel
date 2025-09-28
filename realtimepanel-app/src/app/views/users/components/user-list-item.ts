@@ -4,6 +4,7 @@ import { User } from '@app/data/models/user';
 import { UserService } from '@core/services/user';
 import { UsersActions } from './users-actions';
 import { CheckControl } from '@app/shared/controls/check';
+import { ChatService } from '@core/services/chat';
 
 @Component({
   selector: 'app-list-item-user',
@@ -46,8 +47,11 @@ import { CheckControl } from '@app/shared/controls/check';
     <div class="col bg-body-secondary d-xl-block d-xxl-none"></div>
     <div class="col bg-body-tertiary d-none d-xxl-block ps-2 pt-2">
       <h6>
-        <span class="badge text-bg-success" animate.enter="fade-in-up">online</span>
-        <span class="badge text-bg-danger">offline</span>
+        @if (this.cs.checkStatus(user) === 'online'){
+          <span class="badge text-bg-success" animate.enter="fade-in-up">online</span>
+        } @else {
+          <span class="badge text-bg-danger" animate.enter="fade-in-up">offline</span>
+        }
       </h6>
       <small class="fst-italic">Hace 3 minutos </small>
     </div>
@@ -67,6 +71,7 @@ export class UserListItem {
 
   protected readonly as = inject(AuthService);
   protected readonly us = inject(UserService);
+  protected readonly cs = inject(ChatService)
 
   onTouched(value: boolean){
     this.us.selectMultiple(this.user.id!, value)

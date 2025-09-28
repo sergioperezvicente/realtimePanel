@@ -56,7 +56,7 @@ export class App {
         return;
       case WsStatus.expired:
         this._status.set(AppStatus.disconnected);
-        this.authService.logout();
+        this.router.navigate(['/auth/login']);
         return;
       case WsStatus.off:
         this._status.set(AppStatus.disconnected)

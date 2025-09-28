@@ -13,7 +13,7 @@ import { ModalColor } from '@app/data/enums/modal-color';
   imports: [UserListItem],
   template: `
     <div class="card">
-      <div class="card-header px-2 py-3 text-end">
+      <div class="card-header pe-2 py-3 text-end">
         <button
           class="btn btn-danger me-2"
           [class.d-none]="this.us.multipleSelectedUsers().length === 0"

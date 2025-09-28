@@ -35,11 +35,13 @@ export class AuthService {
     const { email, password } = loginUserDto;
     const user = await this.userRepository.findOne({ where: { email } });
     if (!user) {
+      auth.error(`Not valid credentials: ${email}`)
       throw new UnauthorizedException('Not valid credentials - email');
     }
     if (!user.password || !(await bcryptjs.compare(password, user.password))) {
       throw new UnauthorizedException('Not valid credentials - password');
     }
+    auth.debug(`User: ${email} logged`)
     const { password: _, ...userWithoutPassword } = user;
     return {
       user: userWithoutPassword,
@@ -64,6 +66,7 @@ export class AuthService {
       if (error.code === '23505') {
         throw new BadRequestException(`${createAuthDto.email} already exists`);
       }
+      auth.fatal(`fatal error in service Auth`)
       throw new InternalServerErrorException('Something terrible happened!!');
     }
   }
@@ -74,7 +77,7 @@ export class AuthService {
 
   async findAll(): Promise<Partial<User>[]> {
     const users = await this.userRepository.find();
-    auth.log(`list of users returned`)
+    auth.debug(`list of users returned`)
     return users.map(
       ({ password, ...userWithoutPassword }) => userWithoutPassword,
     );
