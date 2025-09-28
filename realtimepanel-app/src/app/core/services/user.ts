@@ -73,8 +73,13 @@ export class UserService {
   }
 
   public createUser(user: User): Observable<User> {
-    console.log('User to upload:', user);
+    //console.log('User to upload:', user);
     return this.http.post<User>(`${this.apiUrl}`, user);
+  }
+
+  public updateUser(userId: string, body: User): Observable<User> {
+    //console.log('User to upload:', body)
+    return this.http.patch<User>(`${this.apiUrl}/${userId}`, body)
   }
 
   public deleteUser(userId: string): Observable<void> {

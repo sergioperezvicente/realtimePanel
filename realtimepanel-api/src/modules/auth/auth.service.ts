@@ -119,6 +119,31 @@ export class AuthService {
 
   async update(id: string, updateAuthDto: UpdateAuthDto) {
      auth.debug(`user-edited ${id}`)
+     try {
+      const user = await this.userRepository.findOne({ where: { id } })
+      if (!user) {
+        return { message: 'user not-found' };
+      }
+
+      if (updateAuthDto.password) {
+        updateAuthDto.password = await bcryptjs.hash(
+          updateAuthDto.password,
+          10,
+        );
+      } else {
+        updateAuthDto.password = user.password;
+      }
+
+      if (updateAuthDto.imageUrl && user.imageUrl) {
+        this.filesService.deleteImage(user.imageUrl, 'avatars')
+      }
+
+      await this.userRepository.update(id, updateAuthDto);
+      this.wsService.publishDBUpdated(`user-edited: ${user.id} at ${new Date()}`)
+
+     } catch (error) {
+      auth.error(`error on update user ${error}`)
+     }
   }
 
   async remove(id: string): Promise<void> {

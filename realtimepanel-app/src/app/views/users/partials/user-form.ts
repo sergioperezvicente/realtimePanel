@@ -145,7 +145,7 @@ import { AlertColor } from '@app/data/enums/alert-color';
       @switch (userService.modeUserForm()) { @case ('edit') {<button
         class="btn btn-success"
         [disabled]="userForm.invalid"
-        (click)="editUser()"
+        (click)="updateUser()"
       >
         Guardar cambios</button
       >} @case ('delete') {<button
@@ -265,6 +265,11 @@ export class UserForm implements OnDestroy, AfterViewInit {
     if (!user.access.includes('/')) {
       user.access.push('/');
     }
+    //Conceder acceso a la configuración por default
+    if (!user.access.includes('/settings')) {
+      user.access.push('/settings')
+    }
+
     //Si hay imagen... subirla
     if (user.imageUrl) {
       const file = await this.uploadsService.convertBlobToFilePNG(user.imageUrl);
@@ -295,9 +300,20 @@ export class UserForm implements OnDestroy, AfterViewInit {
     this.modalService.close();
   }
 
-  protected async editUser(): Promise<void> {
-    //TODO: Editar en base de datos el usuario seleccionado y mostramos alerta
-    //Cerramos el modal activo
+  protected async updateUser(): Promise<void> {
+    const user = await this.makeUserDto();
+    const id = this.userService.selectedUser()?.id
+    if (id) {
+      this.userService.updateUser(id, user).subscribe({
+        next: () => {
+          this.alertsService.showAlert('Se ha editado el usuario', AlertColor.success)
+        },
+        error: (err) => {
+          console.error(err)
+          this.alertsService.showAlert('No se ha editado el usuario', AlertColor.danger)
+        }
+      })
+    }
     this.modalService.close();
   }
 
