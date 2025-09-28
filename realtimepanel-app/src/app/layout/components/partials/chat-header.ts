@@ -30,7 +30,11 @@ import { AuthService } from '@app/auth/services/auth';
         data-bs-target="#userlist"
         aria-controls="userlist"
       >
-        <img class="rounded-circle" width="50px" [src]="selectedRoom()?.user?.imageUrl || '/assets/controls/user-photo.svg'" />
+        <img
+          class="rounded-circle"
+          width="50px"
+          [src]="selectedRoom()?.user?.imageUrl || '/assets/controls/user-photo.svg'"
+        />
       </div>
       <div
         class="col-6 text-start"
@@ -39,8 +43,10 @@ import { AuthService } from '@app/auth/services/auth';
         aria-controls="userlist"
       >
         <h4>Chat</h4>
-        <h6 class="mb-0">{{selectedRoom()?.user?.name || 'Seleccione usuario...'}}</h6>
-        <small class="text-secondary fst-italic">{{selectedRoom()?.user?.job || 'Toque para expandir'}}</small>
+        <h6 class="mb-0">{{ selectedRoom()?.user?.name || 'Seleccione usuario...' }}</h6>
+        <small class="text-secondary fst-italic">{{
+          selectedRoom()?.user?.job || 'Toque para expandir'
+        }}</small>
       </div>
       }
 
@@ -63,19 +69,17 @@ import { AuthService } from '@app/auth/services/auth';
     <div class="collapse shadow" id="userlist">
       <div class="list-group list-group-flush">
         @for (room of this.chatService.rooms(); track room.socket ){
-          @if (room.user.id !== this.authService.currentUser()?.id) {
-            <div
-              type="button"
-              class="list-group-item list-group-item-action p-0 d-inline"
-              data-bs-toggle="collapse"
-              data-bs-target="#userlist"
-              aria-controls="userlist"
-              (click)="onSelectedRoom(room)"
-            >
-            <img class="col-2" src="{{ room.user.imageUrl || '/assets/controls/user-photo.svg' }}" />
-            <span class="col-10 ms-2">{{ room.user.name + ' ' + room.user.lastName }}</span>
-          </div>
-          }
+        <div
+          type="button"
+          class="list-group-item list-group-item-action p-0 d-inline"
+          data-bs-toggle="collapse"
+          data-bs-target="#userlist"
+          aria-controls="userlist"
+          (click)="onSelectedRoom(room)"
+        >
+          <img class="col-2" src="{{ room.user.imageUrl || '/assets/controls/user-photo.svg' }}" />
+          <span class="col-10 ms-2">{{ room.user.name + ' ' + room.user.lastName }}</span>
+        </div>
         }
       </div>
     </div>
@@ -87,14 +91,14 @@ export class ChatHeader {
   @Output() changed = new EventEmitter<ChatMode>();
 
   protected readonly chatService = inject(ChatService);
-  protected readonly authService = inject(AuthService)
+  protected readonly authService = inject(AuthService);
 
-  protected selectedRoom = signal<ChatRoom | undefined>(undefined)
+  protected selectedRoom = signal<ChatRoom | undefined>(undefined);
 
-  protected onSelectedRoom(room: ChatRoom){
-    this.selectedRoom.set(room)
-    this.selected.emit(room)
-    this.changed.emit(ChatMode.unicast)
+  protected onSelectedRoom(room: ChatRoom) {
+    this.selectedRoom.set(room);
+    this.selected.emit(room);
+    this.changed.emit(ChatMode.unicast);
   }
 
   protected setModeBroadcast() {

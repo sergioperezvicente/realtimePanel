@@ -12,7 +12,7 @@ import { ModalColor } from '@app/data/enums/modal-color';
   selector: 'app-users-list-view',
   imports: [UserListItem],
   template: `
-    <div class="card">
+    <div class="card" animate.enter="pop-appear">
       <div class="card-header pe-2 py-3 text-end">
         <button
           class="btn btn-danger me-2"

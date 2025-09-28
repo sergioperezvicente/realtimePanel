@@ -23,8 +23,6 @@ import { ChatMessageIncoming } from './partials/chat-message-incoming';
       [class.d-none]="room.socket !== selectedRoom()?.socket || chatMode() === 'broadcast'"
       [socket]="room.socket"
       [user]="room.user"
-      animate.enter="pop-appear"
-      animate.leave="roll-up"
     />
     }
 
@@ -57,6 +55,7 @@ export class Chat {
   }
 
   onChangeMode(mode: ChatMode) {
+    console.log(mode)
     this.chatMode.set(mode);
   }
 

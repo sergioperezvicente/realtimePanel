@@ -12,7 +12,7 @@ import { MaterialButton } from '../controls/material-button';
         <div class="modal-header pe-6" [class]="ms.colour()">
           <h4 class="modal-title col">{{ ms.title() }}</h4>
           <div class="modal-buttons mt-2">
-            <app-material-button icon="help" class="me-2" title="Mostrar ayuda" (click)="ms.showHelp.set(true)" />
+            <app-material-button icon="help" class="me-2" title="Mostrar ayuda" (click)="ms.showHelp.set(!ms.showHelp())" />
             <app-material-button icon="close" title="Cerrar modal" (click)="ms.close()" />
           </div>
         </div>

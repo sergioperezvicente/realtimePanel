@@ -2,8 +2,9 @@
 :root {
   --color-theme-rgb: 255, 191, 0;
   --color-theme-rgba25: rgba(255, 191, 0, 0.25);
-  --color-theme-light: #ffda4c; /* hover fallback */
-  --color-theme-dark: #e0a800; /* active fallback */
+  --color-theme-light: #ffda4c;
+  --color-theme-dark: #e0a800;
+  --color-theme-help: #5985e1;
 }
 
 body,
@@ -37,6 +38,10 @@ input.form-control:focus {
 select.form-select:focus {
   border-color: rgb(var(--color-theme-rgb));
   box-shadow: 0 0 0 0.25rem rgba(var(--color-theme-rgb), 0.25);
+}
+
+small {
+  font-size: 0.8em;
 }
 
 login-view {
@@ -87,15 +92,13 @@ app-status {
   z-index: 9999;
 }
 
-
-
 app-chat-room,
 app-modals {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-app-chat-room,
+app-chat-room::-webkit-scrollbar,
 app-modals::-webkit-scrollbar {
   display: none;
 }
@@ -120,6 +123,14 @@ app-material-button button:hover {
 
 #modalRoot {
   padding-right: 0;
+}
+
+.help {
+  color: var(--color-theme-help) !important;
+}
+
+.border-help {
+  border-color: var(--color-theme-help) !important;
 }
 
 .display-7 {
@@ -296,8 +307,9 @@ app-material-button button:hover {
   opacity: 0;
 }
 .pop-appear {
-  animation: pop-appear 0.3s ease-in;
+  animation: pop-appear 0.3s ease-in forwards;
   /* opcional: si quieres que empiece invisible hasta que se aplique la animación */
+  opacity: 0;
 }
 
 .pop-disappear {
