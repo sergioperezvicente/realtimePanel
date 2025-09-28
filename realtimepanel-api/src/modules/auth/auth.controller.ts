@@ -61,6 +61,11 @@ export class AuthController {
     return this.authService.changePassword(id, changePasswordDto);
   }
 
+  @Patch('users/:id')
+  update(@Param('id') id: string, @Body() updateAuthDto: UpdateAuthDto) {
+    return this.authService.update(id, updateAuthDto);
+  }
+
   @Delete('users/:id')
   remove(@Param('id') id: string) {
     return this.authService.remove(id);
