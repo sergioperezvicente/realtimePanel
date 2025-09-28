@@ -39,4 +39,7 @@ export class CreateAuthDto {
   @IsOptional()
   @IsArray()
   access: string[];
+
+  @IsOptional()
+  offline: Date
 }

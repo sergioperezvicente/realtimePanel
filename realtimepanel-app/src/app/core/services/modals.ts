@@ -13,6 +13,7 @@ export class ModalsService {
   public readonly colour = signal<ModalColor | undefined>(undefined);
 
   public readonly state = signal<boolean>(false)
+  public showHelp = signal<boolean>(false)
 
   public open(title: string, component?: Type<any>, size?: ModalSize, color?: ModalColor) {
     const modal = document.getElementById('modalRoot');

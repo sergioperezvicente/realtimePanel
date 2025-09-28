@@ -48,6 +48,7 @@ export class WsService {
         socket: client.id,
         user: user,
         connected: new Date(),
+        disconnected: user.offline ?? new Date()
       });
       ws.log(`Chat-Rooms: added client ${user.email}`);
       if (rooms.length >= 1) {
@@ -74,6 +75,10 @@ export class WsService {
   }
 
   disconnect(client: any) {
+    // const user = await this.authService.findUserById(client.payload);
+    // if (user) {
+    //   await this.authService.setOfflineTime(user.id)
+    // }
     rooms = rooms.filter((socket) => socket.socket !== client.id);
     if (rooms.length < 1) {
       this.server.emit('chat-off', { message: 'Chat inabilitado' });

@@ -35,6 +35,10 @@ export class AuthService {
   }
 
   logout(): void {
+    if (this.currentUser() !== null){
+      const id = this.currentUser()?.id
+      this.http.get(`${this.apiUrl}/auth/logout/${id}`).subscribe()
+    }
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('lastUrl');
     this._currentUser.set(null);

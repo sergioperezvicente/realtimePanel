@@ -1,8 +1,5 @@
 import { computed, effect, inject, Injectable, signal } from '@angular/core';
-import { ChatStatus } from '@app/data/enums/chat-status';
 import { ChatRoom } from '@app/data/models/chat-room';
-import { MsgIncoming } from '@app/data/models/msg-incoming';
-import { WsStatus } from '@app/data/enums/ws-status';
 import { WsService } from './ws';
 import { AuthService } from '@app/auth/services/auth';
 import { User } from '@app/data/models/user';
@@ -35,9 +32,14 @@ export class ChatService {
     return isOnline ? 'online' : 'offline';
   }
 
-  timeConnected(room: ChatRoom): number {
-    if (!room.connected) return 0;
-    const end = room.disconnected ?? new Date();
-    return end.getTime() - room.connected.getTime()
+  timeByUser(user: User): Date {
+    const room = this.ws.rooms().find((r) => r.user.id === user.id);
+
+    if (!room) return user.offline!;
+
+    if (room?.connected) {
+      return new Date(room?.connected);
+    }
+    return new Date()
   }
 }

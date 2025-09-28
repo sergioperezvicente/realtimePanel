@@ -4,5 +4,5 @@ export interface ChatRoom {
     socket: string;
     user: User;
     connected?: Date;
-    disconnected?: Date;
+    disconnected: Date;
 }

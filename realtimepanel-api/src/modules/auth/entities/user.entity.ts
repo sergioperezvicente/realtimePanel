@@ -34,4 +34,7 @@ export class User {
     @Column({ default: null, type: 'simple-array' })
     access: string[];
 
+    @Column({ nullable: true })
+    offline: Date
+
 }

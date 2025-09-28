@@ -3,7 +3,7 @@
   --color-theme-rgb: 255, 191, 0;
   --color-theme-rgba25: rgba(255, 191, 0, 0.25);
   --color-theme-light: #ffda4c; /* hover fallback */
-  --color-theme-dark: #e0a800;  /* active fallback */
+  --color-theme-dark: #e0a800; /* active fallback */
 }
 
 body,
@@ -26,7 +26,7 @@ button {
 }
 
 button:disabled {
-  color:rgb(121, 121, 121) !important;
+  color: rgb(121, 121, 121) !important;
 }
 
 input.form-control:focus {
@@ -87,12 +87,16 @@ app-status {
   z-index: 9999;
 }
 
-app-chat-room {
+
+
+app-chat-room,
+app-modals {
   scrollbar-width: none;
   -ms-overflow-style: none;
 }
 
-app-chat-room::-webkit-scrollbar {
+app-chat-room,
+app-modals::-webkit-scrollbar {
   display: none;
 }
 
@@ -114,6 +118,10 @@ app-material-button button:hover {
   display: none;
 }
 
+#modalRoot {
+  padding-right: 0;
+}
+
 .display-7 {
   font-weight: 300;
   line-height: 1.2;
@@ -121,14 +129,14 @@ app-material-button button:hover {
 }
 
 .navbar {
-  background-color: rgba(var(--color-theme-rgb), 0.60);
+  background-color: rgba(var(--color-theme-rgb), 0.6);
 }
 
 .btn-theme {
   background-color: rgb(var(--color-theme-rgb));
   border-color: rgb(var(--color-theme-rgb));
   color: var(--color-theme-text);
-  transition: background-color .15s ease-in-out, border-color .15s ease-in-out;
+  transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
   cursor: pointer;
 }
 
@@ -155,7 +163,7 @@ app-material-button button:hover {
 }
 
 .bg-theme-soft {
-  background-color: rgba(var(--color-theme-rgb), 0.30);
+  background-color: rgba(var(--color-theme-rgb), 0.3);
   color: var(--color-theme-text);
 }
 
@@ -168,8 +176,6 @@ app-material-button button:hover {
   background-color: rgba(var(--color-theme-rgb), 0.85);
   color: var(--color-theme-text);
 }
-
-
 
 .span-btn:hover {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
@@ -216,19 +222,19 @@ app-material-button button:hover {
 }
 
 .icon-badge {
-  position: relative;        /* referencia para el absolute del small */
-  display: inline-block;     /* para que el tamaño se ajuste al icono */
+  position: relative; /* referencia para el absolute del small */
+  display: inline-block; /* para que el tamaño se ajuste al icono */
 }
 
 .icon-badge small {
   position: absolute;
-  top: -6px;                 /* ajusta según el tamaño del icono */
-  right: -6px;               /* ajusta para centrar/pegar en la esquina */
-  background: rgb(var(--color-theme-rgb));           /* opcional: círculo de color */
+  top: -6px; /* ajusta según el tamaño del icono */
+  right: -6px; /* ajusta para centrar/pegar en la esquina */
+  background: rgb(var(--color-theme-rgb)); /* opcional: círculo de color */
   color: white;
-  font-size: 0.7rem;         /* tamaño del número */
+  font-size: 0.7rem; /* tamaño del número */
   border-radius: 50%;
-  padding: 2px 5px;          /* espacio interno para el badge */
+  padding: 2px 5px; /* espacio interno para el badge */
   line-height: 1;
 }
 
@@ -275,7 +281,7 @@ app-material-button button:hover {
 }
 
 .fade-in-up {
-  animation: fade-in-up 0.6s ease-out forwards;
+  animation: fade-in-up 0.6s ease-in;
   /* opcional: oculto al inicio si el elemento ya está en el DOM */
   opacity: 0;
 }
@@ -286,32 +292,39 @@ app-material-button button:hover {
   opacity: 0;
 }
 .pop-appear {
-  animation: pop-appear 0.3s ease-in-out;
+  animation: pop-appear 0.3s ease-in;
   /* opcional: si quieres que empiece invisible hasta que se aplique la animación */
-  opacity: 0;
 }
 
 .pop-disappear {
-  animation: pop-disappear 0.3s ease-in-out;
+  animation: pop-disappear 300ms ease-out forwards;
   /* opcional: si quieres que empiece invisible hasta que se aplique la animación */
 }
 
 .pop-in-from-left,
 .pop-in-from-right {
-  animation-duration: 0.2s;                  /* un poco más lento */
-  animation-timing-function: cubic-bezier(.4,0,.2,1); /* curva suave estilo material design */
+  animation-duration: 0.2s; /* un poco más lento */
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1); /* curva suave estilo material design */
   animation-fill-mode: forwards;
   opacity: 0; /* para que no se vea antes de animar */
 }
 
-.pop-in-from-left  { animation-name: pop-in-from-left; }
-.pop-in-from-right { animation-name: pop-in-from-right; }
+.pop-in-from-left {
+  animation-name: pop-in-from-left;
+}
+.pop-in-from-right {
+  animation-name: pop-in-from-right;
+}
 
 /* ANIMATIONS */
 
 @keyframes fade-out {
-  from { opacity: 1; }
-  to   { opacity: 0; }
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
 }
 
 @keyframes fade-in-down {
@@ -320,7 +333,7 @@ app-material-button button:hover {
     opacity: 0;
   }
   100% {
-    transform: translateY(0);     /* posición final */
+    transform: translateY(0); /* posición final */
     opacity: 1;
   }
 }
@@ -397,11 +410,19 @@ app-material-button button:hover {
 }
 
 @keyframes roll-up {
-  from { transform: scaleY(1); }
-  to   { transform: scaleY(0); }
+  from {
+    transform: scaleY(1);
+  }
+  to {
+    transform: scaleY(0);
+  }
 }
 
 @keyframes roll-down {
-  from { transform: scaleY(0); }
-  to   { transform: scaleY(1); }
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
 }

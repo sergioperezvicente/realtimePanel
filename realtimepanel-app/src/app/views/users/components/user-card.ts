@@ -48,7 +48,6 @@ import { UsersActions } from './users-actions';
   host: {
     class: 'card shadow',
     'animate.enter': 'pop-appear',
-    'animate.leave': 'pop-disappear'
     
   },
 })

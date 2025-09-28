@@ -9,4 +9,5 @@ export interface User {
   imageUrl: string;
   isAdmin: boolean;
   access: string[];
+  offline?: Date;
 }

@@ -67,7 +67,7 @@ export class UsersActions {
     const title: string = 'Editar ' + user.name;
     this.us.select(user);
     this.us.setModeModal(ModalMode.edit);
-    this.ms.open(title, UserForm, ModalSize.xl, ModalColor.warning);
+    this.ms.open(title, UserForm, ModalSize.lg, ModalColor.warning);
   }
 
   protected selectedUserToDelete(user: User): void {

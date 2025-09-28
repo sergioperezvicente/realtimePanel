@@ -1,14 +1,24 @@
-import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  signal,
+} from '@angular/core';
 import { AuthService } from '@app/auth/services/auth';
 import { User } from '@app/data/models/user';
 import { UserService } from '@core/services/user';
 import { UsersActions } from './users-actions';
 import { CheckControl } from '@app/shared/controls/check';
 import { ChatService } from '@core/services/chat';
+import { TimeAgoPipe } from '@shared/pipes/time-ago-pipe';
 
 @Component({
   selector: 'app-list-item-user',
-  imports: [UsersActions, CheckControl],
+  imports: [UsersActions, CheckControl, TimeAgoPipe],
   template: `
     <div
       class="d-flex align-items-center justify-content-start shadow"
@@ -48,12 +58,12 @@ import { ChatService } from '@core/services/chat';
     <div class="col bg-body-tertiary d-none d-xxl-block ps-2 pt-2">
       <h6>
         @if (this.cs.checkStatus(user) === 'online'){
-          <span class="badge text-bg-success" animate.enter="fade-in-up">online</span>
+        <span class="badge text-bg-success" animate.enter="fade-in-up">online</span>
         } @else {
-          <span class="badge text-bg-danger" animate.enter="fade-in-up">offline</span>
+        <span class="badge text-bg-danger" animate.enter="fade-in-up">offline</span>
         }
       </h6>
-      <small class="fst-italic">Hace 3 minutos </small>
+      <small class="fst-italic"> {{ timeConnected() | timeAgo }} </small>
     </div>
     <div class="d-inline text-end align-content-center bg-body-tertiary px-2">
       <app-users-actions [user]="user" [display]="'7'" />
@@ -62,18 +72,37 @@ import { ChatService } from '@core/services/chat';
   host: {
     class: 'list-group-item list-group-item-action m-0 p-0 d-flex border-0 shadow',
     'animate.enter': 'fade-in-up',
-    'animate.leave': 'pop-disappear'
   },
 })
-export class UserListItem {
+export class UserListItem implements OnInit, OnDestroy {
   @Input() user!: User;
   @Input() index!: number;
 
   protected readonly as = inject(AuthService);
   protected readonly us = inject(UserService);
-  protected readonly cs = inject(ChatService)
+  protected readonly cs = inject(ChatService);
 
-  onTouched(value: boolean){
-    this.us.selectMultiple(this.user.id!, value)
+  private interval?: number;
+
+  timeConnected = signal<Date | string | undefined>('');
+
+  ngOnInit(): void {
+    this.updateTime();
+
+    this.interval = window.setInterval(() => this.updateTime(), 1000);
+  }
+
+  onTouched(value: boolean) {
+    this.us.selectMultiple(this.user.id!, value);
+  }
+  ngOnDestroy(): void {
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
+  }
+  private updateTime(): void {
+    const time = this.cs.timeByUser(this.user);
+
+    this.timeConnected.set(time);
   }
 }

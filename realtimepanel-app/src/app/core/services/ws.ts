@@ -64,6 +64,7 @@ export class WsService {
     });
 
     this.socket.on('chat-rooms', (data) => {
+      console.warn(data)
       this.rooms.set(data.chatrooms);
     });
 

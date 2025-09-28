@@ -35,11 +35,10 @@ export class AuthController {
     };
   }
 
-  // @Post('logout')
-  // logout(@Request() req: Request) {
-  //   const user = req['user'] as User;
-  //   this.authService.logout(user);
-  // }
+  @Get('logout/:id')
+  logout(@Param('id') id: string) {
+    this.authService.setOfflineTime(id);
+  }
 
   @Get('users')
   findAll() {
@@ -50,7 +49,6 @@ export class AuthController {
   create(@Body() createAuthDto: CreateAuthDto) {
     return this.authService.create(createAuthDto);
   }
-
 
   // @Get(':id')
   // findOne(@Param('id') id: string) {

@@ -71,10 +71,6 @@ export class AuthService {
     }
   }
 
-  logout(user: User): void {
-    
-  }
-
   async findAll(): Promise<Partial<User>[]> {
     const users = await this.userRepository.find();
     auth.debug(`list of users returned`)
@@ -123,6 +119,16 @@ export class AuthService {
     this.wsService.publishDBUpdated(`usuario eliminado: ${id}`)
   }
 
+  async setOfflineTime(id: string){
+    const user = await this.userRepository.findOne({ where: { id } });
+    if (!user) {
+      throw new Error('Usuario no encontrado');
+    }
+
+    await this.userRepository.update(id, { offline: new Date() });
+    this.wsService.publishDBUpdated(`usuario deslogueado: ${id}`)
+  }
+
   async createInitialUsers() {
     const users = await this.findAll();
     if (users.length !== 0) return;
@@ -135,7 +141,8 @@ export class AuthService {
       imageUrl: '',
       phone: '',
       isAdmin: true,
-      access: ['/']
+      access: ['/'],
+      offline: new Date()
     })
     this.create({
       name: 'Usuario',
@@ -146,7 +153,8 @@ export class AuthService {
       imageUrl: '',
       phone: '',
       isAdmin: false,
-      access: ['/','/settings']
+      access: ['/','/settings'],
+      offline: new Date()
     })
     auth.log('Usuarios iniciales creados')
   }
