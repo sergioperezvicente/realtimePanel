@@ -15,10 +15,11 @@ import { UsersActions } from './users-actions';
 import { CheckControl } from '@app/shared/controls/check';
 import { ChatService } from '@core/services/chat';
 import { TimeAgoPipe } from '@shared/pipes/time-ago-pipe';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-list-item-user',
-  imports: [UsersActions, CheckControl, TimeAgoPipe],
+  imports: [CommonModule, UsersActions, CheckControl, TimeAgoPipe],
   template: `
     <div
       class="d-flex align-items-center justify-content-start shadow"
@@ -43,11 +44,15 @@ import { TimeAgoPipe } from '@shared/pipes/time-ago-pipe';
         } @else { @if (user.isAdmin) { Administrador } @else { Usuario } }
       </div>
     </div>
-    <img
-      class="d-flex "
-      src="{{ user.imageUrl || '/assets/controls/user-photo.svg' }}"
-      style="width: 70px;"
-    />
+    <div
+      [ngStyle]="{
+        'background-image': 'url(' + (user.imageUrl || '/assets/controls/user-photo.svg') + ')',
+        'background-size': 'cover',
+        'background-repeat': 'no-repeat',
+        'background-position': 'center',
+        'width': '70px'
+      }"
+    ></div>
     <div class="col-4 col-sm-5 col-md-6 col-lg-6 col-xl-5 bg-body-secondary ps-2">
       <div class="col-12 pt-2 fs-5 text-truncate">
         {{ user.name + ' ' + user.lastName }}
