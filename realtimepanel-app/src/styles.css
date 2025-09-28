@@ -177,6 +177,10 @@ app-material-button button:hover {
   color: var(--color-theme-text);
 }
 
+.dropdown-item:active {
+  background-color: rgb(var(--color-theme-rgb));
+}
+
 .span-btn:hover {
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
   transform: scale(1.1);

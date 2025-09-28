@@ -5,10 +5,11 @@ import { FullScreenButton } from './controls/full-screen-button';
 import { LogoutButton } from './controls/logout-button';
 import { DarkModeButton } from './controls/dark-mode-button';
 import { ChatButton } from './controls/chat-button';
+import { UserDropdown } from './controls/user-dropdown';
 
 @Component({
   selector: 'app-header',
-  imports: [MenuButton, SearchInput, FullScreenButton, LogoutButton, DarkModeButton, ChatButton],
+  imports: [MenuButton, SearchInput, FullScreenButton, LogoutButton, DarkModeButton, ChatButton, UserDropdown],
   template: `
     <div class="d-grip d-block d-md-none align-items-center">
       <menu-button />
@@ -17,7 +18,7 @@ import { ChatButton } from './controls/chat-button';
       <search-input />
     </div>
     <div class="d-grip col-5 text-end align-items-center">
-      <!-- <user-dropdown /> -->
+      <user-dropdown />
       <chat-button class="me-1" />
       <dark-mode-button class="me-1" />
       <full-screen-button class="me-1" />
