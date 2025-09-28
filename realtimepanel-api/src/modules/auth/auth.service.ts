@@ -17,6 +17,7 @@ import bcryptjs from 'node_modules/bcryptjs';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { WsService } from '../ws/ws.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
+import { FilesService } from '../files/files.service';
 
 const auth = new Logger('AuthService');
 
@@ -27,6 +28,7 @@ export class AuthService {
     private readonly userRepository: Repository<User>,
     @Inject(forwardRef(() => WsService))
     private readonly wsService: WsService,
+    private readonly filesService: FilesService,
     private readonly jwtService: JwtService,
   ) {
     this.createInitialUsers()
@@ -114,45 +116,32 @@ export class AuthService {
     }
   }
 
-  // update(id: number, updateAuthDto: UpdateAuthDto) {
+  //update(id: number, updateAuthDto: UpdateAuthDto) {
   //   return `This action updates a #${id} auth`;
   // }
 
   async remove(id: string): Promise<void> {
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
-      throw new Error('Usuario no encontrado');
+      throw new Error('user not-found');
     }
 
-    // if (user.imageUrl && !user.imageUrl.includes('default.png')) {
-    //   const filename = user.imageUrl.split('/').pop();
-    //   const imagePath = join(
-    //     __dirname,
-    //     '..',
-    //     '..',
-    //     'public',
-    //     'images',
-    //     'users',
-    //     filename,
-    //   );
-
-    //   if (fs.existsSync(imagePath)) {
-    //     fs.unlinkSync(imagePath);
-    //   }
-    // }
+    if (user.imageUrl) {
+      this.filesService.deleteImage(user.imageUrl, 'avatars')
+    }
 
     await this.userRepository.delete(id);
-    this.wsService.publishDBUpdated(`usuario eliminado: ${id}`)
+    this.wsService.publishDBUpdated(`user deleted: ${id}`)
   }
 
   async setOfflineTime(id: string){
     const user = await this.userRepository.findOne({ where: { id } });
     if (!user) {
-      throw new Error('Usuario no encontrado');
+      throw new Error('user not-found');
     }
 
     await this.userRepository.update(id, { offline: new Date() });
-    this.wsService.publishDBUpdated(`usuario deslogueado: ${id}`)
+    this.wsService.publishDBUpdated(`user loggout: ${id}`)
   }
 
   async createInitialUsers() {
