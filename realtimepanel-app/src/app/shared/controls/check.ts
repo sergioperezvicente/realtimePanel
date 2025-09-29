@@ -23,7 +23,7 @@ import {
       (blur)="onTouched()"
     />
     <label
-      class="form-check-label ps-2"
+      class="form-check-label ps-3"
       [class.d-none]="!label"
       [class]="display"
       [for]="formControlName"
@@ -42,12 +42,13 @@ export class CheckControl implements ControlValueAccessor, Validator {
   @Input() formControlName?: string;
   @Input() label?: string;
   @Input() display?: string;
+  @Input() value = false;
   @Input() set isDisabled(value: boolean) {
     this.disabled = value;
   }
   @Output() changed = new EventEmitter<boolean>()
 
-  value = false;
+  
   disabled = false;
 
   onChange: (value: boolean) => void = () => {};

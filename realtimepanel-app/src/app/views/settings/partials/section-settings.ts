@@ -1,8 +1,8 @@
-import { Component, EventEmitter, Input, Output, signal } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MaterialButton } from '@app/shared/controls/material-button';
 
 @Component({
-  selector: 'app-section-settings',
+  selector: 'app-section-settings-header',
   imports: [MaterialButton],
   template: `
     <div class="col display-7 d-flex align-items-center ps-0">
@@ -26,10 +26,10 @@ import { MaterialButton } from '@app/shared/controls/material-button';
     '(click)': 'this.section.emit(title)',
   },
 })
-export class SectionSetting {
+export class SectionSettingHeader {
   @Input() title?: string;
   @Input() icon?: string;
-  @Output() section = new EventEmitter<string>();
   @Input() isShow?: boolean;
+  @Output() section = new EventEmitter<string>();
   
 }

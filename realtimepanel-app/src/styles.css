@@ -152,6 +152,12 @@ app-material-button button:hover {
   font-size: calc(1.375rem + 0.55vw);
 }
 
+.display-8 {
+  font-weight: 300;
+  line-height: 1.2;
+  font-size: calc(1.175rem + 0.35vw);
+}
+
 .navbar {
   background-color: rgba(var(--color-theme-rgb), 0.6);
 }
@@ -357,6 +363,12 @@ app-material-button button:hover {
   opacity: 1;
 }
 
+.flip-vertical {
+  display: inline-block;                /* allow transform on the element */
+  transform-style: preserve-3d;         /* enable 3D effect */
+  animation: flip-vertical 1s ease;
+}
+
 /* ANIMATIONS */
 
 @keyframes collapse-down {
@@ -367,6 +379,11 @@ app-material-button button:hover {
 @keyframes collapse-up {
   0%   { max-height: max-content; opacity: 1; }
   100% { max-height: 0; opacity: 0; }
+}
+
+@keyframes flip-vertical {
+  0%   { transform: rotateZ(0deg); }
+  100% { transform: rotateZ(180deg); }
 }
 
 @keyframes fade-out {
