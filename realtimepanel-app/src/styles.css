@@ -125,6 +125,15 @@ app-material-button button:hover {
   padding-right: 0;
 }
 
+.form-check-input:checked {
+  background-color: rgb(var(--color-theme-rgb));
+  border-color: rgb(var(--color-theme-rgb));
+}
+.form-check-input:focus {
+  border-color: rgb(var(--color-theme-rgb));
+  box-shadow: 0 0 0 0.25rem rgba(var(--color-theme-rgb), 0.25);
+}
+
 .help {
   color: var(--color-theme-help) !important;
 }

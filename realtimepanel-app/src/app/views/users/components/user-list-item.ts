@@ -44,16 +44,26 @@ import { CommonModule } from '@angular/common';
         } @else { @if (user.isAdmin) { Administrador } @else { Usuario } }
       </div>
     </div>
-    <div
-      [ngStyle]="{
-        'background-image': 'url(' + (user.imageUrl || '/assets/controls/user-photo.svg') + ')',
-        'background-size': 'cover',
-        'background-repeat': 'no-repeat',
-        'background-position': 'center',
-        'width': '70px'
-      }"
-    ></div>
-    <div class="col-4 col-sm-5 col-md-6 col-lg-6 col-xl-5 bg-body-secondary ps-2">
+    <div class="bg-body-secondary" style="width: 70px; height: 70px">
+      <div
+        class="rounded-end-circle d-flex h-100 align-items-center justify-content-center"
+        [class.bg-warning]="user.isAdmin"
+        [class.bg-secondary]="!user.isAdmin"
+      >
+        <div
+          class="rounded-circle"
+          style="width: 50px; height: 50px"
+          [ngStyle]="{
+            'background-image': 'url(' + (user.imageUrl || '/assets/controls/user-photo.svg') + ')',
+            'background-size': 'cover',
+            'background-repeat': 'no-repeat',
+            'background-position': 'center',
+            'box-shadow': '0 0 10px rgba(0,0,0,0.4)'
+          }"
+        ></div>
+      </div>
+    </div>
+    <div class="col-4 col-sm-5 col-md-6 col-lg-6 col-xl-5 bg-body-secondary ps-3">
       <div class="col-12 pt-2 fs-5 text-truncate">
         {{ user.name + ' ' + user.lastName }}
       </div>
@@ -71,7 +81,7 @@ import { CommonModule } from '@angular/common';
       <small class="fst-italic"> {{ timeConnected() | timeAgo }} </small>
     </div>
     <div class="d-inline text-end align-content-center bg-body-tertiary px-2">
-      <app-users-actions [user]="user" [display]="'7'" />
+      <app-users-actions [user]="user" display="7" />
     </div>
   `,
   host: {
