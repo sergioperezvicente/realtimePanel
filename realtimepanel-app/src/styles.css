@@ -110,6 +110,10 @@ app-material-button button:hover {
   transform-origin: center;
 }
 
+.section-theme:hover {
+  background-color: rgba(var(--color-theme-rgb), 0.3);
+}
+
 #main {
   height: 84vh;
   overflow-y: auto;
@@ -341,7 +345,29 @@ app-material-button button:hover {
   animation-name: pop-in-from-right;
 }
 
+.collapse-down {
+  animation-name: collapse-down;
+  animation-duration: 0.5s;
+  min-height: min-content;
+  opacity: 0;
+}
+.collapse-up {
+  animation-name: collapse-up;
+  animation-duration: 0.5s;
+  opacity: 1;
+}
+
 /* ANIMATIONS */
+
+@keyframes collapse-down {
+  0%   { max-height: 0; opacity: 0; }
+  100% { max-height: max-content; opacity: 1; } /* usa un valor mayor a la altura esperada */
+}
+
+@keyframes collapse-up {
+  0%   { max-height: max-content; opacity: 1; }
+  100% { max-height: 0; opacity: 0; }
+}
 
 @keyframes fade-out {
   from {

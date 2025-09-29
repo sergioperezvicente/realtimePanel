@@ -4,7 +4,7 @@ import { Component, Input } from '@angular/core';
   selector: 'app-section-header',
   template: `
     <div class="col-4">
-      <h3 class="text-theme">{{ title }}</h3>
+      <h3 class="text-theme display-7">{{ title }}</h3>
     </div>
     <div class="col-8 d-flex align-items-center justify-content-end">
       <h5 class=" text-muted text-truncate">{{ currentDate }}</h5>

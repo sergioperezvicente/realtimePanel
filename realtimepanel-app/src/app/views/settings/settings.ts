@@ -1,18 +1,31 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { AlertColor } from '@app/data/enums/alert-color';
 import { ModalColor } from '@app/data/enums/modal-color';
 import { ModalSize } from '@app/data/enums/modal-size';
 import { AlertsService } from '@core/services/alerts';
 import { ModalsService } from '@core/services/modals';
 import { TestModal1 } from './modals/test-modal-1';
-import { SectionHeader } from "@app/shared/partials/section-header";
+import { SectionHeader } from '@app/shared/partials/section-header';
+import { SectionSetting } from './partials/section-settings';
+import { SectionCollapse } from './partials/section-collapse';
 
 @Component({
   selector: 'settings-view',
-  imports: [SectionHeader],
+  imports: [SectionHeader, SectionSetting, SectionCollapse],
   template: `
     <app-section-header [title]="'Configuración'" />
-    <p>settings works!</p>
+    @for (item of sections; track item.name) {
+    <app-section-settings
+      [title]="item.name"
+      [icon]="item.icon"
+      (section)="this.target.set($event)"
+      (click)="this.show.set(!this.show())"
+      [isShow]="this.show() && (this.target() === item.name)"
+    />
+    @if((target() === item.name) && this.show()) {
+    <app-section-collapse />
+    } }
+    <!-- <p>settings works!</p>
     <button class="btn-theme btn" (click)="mostraralerta()">mostrar alerta</button>
     <p>cambiar color de enfasis</p>
     <input type="color" value="#ffc107" (input)="applyColor($event)" />
@@ -60,13 +73,21 @@ import { SectionHeader } from "@app/shared/partials/section-header";
     voluptate nostrud ad dolore aliqua. Eiusmod reprehenderit fugiat et ad aliquip minim
     exercitation eu dolor tempor. Culpa proident consequat irure enim deserunt eiusmod nisi amet eu
     non velit laborum non. Nisi aliquip aliquip laborum nulla incididunt Lorem aliquip amet dolor ea
-    ut voluptate.
+    ut voluptate. -->
   `,
   styles: ``,
 })
 export class SettingsView {
   private readonly alertService = inject(AlertsService);
   private readonly modalsService = inject(ModalsService);
+
+  protected sections = [
+    { name: 'General', icon: 'build', component: '' },
+    { name: 'Aspecto y visual', icon: 'visibility', component: '' },
+  ];
+
+  target = signal<string>('');
+  show = signal<boolean>(false);
 
   mostraralerta() {
     this.alertService.showAlert('hola que tal', AlertColor.theme);
