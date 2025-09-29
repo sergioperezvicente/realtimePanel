@@ -8,6 +8,7 @@ import { WsService } from '@core/services/ws';
 import { AuthStatus } from '@enums/auth-status';
 import { WsStatus } from '@enums/ws-status';
 import packageInfo from '../../package.json';
+import { SettingsService } from '@core/services/settings';
 
 @Component({
   selector: 'app-root',
@@ -17,8 +18,9 @@ import packageInfo from '../../package.json';
 export class App {
   private readonly apiUrl = environment.apiUrl;
   private readonly http = inject(HttpClient);
-  private readonly authService = inject(AuthService);
+  private readonly auth = inject(AuthService);
   private readonly ws = inject(WsService);
+  private readonly settings = inject(SettingsService)
   private readonly router = inject(Router);
   private readonly _status = signal<AppStatus>(AppStatus.loading);
 
@@ -33,16 +35,17 @@ export class App {
   // }
 
   public authStatusChangedEffect = effect(() => {
-    switch (this.authService.authStatus()) {
+    switch (this.auth.authStatus()) {
       case AuthStatus.checking:
         this._status.set(AppStatus.loading);
         return;
       case AuthStatus.authenticated:
         this._status.set(AppStatus.syncronized);
-        const url = this.authService.currentUser()?.access[0];
+        const url = this.auth.currentUser()?.access[0];
         this.router.navigate([sessionStorage.getItem('lastUrl') || url]);
         return;
       case AuthStatus.notAuthenticated:
+        this.settings.applyColorTheme('#dd6969')
         this._status.set(AppStatus.disconnected);
         this.router.navigate(['/auth/login']);
         return;

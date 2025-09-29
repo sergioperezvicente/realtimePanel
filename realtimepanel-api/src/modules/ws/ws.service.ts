@@ -62,7 +62,7 @@ export class WsService {
       }
     } catch (error) {
       if (error instanceof TokenExpiredError) {
-        ws.error(`token-expired: ${client.id}`);
+        ws.warn(`token-expired: ${client.id}`);
         this.server.to(client).emit('expired');
       } else {
         ws.error(`unauthorized: ${client.id} - error: ${error}`);

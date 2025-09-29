@@ -7,7 +7,7 @@ import { LoginForm } from './login-form';
   selector: 'app-login-card',
   imports: [Brand, LoginForm],
   template: `
-    <header class="card-header">
+    <header class="card-header bg-theme">
       <app-brand size="80px" />
     </header>
 
