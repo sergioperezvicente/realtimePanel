@@ -208,6 +208,10 @@ app-material-button button:hover {
   color: rgb(var(--color-theme-rgb));
 }
 
+.text-debug {
+  color: #9257ff;
+}
+
 .alert-theme {
   border-color: rgb(var(--color-theme-light));
   background-color: rgba(var(--color-theme-rgb), 0.85);

@@ -39,7 +39,15 @@ export class LogsService extends ConsoleLogger implements LoggerService {
   }
 
   debug(message: any, context?: string) {
-    super.debug(`[DEBUG] ${message}`, context);
+    const payload = `${message}`
+    super.debug(payload, context);
+
+    this.wsService.publishConsole({
+      level: 'debug',
+      message: payload,
+      context,
+      timestamp: new Date().toISOString(),
+    });
   }
 
   verbose(message: any, context?: string) {
