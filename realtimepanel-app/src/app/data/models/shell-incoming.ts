@@ -1,5 +1,5 @@
 export interface ShellIncoming {
-    level: 'log';
+    level: 'log' | 'warn';
     message: string;
     context: string;
     timestamp: Date;
