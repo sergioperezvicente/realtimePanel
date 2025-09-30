@@ -19,8 +19,8 @@ import { WsService } from '@core/services/ws';
         title="Enviar Mensaje"
         icon="send"
         display="5"
+        color="text-theme"
         type="submit"
-        color="text-warning"
         [disabled]="!messageForm.get('messageInput')?.value"
       />
     </form>

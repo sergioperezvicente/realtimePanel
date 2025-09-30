@@ -34,25 +34,25 @@ export class App {
   //   this.checkServer();
   // }
 
-  public authStatusChangedEffect = effect(() => {
+  authStatusChangedEffect = effect(() => {
     switch (this.auth.authStatus()) {
       case AuthStatus.checking:
         this._status.set(AppStatus.loading);
         return;
       case AuthStatus.authenticated:
         this._status.set(AppStatus.syncronized);
+        this.settings.applySettingFromDB()
         const url = this.auth.currentUser()?.access[0];
         this.router.navigate([sessionStorage.getItem('lastUrl') || url]);
         return;
       case AuthStatus.notAuthenticated:
-        this.settings.applyColorTheme('#dd6969')
         this._status.set(AppStatus.disconnected);
         this.router.navigate(['/auth/login']);
         return;
     }
   });
 
-  public wsStatusChangedEffect = effect(() => {
+  wsStatusChangedEffect = effect(() => {
     switch (this.ws.status()) {
       case WsStatus.syncronized:
         this._status.set(AppStatus.syncronized);

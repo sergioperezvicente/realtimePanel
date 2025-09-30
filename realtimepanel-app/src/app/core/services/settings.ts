@@ -1,43 +1,105 @@
-import { computed, effect, Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import {
+  computed,
+  effect,
+  inject,
+  Injectable,
+  OnChanges,
+  signal,
+  SimpleChanges,
+} from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { environment } from '@env/environment';
+import { debounceTime, Observable, of } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SettingsService {
+  private readonly apiUrl: string = `${environment.apiUrl}/files/settings`;
+  private readonly http = inject(HttpClient);
 
   // ** GENERAL SETTINGS ** //
-  private readonly _developerMode = signal<boolean>(false)
+  private readonly _developerMode = signal<boolean>(false);
 
-  getDeveloperMode = computed(() => this._developerMode())
+  getDeveloperMode = computed(() => this._developerMode());
 
-  setDeveloperMode(mode: boolean){
-    this._developerMode.set(mode)
+  setDeveloperMode(mode: boolean) {
+    this._developerMode.set(mode);
   }
 
   // ** VISUAL SETTINGS ** //
-  private readonly _showHelpAlways = signal<boolean>(false)
-  private readonly _rgbColorTheme = signal<string>('#dd6969')
+  private readonly _theme = signal<'dark' | 'light'>('dark');
+  private readonly _showHelpAlways = signal<boolean>(false);
+  private readonly _rgbColorTheme = signal<string>('#dd6969');
 
-  getShowHelpAlways = computed(() => this._showHelpAlways())
-  getRgbColorTheme = computed(() => this._rgbColorTheme())
+  getTheme = computed(() => this._theme());
+  getShowHelpAlways = computed(() => this._showHelpAlways());
+  getRgbColorTheme = computed(() => this._rgbColorTheme());
 
-  setShowHelpAlways(mode: boolean){
-    this._showHelpAlways.set(mode)
+  setTheme(mode: 'dark' | 'light') {
+    this._theme.set(mode);
+  }
+  setShowHelpAlways(mode: boolean) {
+    this._showHelpAlways.set(mode);
   }
   setRgbColorTheme(color: string) {
-    this._rgbColorTheme.set(color)
+    this._rgbColorTheme.set(color);
   }
 
-  constructor(){
-    this.applyColorTheme(this.getRgbColorTheme())
+  onThemeChangeffect = effect(() => {
+    const value = this.getTheme();
+    this.applyTheme(value);
+  });
+
+  onColorChangedEffect = effect(() => {
+    const value = this.getRgbColorTheme();
+    this.applyColorTheme(value);
+  });
+
+    applySettingFromDB() {
+    this.getSettings().subscribe({
+      next: (res) => this.loadSettings(res),
+      error: (error) => console.error(error),
+    });
   }
 
-  colorChangedEffect = effect(()=> {
-    const value = this.getRgbColorTheme()
-    this.applyColorTheme(value)
-  })
+  saveSettingsOnDB(): void {
+    const json = this.makeJson();
+    this.saveSettings(json).subscribe({
+      next: (res) => console.log('Ajustes guardados exitosamente'),
+      error: (error) => console.error('Algo falló al guardar los ajustes', error),
+    });
+  }
 
-  applyColorTheme(color: string) {
+  private loadSettings(settings: UserSettings) {
+    //** AJUSTES GENERALES */
+    this._developerMode.set(settings.developerMode);
+    //** AJUSTES VISUALES */
+    this._theme.set(settings.theme);
+    this._showHelpAlways.set(settings.helpAlways);
+    this._rgbColorTheme.set(settings.themeColor);
+
+    //** ACTUALIZAR INTERFAZ DE USUARIO */
+    this.applyTheme(settings.theme);
+    this.applyColorTheme(settings.themeColor);
+  }
+
+  private makeJson(): UserSettings {
+    const json: UserSettings = {
+      developerMode: this._developerMode(),
+      theme: this._theme(),
+      helpAlways: this._showHelpAlways(),
+      themeColor: this._rgbColorTheme(),
+    };
+    return json;
+  }
+
+  private applyTheme(mode: 'light' | 'dark'): void {
+    document.documentElement.setAttribute('data-bs-theme', mode);
+  }
+
+  private applyColorTheme(color: string) {
     const rgb = this.hexToRgbString(color);
 
     document.documentElement.style.setProperty('--color-theme-rgb', rgb);
@@ -133,5 +195,14 @@ export class SettingsService {
     const g = parseInt(hex.slice(3, 5), 16);
     const b = parseInt(hex.slice(5, 7), 16);
     return `${r}, ${g}, ${b}`;
+  }
+
+  // ** COMUNICACION CON LA API ** //
+  getSettings(): Observable<UserSettings> {
+    return this.http.get<UserSettings>(`${this.apiUrl}`);
+  }
+
+  saveSettings(settings: UserSettings): Observable<any> {
+    return this.http.patch<UserSettings>(`${this.apiUrl}`, settings);
   }
 }

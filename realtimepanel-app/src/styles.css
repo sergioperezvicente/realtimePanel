@@ -44,6 +44,11 @@ small {
   font-size: 0.8em;
 }
 
+a:link {
+  color: rgba(var(--color-theme-rgb),0.7) !important;
+}
+
+
 login-view {
   background-image: url(/assets/background-login.jpg);
   background-size: cover;
@@ -113,6 +118,8 @@ app-material-button button:hover {
 .section-theme:hover {
   background-color: rgba(var(--color-theme-rgb), 0.3);
 }
+
+
 
 #main {
   height: 84vh;

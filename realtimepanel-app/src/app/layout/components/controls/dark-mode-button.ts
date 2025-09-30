@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, effect, inject, OnInit } from '@angular/core';
+import { SettingsService } from '@core/services/settings';
 
 @Component({
   selector: 'dark-mode-button',
@@ -10,37 +11,33 @@ import { Component, OnInit } from '@angular/core';
     '(click)': 'changeMode()',
   },
 })
-export class DarkModeButton implements OnInit {
-  private mode: 'dark' | 'light' = 'light';
+export class DarkModeButton {
+  private readonly settings = inject(SettingsService)
+
+  private mode?: 'dark' | 'light';
   protected iconButton: string = 'dark_mode';
   protected titleButton: string = 'Cambiar a modo oscuro';
 
-  ngOnInit(): void {
-    const stored = localStorage.getItem('theme');
-    if (stored === 'dark' || stored === 'light') {
-      this.mode = stored as 'dark' | 'light';
-    } else {
-      this.mode = document.documentElement.getAttribute('data-bs-theme') as 'dark' | 'light' || 'light';
-    }
-    this.applyTheme();
-  }
-
-  protected changeMode(): void {
-    this.mode = this.mode === 'dark' ? 'light' : 'dark';
-    this.applyTheme();
-    localStorage.setItem('theme', this.mode);
-  }
-
-  private applyTheme(): void {
-    document.documentElement.setAttribute('data-bs-theme', this.mode);
-    if (this.mode === 'dark') {
+  onChangesEffect = effect(()=> {
+    const stored = this.settings.getTheme();
+    if (stored === 'dark') {
+      this.mode = 'dark'
       this.iconButton = 'light_mode';
       this.titleButton = 'Cambiar a modo claro';
     } else {
+      this.mode = 'light'
       this.iconButton = 'dark_mode';
       this.titleButton = 'Cambiar a modo oscuro';
     }
+  }) 
+
+  protected changeMode(): void {
+    this.mode = this.mode === 'dark' ? 'light' : 'dark';
+    this.settings.setTheme(this.mode);
+    this.settings.saveSettingsOnDB()
   }
+
+  
 }
 
 

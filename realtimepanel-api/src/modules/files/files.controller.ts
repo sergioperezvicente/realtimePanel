@@ -1,13 +1,28 @@
-import { Controller, Logger, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Logger, Param, Request, Post, UploadedFile, UseInterceptors, Patch, Body } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { existsSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import { diskStorage } from 'multer';
+import { User } from '../auth/entities/user.entity';
+import { FilesService } from './files.service';
 
 const files = new Logger('FilesController')
 
 @Controller('files')
 export class FilesController {
+  constructor(private readonly filesService: FilesService){}
+
+  @Get('settings')
+  sendSettings(@Request() req: Request){
+    const user = req['user'] as User;
+    return this.filesService.sendSettingsOfUser(user.id)
+  }
+
+  @Patch('settings')
+  updateSettings(@Request() req: Request, @Body() settings: any) {
+    const user = req['user'] as User;
+    return this.filesService.updateSettingsOfUser(user.id, settings )
+  }
 
   @Post('upload/:category')
   @UseInterceptors(FileInterceptor('file', {
@@ -43,5 +58,7 @@ export class FilesController {
       filePath,
     };
   }
+
+  
 }
 

@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnDestroy } from '@angular/core';
 import { CheckControl } from '@app/shared/controls/check';
 import { SettingsService } from '@core/services/settings';
 
@@ -16,6 +16,10 @@ import { SettingsService } from '@core/services/settings';
   `,
   styles: ``,
 })
-export class GeneralSection {
+export class GeneralSection implements OnDestroy {
   protected readonly settings = inject(SettingsService);
+
+  ngOnDestroy(): void {
+    this.settings.saveSettingsOnDB()
+  }
 }

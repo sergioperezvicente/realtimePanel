@@ -7,6 +7,7 @@ import { InputControl } from '@app/shared/controls/input';
 import { passwordMatchValidator } from '@app/shared/validators/password-match';
 import { AlertsService } from '@core/services/alerts';
 import { ModalsService } from '@core/services/modals';
+import { SettingsService } from '@core/services/settings';
 import { UserService } from '@core/services/user';
 
 @Component({
@@ -15,7 +16,7 @@ import { UserService } from '@core/services/user';
   template: `
     <form [formGroup]="passwordForm" class="modal-body">
       <p>Establezca su contraseña:</p>
-      @if (modalS.showHelp()){
+      @if (modals.showHelp() || settings.getShowHelpAlways()){
       <app-help
         text="Una contraseña segura protege tu información personal al dificultar que terceros accedan a
           tus cuentas y datos sensibles."
@@ -68,9 +69,10 @@ import { UserService } from '@core/services/user';
 })
 export class ChangePasswordForm {
   private readonly fb = inject(FormBuilder);
-  private readonly authS = inject(AuthService);
-  private readonly alertS = inject(AlertsService);
-  protected readonly modalS = inject(ModalsService);
+  private readonly auths = inject(AuthService);
+  private readonly alerts = inject(AlertsService);
+  protected readonly modals = inject(ModalsService);
+  protected readonly settings = inject(SettingsService);
 
   passwordForm: FormGroup = this.fb.group(
     {
@@ -82,15 +84,15 @@ export class ChangePasswordForm {
 
   submit() {
     const password = this.passwordForm.get('passwordInput')?.value;
-    this.authS.changePassword(password).subscribe({
+    this.auths.changePassword(password).subscribe({
       next: () => {
-        this.alertS.showAlert('La contraseña se ha cambiado', AlertColor.success);
-        this.authS.logout();
+        this.alerts.showAlert('La contraseña se ha cambiado', AlertColor.success);
+        this.auths.logout();
       },
       error: () => {
-        this.alertS.showAlert('No se ha podido cambiar la contraseña', AlertColor.danger);
+        this.alerts.showAlert('No se ha podido cambiar la contraseña', AlertColor.danger);
       },
     });
-    this.modalS.close();
+    this.modals.close();
   }
 }
