@@ -57,7 +57,7 @@ export class SettingsService {
     this.applyColorTheme(value);
   });
 
-    applySettingFromDB() {
+  applySettingFromDB() {
     this.getSettings().subscribe({
       next: (res) => this.loadSettings(res),
       error: (error) => console.error(error),

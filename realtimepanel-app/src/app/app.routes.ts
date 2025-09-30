@@ -3,11 +3,12 @@ import { privateGuard } from '@core/guards/private-guard';
 import { publicGuard } from '@core/guards/public-guard';
 import { LoginView } from './auth/login';
 import { Layout } from '@layout/layout';
+import { accessGuard } from '@core/guards/access-guard';
 
 export const routes: Routes = [
   {
     path: '',
-    canActivateChild: [privateGuard],
+    canActivateChild: [privateGuard, accessGuard],
     component: Layout,
     children: [
       {

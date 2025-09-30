@@ -21,7 +21,7 @@ import { MaterialButton } from '@app/shared/controls/material-button';
     </div>
   `,
   host: {
-    class: 'section-theme row shadow mx-0 border-bottom',
+    class: 'section-theme row shadow mx-0',
     role: 'button',
     '(click)': 'this.section.emit(title)',
   },

@@ -15,7 +15,8 @@ import { SettingsSection } from '@app/data/models/settings-sections';
   imports: [SectionHeader, SectionSettingHeader, SectionCollapse,],
   template: `
     <app-section-header [title]="'Configuración'" />
-    @for (item of sections(); track item.name) {
+    <div class="card shadow">
+      @for (item of sections(); track item.name) {
       @if (item.access) {
         <app-section-settings-header
           [title]="item.name"
@@ -29,6 +30,7 @@ import { SettingsSection } from '@app/data/models/settings-sections';
       }
       }
     }
+    </div>
     
     <!-- 
     <button class="btn-theme btn" (click)="mostraralerta()">mostrar alerta</button>
@@ -41,12 +43,13 @@ import { SettingsSection } from '@app/data/models/settings-sections';
     </button>
   -->
   `,
-  styles: ``,
 })
 export class SettingsView {
   private readonly auth = inject(AuthService);
   private readonly settings = inject(SettingsService);
 
+  protected target = signal<string>('');
+  protected show = signal<boolean>(false);
   protected sections = signal<SettingsSection[]>([
     { name: 'General', icon: 'build', component: GeneralSection, access: true },
     { name: 'Aspecto y visual', icon: 'visibility', component: VisualSection, access: true },
@@ -54,12 +57,7 @@ export class SettingsView {
     { name: 'Modo desarrollo', icon: 'code', component: DeveloperSection, access: this.settings.getDeveloperMode() },
   ])
 
-  target = signal<string>('');
-  show = signal<boolean>(false);
 
-  effectModeDeveloper = effect(()=> {
-    this.settings.getDeveloperMode()
-  })
 
 
 
