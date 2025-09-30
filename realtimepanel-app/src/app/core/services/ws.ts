@@ -8,6 +8,7 @@ import { environment } from '@env/environment';
 import { io, Socket } from 'socket.io-client';
 import { ChatService } from './chat';
 import { ChatStatus } from '@app/data/enums/chat-status';
+import { ShellIncoming } from '@app/data/models/shell-incoming';
 
 @Injectable({
   providedIn: 'root',
@@ -17,16 +18,18 @@ export class WsService {
 
   private readonly router = inject(Router);
 
-  private _status = signal<WsStatus>(WsStatus.off);
-  private _chatStatus = signal<ChatStatus>(ChatStatus.off);
-  private _broadcastIncoming = signal<string | undefined>(undefined);
-  private _chatIncoming = signal<MsgIncoming | undefined>(undefined);
+  private readonly _status = signal<WsStatus>(WsStatus.off);
+  private readonly _chatStatus = signal<ChatStatus>(ChatStatus.off);
+  private readonly _broadcastIncoming = signal<string | undefined>(undefined);
+  private readonly _chatIncoming = signal<MsgIncoming | undefined>(undefined);
+  private readonly _shellIncoming = signal<ShellIncoming | undefined>(undefined)
   
 
   public status = computed(() => this._status());
   public chatStatus = computed(() => this._chatStatus());
   public broadcastIncoming = computed(() => this._broadcastIncoming());
   public chatIncoming = computed(() => this._chatIncoming());
+  public shellIncoming = computed(() => this._shellIncoming())
   public dbUpdated = signal<string | undefined>(undefined)
 
   public rooms = signal<ChatRoom[]>([]);
@@ -64,7 +67,7 @@ export class WsService {
     });
 
     this.socket.on('chat-rooms', (data) => {
-      console.warn(data)
+      //console.warn(data)
       this.rooms.set(data.chatrooms);
     });
 
@@ -81,6 +84,11 @@ export class WsService {
       this.dbUpdated.set(data);
       console.warn(data);
     });
+
+    this.socket.on('api:shell:', (data) => {
+      this._shellIncoming.set(data)
+      //console.warn(data);
+    })
   }
 
   public send(to: string, message: string) {

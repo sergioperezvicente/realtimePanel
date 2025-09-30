@@ -3,10 +3,10 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-section-header',
   template: `
-    <div class="col-4">
+    <div class="col-5">
       <h3 class="text-theme display-6">{{ title }}</h3>
     </div>
-    <div class="col-8 d-flex align-items-center justify-content-end">
+    <div class="col-7 d-flex align-items-center justify-content-end">
       <h5 class=" text-muted text-truncate">{{ currentDate }}</h5>
     </div>
   `,

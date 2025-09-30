@@ -4,6 +4,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { provisionDatabase } from './data/provision-database';
 import * as express from 'express';
 import { join } from 'path';
+import { LogsService } from './logs/logs.service';
 
 async function bootstrap() {
   await provisionDatabase();
@@ -16,6 +17,8 @@ async function bootstrap() {
       forbidNonWhitelisted: true,
     }),
   );
+
+  app.useLogger(app.get(LogsService))
 
   // Habilitar CORS
   app.enableCors({

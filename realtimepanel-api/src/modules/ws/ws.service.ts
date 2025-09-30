@@ -122,6 +122,10 @@ export class WsService {
     this.server.emit('db:updated:', payload);
   }
 
+  publishConsole(payload: any) {
+    this.server.emit('api:shell:', payload)
+  }
+
   //   findOne(id: number) {
   //     return `This action returns a #${id} w`;
   //   }

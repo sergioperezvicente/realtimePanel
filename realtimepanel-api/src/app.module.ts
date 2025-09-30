@@ -9,6 +9,7 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './common/guards/auth.guard';
+import { LogsService } from './logs/logs.service';
 
 @Module({
   imports: [
@@ -43,6 +44,9 @@ import { AuthGuard } from './common/guards/auth.guard';
       provide: APP_GUARD,
       useClass: AuthGuard,
     },
-    AppService],
+    AppService,
+    LogsService,
+  ],
+  exports: [LogsService],
 })
 export class AppModule {}
