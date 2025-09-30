@@ -26,6 +26,11 @@ export const routes: Routes = [
         title: 'realtimePanel - Usuarios',
         loadComponent: () => import('@views/users/users').then((m) => m.UsersView),
       },
+      {
+        path: 'server',
+        title: 'realtimePanel - Servidor',
+        loadComponent: () => import('@views/server/server').then((m) => m.ServerView),
+      },
     ],
   },
   {

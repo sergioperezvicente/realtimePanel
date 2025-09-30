@@ -47,6 +47,17 @@ export class SettingsService {
     this._rgbColorTheme.set(color);
   }
 
+  //** ADMIN SETTINGS */
+  private readonly _showServer = signal<boolean>(false);
+
+  getShowServer = computed(() => this._showServer())
+
+  setShowServer(mode: boolean) {
+    this._showServer.set(mode)
+  }
+
+
+
   onThemeChangeffect = effect(() => {
     const value = this.getTheme();
     this.applyTheme(value);
@@ -79,6 +90,8 @@ export class SettingsService {
     this._theme.set(settings.theme);
     this._showHelpAlways.set(settings.helpAlways);
     this._rgbColorTheme.set(settings.themeColor);
+    //** AJUSTES ADMINISTRATIVOS */
+    this._showServer.set(settings.showServer)
 
     //** ACTUALIZAR INTERFAZ DE USUARIO */
     this.applyTheme(settings.theme);
@@ -91,6 +104,7 @@ export class SettingsService {
       theme: this._theme(),
       helpAlways: this._showHelpAlways(),
       themeColor: this._rgbColorTheme(),
+      showServer: this._showServer(),
     };
     return json;
   }

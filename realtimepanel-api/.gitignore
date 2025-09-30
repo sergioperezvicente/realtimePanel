@@ -3,6 +3,7 @@
 /node_modules
 /build
 /public/images/avatars/*
+/public/settings/*
 
 # Logs
 logs

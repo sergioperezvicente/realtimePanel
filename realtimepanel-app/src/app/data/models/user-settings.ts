@@ -3,5 +3,6 @@ interface UserSettings {
   theme: 'dark' | 'light';
   themeColor: string;
   helpAlways: boolean;
+  showServer: boolean;
   
 }
