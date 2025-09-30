@@ -3,6 +3,7 @@ import { Component, inject } from '@angular/core';
 import { ModalsService } from '@core/services/modals';
 import { MaterialButton } from '../controls/material-button';
 import { SettingsService } from '@core/services/settings';
+import { UserService } from '@core/services/user';
 
 @Component({
   selector: 'app-modals',
@@ -13,7 +14,7 @@ import { SettingsService } from '@core/services/settings';
         <div class="modal-header pe-6" [class]="modals.colour()">
           <h4 class="modal-title col">{{ modals.title() }}</h4>
           <div class="modal-buttons mt-2">
-            <app-material-button icon="help" class="me-2" title="Mostrar ayuda" (click)="modals.showHelp.set(!modals.showHelp())" />
+            <app-material-button icon="help" class="me-2" [class.d-none]="users.modeUserForm() === 'delete'" title="Mostrar ayuda" (click)="modals.showHelp.set(!modals.showHelp())" />
             <app-material-button icon="close" title="Cerrar modal" (click)="modals.close()" />
           </div>
         </div>
@@ -30,4 +31,5 @@ import { SettingsService } from '@core/services/settings';
 export class Modals {
   protected readonly settings = inject(SettingsService)
   protected readonly modals = inject(ModalsService);
+  protected readonly users = inject(UserService)
 }
