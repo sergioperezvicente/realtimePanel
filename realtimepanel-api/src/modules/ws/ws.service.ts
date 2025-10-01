@@ -1,13 +1,13 @@
 import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
-import { User } from '../auth/entities/user.entity';
-import { WsGateway } from './ws.gateway';
-import { JwtPayload } from '../auth/interfaces/jwt-payload';
-import { AuthService } from '../auth/auth.service';
-import { Room } from './models/room';
-import { Socket } from 'socket.io';
 import { JwtService, TokenExpiredError } from '@nestjs/jwt';
-import * as os from 'os';
+import { AuthService } from '@auth/auth.service';
+import { JwtPayload } from '@auth/interfaces/jwt-payload';
+import { User } from '@auth/entities/user.entity';
 import checkDiskSpace from 'check-disk-space';
+import { Socket } from 'socket.io';
+import * as os from 'os';
+import { Room } from './interfaces/room';
+import { WsGateway } from './ws.gateway';
 
 const ws = new Logger('WebSocketService');
 const rootPath = os.platform() === 'win32' ? 'C:\\' : '/';

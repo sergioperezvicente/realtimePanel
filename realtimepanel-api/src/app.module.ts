@@ -1,15 +1,15 @@
+import { APP_GUARD } from '@nestjs/core';
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { AppService } from './app.service';
-import { AuthModule } from './modules/auth/auth.module';
-import { FilesModule } from './modules/files/files.module';
-import { WsModule } from './modules/ws/ws.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { APP_GUARD } from '@nestjs/core';
-import { AuthGuard } from './common/guards/auth.guard';
-import { LogsService } from './logs/logs.service';
+import { AuthGuard } from '@common/guards/auth.guard';
+import { AuthModule } from '@auth/auth.module';
+import { WsModule } from '@ws/ws.module';
+import { FilesModule } from '@files/files.module';
+import { LogsService } from '@logs/logs.service';
+import { AppController } from './app.controller';
+import { AppService } from './app.service';
 
 @Module({
   imports: [

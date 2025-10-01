@@ -14,12 +14,12 @@ import { JwtPayload } from './interfaces/jwt-payload';
 import { JwtService } from '@nestjs/jwt';
 import { User } from './entities/user.entity';
 import { LoginUserDto } from './dto/login-user.dto';
-import bcryptjs from 'node_modules/bcryptjs';
 import { CreateAuthDto } from './dto/create-auth.dto';
 import { WsService } from '../ws/ws.service';
 import { ChangePasswordDto } from './dto/change-password.dto';
 import { FilesService } from '../files/files.service';
 import { UpdateAuthDto } from './dto/update-auth.dto';
+import bcryptjs from 'node_modules/bcryptjs';
 
 const auth = new Logger('AuthService');
 

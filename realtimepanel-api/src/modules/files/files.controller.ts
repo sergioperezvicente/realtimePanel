@@ -1,10 +1,10 @@
 import { Controller, Get, Logger, Param, Request, Post, UploadedFile, UseInterceptors, Patch, Body } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { existsSync, mkdirSync } from 'fs';
-import { join } from 'path';
-import { diskStorage } from 'multer';
-import { User } from '../auth/entities/user.entity';
+import { User } from '@auth/entities/user.entity';
 import { FilesService } from './files.service';
+import { existsSync, mkdirSync } from 'fs';
+import { diskStorage } from 'multer';
+import { join } from 'path';
 
 const files = new Logger('FilesController')
 
@@ -30,7 +30,6 @@ export class FilesController {
       destination: (req, file, cb) => {
         const category = req.params.category;
         const uploadPath = join(__dirname, '..','..','..', 'public', 'images', category);
-        //files.debug(uploadPath)
 
         if (!existsSync(uploadPath)) {
           mkdirSync(uploadPath, { recursive: true });
@@ -39,7 +38,6 @@ export class FilesController {
         cb(null, uploadPath);
       },
       filename: (req, file, cb) => {
-        // nombre único (ej. timestamp + original)
         const uniqueName = `${Date.now()}-${file.originalname}`;
         cb(null, uniqueName);
       },

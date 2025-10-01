@@ -1,3 +1,4 @@
+import { forwardRef, Inject, Logger } from '@nestjs/common';
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
@@ -7,7 +8,6 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
-import { forwardRef, Inject, Logger } from '@nestjs/common';
 import { WsService } from './ws.service';
 
 const chat = new Logger('ChatGateway');

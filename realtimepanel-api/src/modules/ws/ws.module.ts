@@ -1,7 +1,7 @@
 import { forwardRef, Module } from '@nestjs/common';
+import { AuthModule } from '@auth/auth.module';
 import { WsService } from './ws.service';
 import { WsGateway } from './ws.gateway';
-import { AuthModule } from '../auth/auth.module';
 
 @Module({
   imports: [forwardRef(() => AuthModule)],

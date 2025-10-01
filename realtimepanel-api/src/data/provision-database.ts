@@ -1,4 +1,7 @@
+import { Logger } from '@nestjs/common';
 import { Client } from 'pg';
+
+const db = new Logger('Database')
 
 export async function provisionDatabase(): Promise<void> {
   const host = process.env.PG_HOST;
@@ -21,13 +24,12 @@ export async function provisionDatabase(): Promise<void> {
   });
 
   function escapeLiteral(str: string): string {
-    return str.replace(/'/g, "''"); // duplica comillas simples
+    return str.replace(/'/g, "''");
   }
 
   try {
     await client.connect();
 
-    // --------- Crear DB si no existe ----------
     const dbExists =
       ((
         await client.query('SELECT 1 FROM pg_database WHERE datname = $1', [
@@ -37,12 +39,11 @@ export async function provisionDatabase(): Promise<void> {
 
     if (!dbExists) {
       await client.query(`CREATE DATABASE "${targetDb}"`);
-      console.log(`✅ Database "${targetDb}" creada.`);
+      db.log(`Database "${targetDb}" created.`);
     } else {
-      console.log(`ℹ️ Database "${targetDb}" ya existe.`);
+      db.log(`Database "${targetDb}" exists.`);
     }
 
-    // --------- Crear usuario si no existe ----------
     const userExists =
       ((
         await client.query('SELECT 1 FROM pg_roles WHERE rolname = $1', [
@@ -54,35 +55,29 @@ export async function provisionDatabase(): Promise<void> {
       await client.query(
         `CREATE USER "${targetUser}" WITH ENCRYPTED PASSWORD '${escapeLiteral(targetPass)}'`,
       );
-      console.log(`✅ Usuario "${targetUser}" creado.`);
+      db.log(`User "${targetUser}" created.`);
     } else {
       await client.query(
         `ALTER USER "${targetUser}" WITH ENCRYPTED PASSWORD '${escapeLiteral(targetPass)}'`,
       );
-      console.log(
-        `ℹ️ Usuario "${targetUser}" ya existía — contraseña actualizada.`,
+      db.warn(
+        `User "${targetUser}" exists: password updated.`,
       );
     }
 
-    // --------- Privilegios a nivel de base de datos ----------
     await client.query(
       `GRANT ALL PRIVILEGES ON DATABASE "${targetDb}" TO "${targetUser}"`,
     );
-    console.log(
-      `✅ Privilegios de "${targetUser}" sobre "${targetDb}" otorgados.`,
+    db.log(
+      `Privileges granted to "${targetUser}" over "${targetDb}".`,
     );
 
-    // ---------------------------------------------
-    // AHORA: Conceder permisos en el esquema "public"
-    // ---------------------------------------------
-
-    // Abrimos una segunda conexión, esta vez a la base de datos de la app
     const appClient = new Client({
       host,
       port,
       user: rootUser,
       password: rootPass,
-      database: targetDb, // importante para GRANT en el esquema
+      database: targetDb,
     });
 
     await appClient.connect();
@@ -102,8 +97,8 @@ export async function provisionDatabase(): Promise<void> {
       `ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON SEQUENCES TO "${targetUser}"`,
     );
 
-    console.log(
-      `✅ Permisos completos sobre el esquema "public" otorgados a "${targetUser}".`,
+    db.log(
+      `All privileges on schema "public" granted to "${targetUser}".`,
     );
 
     await appClient.end();

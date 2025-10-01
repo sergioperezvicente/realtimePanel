@@ -1,15 +1,16 @@
 import { NestFactory } from '@nestjs/core';
-import { AppModule } from './app.module';
-import { ValidationPipe } from '@nestjs/common';
-import { provisionDatabase } from './data/provision-database';
+import { Logger, ValidationPipe } from '@nestjs/common';
 import * as express from 'express';
 import { join } from 'path';
+import { AppModule } from './app.module';
+import { provisionDatabase } from './data/provision-database';
 import { LogsService } from './logs/logs.service';
 
 async function bootstrap() {
   await provisionDatabase();
 
   const app = await NestFactory.create(AppModule);
+  const logger = new Logger('NestApplication')
 
   app.useGlobalPipes(
     new ValidationPipe({
@@ -30,5 +31,7 @@ async function bootstrap() {
   app.use('/images', express.static(join(__dirname, '..', 'public/images')));
 
   await app.listen(process.env.PORT ?? 3000);
+  logger.log(`"realtimepanel-api" listening on port ${process.env.PORT ?? 3000}`)
 }
 bootstrap();
+
