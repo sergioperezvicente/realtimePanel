@@ -1,5 +1,6 @@
 import {
   BadRequestException,
+  ConflictException,
   forwardRef,
   Inject,
   Injectable,
@@ -38,10 +39,18 @@ export class AuthService {
   async login(loginUserDto: LoginUserDto) {
     const { email, password } = loginUserDto;
     const user = await this.userRepository.findOne({ where: { email } });
+    
     if (!user) {
       auth.error(`Not valid credentials: ${email}`)
       throw new UnauthorizedException('Not valid credentials - email');
     }
+
+    const status = this.wsService.checkStatusUser(user.id)
+
+    if (status === 'online') {
+      throw new ConflictException('This user is online')
+    }
+
     if (!user.password || !(await bcryptjs.compare(password, user.password))) {
       throw new UnauthorizedException('Not valid credentials - password');
     }

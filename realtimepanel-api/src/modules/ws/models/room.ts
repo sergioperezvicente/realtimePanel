@@ -1,6 +1,6 @@
 import { User } from "src/modules/auth/entities/user.entity";
 
-export class Room {
+export interface Room {
     socket: string;
     user: User
     connected?: Date;

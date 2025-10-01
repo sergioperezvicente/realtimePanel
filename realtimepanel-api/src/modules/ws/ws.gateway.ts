@@ -5,8 +5,8 @@ import {
   WebSocketGateway,
   WebSocketServer,
 } from '@nestjs/websockets';
-import { Server } from 'socket.io';
-import { Injectable, Logger } from '@nestjs/common';
+import { Server, Socket } from 'socket.io';
+import { forwardRef, Inject, Logger } from '@nestjs/common';
 import { WsService } from './ws.service';
 
 const chat = new Logger('ChatGateway');
@@ -18,29 +18,35 @@ const broadcast = new Logger('BroadcastGateway');
 export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   @WebSocketServer() server: Server;
 
-  constructor(private readonly wsService: WsService) {}
-
-  afterInit(server: Server) {
-    this.wsService.setServer(server);
-  }
+  constructor(
+    @Inject(forwardRef(() => WsService))
+    private readonly wsService: WsService,
+  ) {}
 
   async handleConnection(client: any, ...args: any[]) {
     await this.wsService.createConection(client);
+  }
+
+  getActiveClients() {
+    return Array.from(this.server.sockets.sockets.values());
   }
 
   handleDisconnect(client: any) {
     this.wsService.disconnect(client);
   }
 
-  broadcastAll(event: string, payload: any) {
+  to(client: any, payload: any) {
+    this.server.to(client).emit(payload);
+  }
+
+  emit(event: string, payload: any) {
     this.server.emit(event, payload);
   }
 
   @SubscribeMessage('chat')
-  handleChat(client: any, payload: any) {
+  handleChat(client: Socket, payload: any) {
     const fromUser = this.wsService.identify(client);
     const toUser = this.wsService.identify(payload.to);
-
     chat.log(`Chat-from: ${fromUser} to: ${toUser} => ${payload.message}`);
     this.server.to(payload.to).emit('chat-incoming', {
       from: client.id,
@@ -52,6 +58,6 @@ export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect {
   handleBroadcast(client: any, message: string) {
     const fromUser = this.wsService.identify(client);
     broadcast.warn(`Broadcast-from: ${fromUser} => ${message}`);
-    this.broadcastAll('broadcast', message);
+    this.emit('broadcast', message);
   }
 }

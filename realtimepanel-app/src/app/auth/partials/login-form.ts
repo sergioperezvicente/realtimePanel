@@ -34,6 +34,13 @@ import { AuthService } from '../services/auth';
       >
         El usuario o la contraseña son incorrectos
       </div>
+      } @if(conflict()){
+      <div
+        class="d-flex justify-content-center mb-3 text-warning fw-semibold"
+        animate.enter="pop-appear"
+      >
+        El usuario ya está online
+      </div>
       }
       <div class="d-flex justify-content-center">
         <button class="btn btn-theme col-9" [disabled]="loginForm.invalid">Iniciar</button>
@@ -48,6 +55,7 @@ export class LoginForm {
   protected readonly app = inject(App);
 
   protected error = signal<boolean>(false);
+  protected conflict = signal<boolean>(false);
 
   protected loginForm: FormGroup = this.fb.group({
     username: ['admin@admin.com', [Validators.required, Validators.email]],
@@ -55,16 +63,26 @@ export class LoginForm {
   });
 
   onLogin(): void {
-    this.app.checkServer()
+    this.app.checkServer();
     const { username, password } = this.loginForm.value;
     //console.log(username, password);
     this.authService.login(username, password).subscribe({
       next: () => this.router.navigate(['']),
-      error: () => {
-        this.error.set(true);
-        setTimeout(() => {
-          this.error.set(false);
-        }, 3000);
+      error: (err) => {
+        switch (err.status) {
+          case 409:
+            this.conflict.set(true);
+            setTimeout(() => {
+              this.conflict.set(false);
+            }, 3000);
+            break;
+          default:
+            this.error.set(true);
+            setTimeout(() => {
+              this.error.set(false);
+            }, 3000);
+            break;
+        }
       },
     });
   }
