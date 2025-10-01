@@ -21,7 +21,7 @@ Versión: **Alpha 0.5**
 
 * [Instalación en Windows](./docs/INSTALACION_WINDOWS.md)
 * [Instalación en Linux](./docs/INSTALACION_LINUX.md)
-* [Guía de despliegue](./docs/DEPLOYMENT.md)
+<!-- * [Guía de despliegue](./docs/DEPLOYMENT.md) -->
 
 ---
 
