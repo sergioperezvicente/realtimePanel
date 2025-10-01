@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { Header } from './components/header';
 import { RouterOutlet } from '@angular/router';
 import { Footer } from './components/footer';
@@ -15,7 +15,7 @@ import { AlertsService } from '@core/services/alerts';
   selector: 'app-layout',
   imports: [RouterOutlet, Header, Footer, Sidebar, SidebarOffcanvas, Alerts, Chat, AppStatus, Modals],
   template: `
-    @if (this.app.status() !== 'syncronized') {
+    @if ((this.app.status() !== 'syncronized')) {
     <app-status />
     }
     <app-sidebar />
@@ -28,7 +28,7 @@ import { AlertsService } from '@core/services/alerts';
       <app-footer />
     </main>
     <app-chat />
-    @if (this.alertsService.alerts()){
+    @if (this.alerts.alerts()){
       <app-alerts />
     }
     <app-modals />
@@ -39,5 +39,6 @@ import { AlertsService } from '@core/services/alerts';
 })
 export class Layout {
   protected readonly app = inject(App);
-  protected readonly alertsService = inject(AlertsService)
+  protected readonly alerts = inject(AlertsService)
+
 }

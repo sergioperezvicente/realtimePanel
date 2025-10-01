@@ -13,6 +13,7 @@ import { ModalColor } from '@app/data/enums/modal-color';
     
     <span
       class="dropdown material-symbols-outlined display-7 span-btn me-1"
+      [class.d-none]="auths.currentUser() === null"
       type="button"
       title="Usuario"
       data-bs-toggle="dropdown"
@@ -20,7 +21,7 @@ import { ModalColor } from '@app/data/enums/modal-color';
     >
     
     <ul class="dropdown-menu" animate.enter="pop-appear">
-      <div class="px-3">{{ getGreeting() }} {{ this.as.currentUser()?.name ?? '' }}!</div>
+      <div class="px-3">{{ getGreeting() }} {{ this.auths.currentUser()?.name ?? '' }}!</div>
       <li><hr class="dropdown-divider" /></li>
       <!-- <li>
         <div class="dropdown-item d-flex align-items-center" type="button">
@@ -53,11 +54,11 @@ import { ModalColor } from '@app/data/enums/modal-color';
   },
 })
 export class UserDropdown {
-  protected readonly as = inject(AuthService)
-  protected readonly ms = inject(ModalsService)
+  protected readonly auths = inject(AuthService)
+  protected readonly modals = inject(ModalsService)
   
   openModalChangePassword(): void {
-    this.ms.open('Cambiar la contraseña', ChangePasswordForm, undefined, ModalColor.theme);
+    this.modals.open('Cambiar la contraseña', ChangePasswordForm, undefined, ModalColor.theme);
   }
 
   protected getGreeting(): string {

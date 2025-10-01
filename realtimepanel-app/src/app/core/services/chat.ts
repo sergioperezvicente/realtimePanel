@@ -27,9 +27,12 @@ export class ChatService {
     this._rooms.set(rooms);
   });
 
-  checkStatus(user: User): string {
-    const isOnline = this.ws.rooms().some((room) => room.user.id === user.id);
-    return isOnline ? 'online' : 'offline';
+  checkStatus(user: User | undefined): string {
+    if (user) {
+      const isOnline = this.ws.rooms().some((room) => room.user.id === user.id);
+      return isOnline ? 'online' : 'offline';
+    }
+    return 'offline';
   }
 
   timeByUser(user: User): Date {
@@ -40,6 +43,6 @@ export class ChatService {
     if (room?.connected) {
       return new Date(room?.connected);
     }
-    return new Date()
+    return new Date();
   }
 }

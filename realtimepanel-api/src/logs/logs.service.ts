@@ -21,7 +21,16 @@ export class LogsService extends ConsoleLogger implements LoggerService {
   }
 
   error(message: any, stack?: string, context?: string) {
-    super.error(`[ERROR] ${message}`, stack, context);
+    const payload = `${message}`
+    super.error(payload, stack, context);
+
+    this.wsService.publishConsole({
+      level: 'error',
+      message: payload,
+      stack,
+      context,
+      timestamp: new Date().toISOString(),
+    })
   }
 
   warn(message: any, context?: string) {

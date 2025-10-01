@@ -1,16 +1,8 @@
 import { HttpClient } from '@angular/common/http';
-import {
-  computed,
-  effect,
-  inject,
-  Injectable,
-  OnChanges,
-  signal,
-  SimpleChanges,
-} from '@angular/core';
-import { toObservable } from '@angular/core/rxjs-interop';
+import { computed, effect, inject, Injectable, signal } from '@angular/core';
+import { AuthService } from '@app/auth/services/auth';
 import { environment } from '@env/environment';
-import { debounceTime, Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +10,7 @@ import { debounceTime, Observable, of } from 'rxjs';
 export class SettingsService {
   private readonly apiUrl: string = `${environment.apiUrl}/files/settings`;
   private readonly http = inject(HttpClient);
+  private readonly auths = inject(AuthService);
 
   // ** GENERAL SETTINGS ** //
   private readonly _developerMode = signal<boolean>(false);
@@ -50,13 +43,11 @@ export class SettingsService {
   //** ADMIN SETTINGS */
   private readonly _showServer = signal<boolean>(false);
 
-  getShowServer = computed(() => this._showServer())
+  getShowServer = computed(() => this._showServer());
 
   setShowServer(mode: boolean) {
-    this._showServer.set(mode)
+    this._showServer.set(mode);
   }
-
-
 
   onThemeChangeffect = effect(() => {
     const value = this.getTheme();
@@ -79,7 +70,7 @@ export class SettingsService {
     const json = this.makeJson();
     this.saveSettings(json).subscribe({
       next: (res) => console.log('Ajustes guardados exitosamente'),
-      error: (error) => console.error('Algo falló al guardar los ajustes', error),
+      error: (error) => this.auths.logout(),
     });
   }
 
@@ -91,7 +82,7 @@ export class SettingsService {
     this._showHelpAlways.set(settings.helpAlways);
     this._rgbColorTheme.set(settings.themeColor);
     //** AJUSTES ADMINISTRATIVOS */
-    this._showServer.set(settings.showServer)
+    this._showServer.set(settings.showServer);
 
     //** ACTUALIZAR INTERFAZ DE USUARIO */
     this.applyTheme(settings.theme);
