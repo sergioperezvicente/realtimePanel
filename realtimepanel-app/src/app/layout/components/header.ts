@@ -14,10 +14,10 @@ import { UserDropdown } from './controls/user-dropdown';
     <div class="d-grip d-block d-md-none align-items-center">
       <menu-button />
     </div>
-    <div class="d-grid col-6 ms-3">
+    <div class="d-grid col-6 col-sm-6 col-md-7 align-items-center ms-3">
       <search-input />
     </div>
-    <div class="d-grip col-5 text-end align-items-center">
+    <div class="d-grip col text-end align-items-center">
       <user-dropdown />
       <chat-button class="me-1" />
       <dark-mode-button class="me-1" />

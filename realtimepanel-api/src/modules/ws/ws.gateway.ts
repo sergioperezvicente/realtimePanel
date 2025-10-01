@@ -1,6 +1,7 @@
 import {
   OnGatewayConnection,
   OnGatewayDisconnect,
+  OnGatewayInit,
   SubscribeMessage,
   WebSocketGateway,
   WebSocketServer,
@@ -15,13 +16,20 @@ const broadcast = new Logger('BroadcastGateway');
 @WebSocketGateway({
   cors: { origin: 'http://localhost:4200', methods: ['GET', 'POST'] },
 })
-export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect {
+export class WsGateway implements OnGatewayConnection, OnGatewayDisconnect, OnGatewayInit {
   @WebSocketServer() server: Server;
 
   constructor(
     @Inject(forwardRef(() => WsService))
     private readonly wsService: WsService,
   ) {}
+
+  afterInit(server: any) {
+    setInterval(async () => {
+      const stats = await this.wsService.getServerStats();
+      this.server.emit('server-stats', stats)
+    }, 5000)
+  }
 
   async handleConnection(client: any, ...args: any[]) {
     await this.wsService.createConection(client);

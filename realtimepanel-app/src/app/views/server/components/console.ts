@@ -7,8 +7,8 @@ import { ShellIncoming } from '../partials/shell-incoming';
   imports: [],
   template: `
     <div class="card-header display-8 d-flex align-items-center ps-0">
-      <div class="display-6 material-symbols-outlined mx-3">dns</div>
-      <div class="d-block">Consola</div>
+      <div class="display-6 material-symbols-outlined mx-3">terminal</div>
+      <div class="d-block">Terminal</div>
     </div>
     <div class="card-body">
       <ng-container #shell></ng-container>

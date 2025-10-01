@@ -6,6 +6,7 @@ import { AuthService } from '../auth/auth.service';
 import { Room } from './models/room';
 import { Socket } from 'socket.io';
 import { JwtService, TokenExpiredError } from '@nestjs/jwt';
+import * as os from 'os';
 
 const ws = new Logger('WebSocketService');
 
@@ -70,10 +71,10 @@ export class WsService {
   }
 
   disconnect(client: any) {
-    const user = this.identify(client)
+    const user = this.identify(client);
     rooms = rooms.filter((socket) => socket.socket !== client.id);
     if (user) {
-      ws.log(`Chat-Rooms: removed client ${user}`)
+      ws.log(`Chat-Rooms: removed client ${user}`);
     }
     if (rooms.length < 1) {
       this.server.emit('chat-off', { message: 'Chat inabilitado' });
@@ -94,11 +95,11 @@ export class WsService {
   }
 
   checkStatusUser(userId: string): 'online' | 'offline' {
-    const finded = rooms.find(room => room.user.id === userId )
-    if(finded){
-      return 'online'
+    const finded = rooms.find((room) => room.user.id === userId);
+    if (finded) {
+      return 'online';
     }
-    return 'offline'
+    return 'offline';
   }
 
   identify(socket: Socket | string): string | null {
@@ -126,4 +127,52 @@ export class WsService {
     this.server.emit('api:shell:', payload);
   }
 
+  async getServerStats() {
+    const totalMem = os.totalmem();
+    const freeMem = os.freemem();
+    const usedMem = totalMem - freeMem;
+
+    const cpuPercent = await this.getCpuUsagePercent(); // función que mide CPU real
+    const cpus = os.cpus().length;
+
+    return {
+      uptime: process.uptime(),
+      platform: os.platform(),
+      release: os.release(),
+      connections: rooms.length,
+      cpuLoad: os.loadavg() as [number, number, number], // opcional
+      cpuPercent, // porcentaje calculado dinámicamente
+      cpus,
+      memory: {
+        total: totalMem,
+        free: freeMem,
+        used: usedMem,
+        percent: (usedMem / totalMem) * 100,
+      },
+    };
+  }
+
+  private async getCpuUsagePercent(): Promise<number> {
+    const start = os.cpus().map((cpu) => ({ ...cpu.times }));
+
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    const end = os.cpus().map((cpu) => ({ ...cpu.times }));
+
+    let idleDiff = 0;
+    let totalDiff = 0;
+
+    for (let i = 0; i < start.length; i++) {
+      const startTotal = Object.values(start[i]).reduce((a, b) => a + b, 0);
+      const endTotal = Object.values(end[i]).reduce((a, b) => a + b, 0);
+
+      const idle = end[i].idle - start[i].idle;
+      const total = endTotal - startTotal;
+
+      idleDiff += idle;
+      totalDiff += total;
+    }
+
+    return Math.round(100 - (idleDiff / totalDiff) * 100);
+  }
 }
