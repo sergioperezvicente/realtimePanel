@@ -27,8 +27,14 @@ Versión: **Alpha 0.5**
 
 ## Descripción breve
 
-Este repositorio contiene la aplicación completa (backend + frontend). Consulta la documentación en la carpeta [`docs/`](./docs/) para ver guías de instalación y despliegue según tu entorno.
+realtimePanel es una aplicación fullstack que permite la **gestión de usuarios** a través de una **SPA en Angular**. La comunicación es **en tiempo real mediante WebSockets**, lo que habilita funcionalidades como:
+
+* **Chat en vivo** entre usuarios.
+* **Monitoreo del servidor en tiempo real**.
+* Interacciones rápidas y fluidas sin recargar la página.
 
 ---
 
 [➡️ Ir a instalación en Windows](./docs/INSTALACION_WINDOWS.md)
+
+> Nota: Esta aplicación puede servir como base para otros proyectos fullstack que requieran SPA en Angular, backend en NestJS y comunicación en tiempo real mediante WebSockets.
