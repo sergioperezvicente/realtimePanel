@@ -7,8 +7,10 @@ import { Room } from './models/room';
 import { Socket } from 'socket.io';
 import { JwtService, TokenExpiredError } from '@nestjs/jwt';
 import * as os from 'os';
+import checkDiskSpace from 'check-disk-space';
 
 const ws = new Logger('WebSocketService');
+const rootPath = os.platform() === 'win32' ? 'C:\\' : '/';
 
 let rooms: Room[] = [];
 
@@ -132,26 +134,34 @@ export class WsService {
     const freeMem = os.freemem();
     const usedMem = totalMem - freeMem;
 
-    const cpuPercent = await this.getCpuUsagePercent(); // función que mide CPU real
+    const cpuPercent = await this.getCpuUsagePercent();
     const cpus = os.cpus().length;
+
+    const rootPath = os.platform() === 'win32' ? 'C:\\' : '/';
+    const disk = await checkDiskSpace(rootPath);
 
     return {
       uptime: process.uptime(),
       platform: os.platform(),
       release: os.release(),
       connections: rooms.length,
-      cpuLoad: os.loadavg() as [number, number, number], // opcional
-      cpuPercent, // porcentaje calculado dinámicamente
       cpus,
+      cpuPercent,
       memory: {
         total: totalMem,
         free: freeMem,
         used: usedMem,
         percent: (usedMem / totalMem) * 100,
       },
+      disk: {
+        total: disk.size,
+        free: disk.free,
+        used: disk.size - disk.free,
+        percent: ((disk.size - disk.free) / disk.size) * 100,
+      },
     };
   }
-
+  
   private async getCpuUsagePercent(): Promise<number> {
     const start = os.cpus().map((cpu) => ({ ...cpu.times }));
 

@@ -8,7 +8,8 @@ import { environment } from '@env/environment';
   imports: [CommonModule],
   template: `
     <svg
-      class="d-sm-none d-md-block col-12 col-sm-3 col-md-4 col-lg-4"
+      class="d-none d-md-block col-12 col-sm-3 col-md-4 col-lg-4"
+      [class]="serverLoadState"
       xmlns="http://www.w3.org/2000/svg"
       height="400px"
       viewBox="0 -960 960 960"
@@ -31,7 +32,7 @@ import { environment } from '@env/environment';
       <div class="d-flex align-items-center mb-2 display-8">
         <div class="d-inline material-symbols-outlined">memory</div>
         <div class="d-inline ms-1">
-          <span class="text-theme">{{ ws.serverStats()?.cpus }}</span> CORES:
+          <span class="text-theme">{{ ws.serverStats()?.cpus }}</span> CPUS:
           {{ loadPercent | number : '1.0-0' }}%
         </div>
         <div class="col ms-3">
@@ -80,22 +81,27 @@ import { environment } from '@env/environment';
         </div>
       </div>
 
-      
       <div class="d-flex align-items-center mb-2 display-8">
         <div class="d-inline material-symbols-outlined">hard_disk</div>
-        <div class="d-inline">DISCO:</div>
+        <div class="d-inline ms-1">
+          <span class="text-theme">{{ diskTotalGB | number : '1.0-2' }}</span> GB:
+          {{ diskPercent | number : '1.0-0' }}%
+        </div>
         <div class="col ms-3">
           <div
             class="progress"
             role="progressbar"
-            aria-valuenow="75"
+            [attr.aria-valuenow]="diskPercent"
             aria-valuemin="0"
             aria-valuemax="100"
             style="height: 25px;"
           >
             <div
               class="progress-bar progress-bar-striped progress-bar-animated"
-              style="width: 75%"
+              [class.bg-success]="diskPercent < 50"
+              [class.bg-warning]="diskPercent >= 50 && diskPercent < 80"
+              [class.bg-danger]="diskPercent >= 80"
+              [style.width.%]="diskPercent"
             ></div>
           </div>
         </div>
@@ -118,7 +124,27 @@ export class ServerStats {
     return this.ws.serverStats()?.memory?.percent ?? 0;
   }
 
+  get diskPercent(): number {
+    return this.ws.serverStats()?.disk?.percent ?? 0;
+  }
+
+  get diskTotalGB(): number {
+    return (this.ws.serverStats()?.disk?.total ?? 0) / 1e9;
+  }
+
   get loadPercent(): number {
     return this.ws.serverStats()?.cpuPercent ?? 0;
+  }
+
+  get serverLoadState(): 'text-success' | 'text-warning' | 'text-danger' {
+    const cpu = this.loadPercent; 
+    const memory = this.memoryPercent; 
+    const disk = this.diskPercent; 
+
+    const maxLoad = Math.max(cpu, memory, disk);
+
+    if (maxLoad < 50) return 'text-success';
+    if (maxLoad >= 50 && maxLoad < 80) return 'text-warning'; 
+    return 'text-danger';
   }
 }

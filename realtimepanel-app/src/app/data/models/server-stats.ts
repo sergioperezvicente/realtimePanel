@@ -1,15 +1,21 @@
 export interface ServerStats {
   connections: number;
-  cpuLoad: [number, number, number];       // loadavg crudo (1,5,15 min)
-  cpuPercent: number;    // porcentaje normalizado según núcleos
-  cpus: number;                            // núcleos lógicos
+  cpuLoad: [number, number, number];
+  cpuPercent: number;
+  cpus: number;
   memory: {
-    total: number;                         // bytes totales
-    free: number;                          // bytes libres
-    used: number;                          // bytes usados
-    percent: number;                        // porcentaje de memoria usada
+    total: number;
+    free: number;
+    used: number;
+    percent: number;
   };
-  platform: string;                         // sistema operativo
-  release: string;                          // versión del OS
-  uptime: number;                            // segundos activo
+  disk?: {
+    total: number;
+    free: number;
+    used: number;
+    percent: number;
+  };
+  platform: string;
+  release: string;
+  uptime: number;
 }

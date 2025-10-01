@@ -3,7 +3,7 @@ import { WsService } from '@core/services/ws';
 import { ShellIncoming } from '../partials/shell-incoming';
 
 @Component({
-  selector: 'app-server-console',
+  selector: 'app-server-terminal',
   imports: [],
   template: `
     <div class="card-header display-8 d-flex align-items-center ps-0">
@@ -19,7 +19,7 @@ import { ShellIncoming } from '../partials/shell-incoming';
     class: 'card shadow',
   },
 })
-export class Console implements AfterViewInit {
+export class Terminal implements AfterViewInit {
   @ViewChild('shell', { read: ViewContainerRef }) shell!: ViewContainerRef;
   private readonly ws = inject(WsService);
 
