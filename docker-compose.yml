@@ -1,33 +1,32 @@
-version: "3.9"
 services:
   db:
     image: postgres:17
     restart: always
     environment:
-      POSTGRES_USER: ${APP_DB_USER}
-      POSTGRES_PASSWORD: ${APP_DB_PASSWORD}
-      POSTGRES_DB: ${APP_DB_NAME}
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: rEaLtImEpAnEl
+      POSTGRES_DB: realtimepanel
     volumes:
       - db_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
 
-  realtimepanel-api:
+  api:
     build: ./realtimepanel-api
     restart: always
-    env_file: ./realtimepanel-api/.env
+    env_file: ./realtimepanel-api/.env.docker
     depends_on:
       - db
     ports:
-      - "3000:3000"
+      - "3001:3001"
 
-  realtimepanel-app:
+  app:
     build: ./realtimepanel-app
     restart: always
     ports:
-      - "4200:80"
+      - "4201:80"
     depends_on:
-      - realtimepanel-api
+      - api
 
 volumes:
   db_data:
