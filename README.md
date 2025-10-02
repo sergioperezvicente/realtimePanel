@@ -13,14 +13,14 @@ Versión: **Alpha 0.5**
 ## Autor
 
 * Sergio Pérez
-* Contacto (GitHub, correo, etc.)
+<!-- * Contacto (GitHub, correo, etc.) -->
 
 ---
 
 ## Documentación
 
 * [Instalación en Windows](./docs/INSTALACION_WINDOWS.md)
-* [Instalación en Linux](./docs/INSTALACION_LINUX.md)
+<!-- * [Instalación en Linux](./docs/INSTALACION_LINUX.md) -->
 <!-- * [Guía de despliegue](./docs/DEPLOYMENT.md) -->
 
 ---

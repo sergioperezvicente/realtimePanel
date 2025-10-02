@@ -10,9 +10,12 @@ Guía paso a paso para instalar y ejecutar realtimePanel en **entornos Windows 1
 * **Node.js v18+** (LTS recomendado) → [descargar](https://nodejs.org/en/download)
 * **npm** (incluido con Node.js)
 * **Docker Desktop para Windows** (opcional pero recomendado) → [descargar](https://www.docker.com/products/docker-desktop/)
+
+  * Si no deseas usar Docker, es **necesario instalar PostgreSQL localmente** para ejecutar la aplicación.
 * (Opcional) **Windows Terminal** o **PowerShell 7**
 
 > ⚠️ `nvm` no es común en Windows, pero existe [nvm-windows](https://github.com/coreybutler/nvm-windows) si quieres gestionar versiones de Node.js.
+
 
 
 
