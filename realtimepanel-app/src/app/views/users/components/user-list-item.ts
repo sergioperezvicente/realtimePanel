@@ -35,7 +35,7 @@ import { CommonModule } from '@angular/common';
         (changed)="onTouched($event)"
       />
       <div
-        class="fw-semibold pe-3 d-none d-xl-block"
+        class="fw-semibold pe-3 d-none d-xxl-block"
         [class.ms-3]="!this.us.multipleCheck()"
         style="width: 125px;"
       >
@@ -63,14 +63,14 @@ import { CommonModule } from '@angular/common';
         ></div>
       </div>
     </div>
-    <div class="col-4 col-sm-5 col-md-6 col-lg-6 col-xl-5 bg-body-secondary ps-3">
+    <div class="col-4 col-sm-4 col-md-4 col-lg-4 col-xl-3 bg-body-secondary ps-3">
       <div class="col-12 pt-2 fs-5 text-truncate">
         {{ user.name + ' ' + user.lastName }}
       </div>
       <small class="text-truncate fst-italic text-muted ">{{ user.job }}</small>
     </div>
-    <div class="col bg-body-secondary d-xl-block d-xxl-none"></div>
-    <div class="col bg-body-tertiary d-none d-xxl-block ps-2 pt-2">
+    <div class="col bg-body-secondary d-xl-block d-md-none"></div>
+    <div class="col bg-body-tertiary d-none d-md-block ps-2 pt-2">
       <h6>
         @if (this.cs.checkStatus(user) === 'online'){
         <span class="badge text-bg-success" animate.enter="fade-in-up">online</span>

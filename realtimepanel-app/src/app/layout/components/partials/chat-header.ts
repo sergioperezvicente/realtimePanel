@@ -82,6 +82,16 @@ import { WsService } from '@core/services/ws';
           <img class="col-2" src="{{ room.user.imageUrl || '/assets/controls/user-photo.svg' }}" />
           <span class="col-10 ms-2">{{ room.user.name + ' ' + room.user.lastName }}</span>
         </div>
+        } @empty {
+          <div
+          type="button"
+          class="list-group-item list-group-item-action"
+          data-bs-toggle="collapse"
+          data-bs-target="#userlist"
+          aria-controls="userlist"
+        >
+        No hay usuarios conectados actualmente
+        </div>
         }
       </div>
     </div>
