@@ -4,6 +4,7 @@ import { MaterialButton } from '@app/shared/controls/material-button';
 import { ChatRoom } from '@data/models/chat-room';
 import { ChatService } from '@core/services/chat';
 import { AuthService } from '@app/auth/services/auth';
+import { WsService } from '@core/services/ws';
 
 @Component({
   selector: 'app-chat-header',
@@ -53,22 +54,23 @@ import { AuthService } from '@app/auth/services/auth';
       <div class="col d-flex justify-content-end align-items-center">
         @if (mode === "unicast") {
         <app-material-button
+          class="me-2"
           icon="campaign"
           title="Difundir mensaje"
           (click)="setModeBroadcast()"
         />
         }
         <app-material-button
-          class="d-sm-block d-md-none"
           icon="close"
           title="Cerrar Chat"
           data-bs-dismiss="offcanvas"
+          (click)="onCloseChat()"
         />
       </div>
     </div>
     <div class="collapse shadow" id="userlist">
       <div class="list-group list-group-flush">
-        @for (room of this.chatService.rooms(); track room.socket ){
+        @for (room of chats.rooms(); track room.socket ){
         <div
           type="button"
           class="list-group-item list-group-item-action p-0 d-inline"
@@ -90,10 +92,16 @@ export class ChatHeader {
   @Output() selected = new EventEmitter<ChatRoom | undefined>();
   @Output() changed = new EventEmitter<ChatMode>();
 
-  protected readonly chatService = inject(ChatService);
-  protected readonly authService = inject(AuthService);
+  protected readonly chats = inject(ChatService);
+  protected readonly auths = inject(AuthService);
+  protected readonly wss = inject(WsService)
 
   protected selectedRoom = signal<ChatRoom | undefined>(undefined);
+
+  protected onCloseChat(){
+    this.wss.deleteChatIncomings()
+    this.chats.showed.set(false)
+  }
 
   protected onSelectedRoom(room: ChatRoom) {
     this.selectedRoom.set(room);

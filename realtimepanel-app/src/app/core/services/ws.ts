@@ -15,10 +15,10 @@ import { ServerStats } from '@app/data/models/server-stats';
   providedIn: 'root',
 })
 export class WsService {
-  private socket?: Socket;
-
   private readonly router = inject(Router);
-
+  
+  private socket?: Socket;
+  
   private readonly _status = signal<WsStatus>(WsStatus.off);
   private readonly _chatStatus = signal<ChatStatus>(ChatStatus.off);
   private readonly _broadcastIncoming = signal<string | undefined>(undefined);
@@ -26,7 +26,8 @@ export class WsService {
   private readonly _shellIncoming = signal<ShellIncoming | undefined>(undefined);
   private readonly _serverStats = signal<ServerStats | null>(null)
   
-
+  
+  public rooms = signal<ChatRoom[]>([]);
   public status = computed(() => this._status());
   public chatStatus = computed(() => this._chatStatus());
   public broadcastIncoming = computed(() => this._broadcastIncoming());
@@ -35,7 +36,10 @@ export class WsService {
   public serverStats = computed(() => this._serverStats())
   public dbUpdated = signal<string | undefined>(undefined)
 
-  public rooms = signal<ChatRoom[]>([]);
+  public deleteChatIncomings() {
+    this._chatIncoming.set(undefined)
+  }
+
 
   public connect(token: string) {
     if (this.socket?.connected) return;

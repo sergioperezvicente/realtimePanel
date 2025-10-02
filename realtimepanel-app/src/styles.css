@@ -45,9 +45,8 @@ small {
 }
 
 a:link {
-  color: rgba(var(--color-theme-rgb),0.7) !important;
+  color: rgba(var(--color-theme-rgb), 0.7) !important;
 }
-
 
 login-view {
   background-image: url(/assets/background-login.jpg);
@@ -118,8 +117,6 @@ app-material-button button:hover {
 .section-theme:hover {
   background-color: rgba(var(--color-theme-rgb), 0.3);
 }
-
-
 
 #main {
   height: 84vh;
@@ -375,26 +372,46 @@ app-material-button button:hover {
 }
 
 .flip-vertical {
-  display: inline-block;                /* allow transform on the element */
-  transform-style: preserve-3d;         /* enable 3D effect */
+  display: inline-block; /* allow transform on the element */
+  transform-style: preserve-3d; /* enable 3D effect */
   animation: flip-vertical 1s ease;
+}
+
+.notify {
+  animation: notify 2s infinite;
 }
 
 /* ANIMATIONS */
 
 @keyframes collapse-down {
-  0%   { max-height: 0; opacity: 0; }
-  100% { max-height: max-content; opacity: 1; } /* usa un valor mayor a la altura esperada */
+  0% {
+    max-height: 0;
+    opacity: 0;
+  }
+  100% {
+    max-height: max-content;
+    opacity: 1;
+  } /* usa un valor mayor a la altura esperada */
 }
 
 @keyframes collapse-up {
-  0%   { max-height: max-content; opacity: 1; }
-  100% { max-height: 0; opacity: 0; }
+  0% {
+    max-height: max-content;
+    opacity: 1;
+  }
+  100% {
+    max-height: 0;
+    opacity: 0;
+  }
 }
 
 @keyframes flip-vertical {
-  0%   { transform: rotateZ(0deg); }
-  100% { transform: rotateZ(180deg); }
+  0% {
+    transform: rotateZ(0deg);
+  }
+  100% {
+    transform: rotateZ(180deg);
+  }
 }
 
 @keyframes fade-out {
@@ -488,20 +505,13 @@ app-material-button button:hover {
   }
 }
 
-@keyframes roll-up {
-  from {
-    transform: scaleY(1);
+@keyframes notify {
+  0% {
   }
-  to {
-    transform: scaleY(0);
+  50% {
+    color: rgb(var(--color-theme-rgb));
+    filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 1));
   }
-}
-
-@keyframes roll-down {
-  from {
-    transform: scaleY(0);
-  }
-  to {
-    transform: scaleY(1);
+  100% {
   }
 }

@@ -37,6 +37,7 @@ import { ChatMessageIncoming } from './partials/chat-message-incoming';
   host: {
     class: 'offcanvas offcanvas-end p-0',
     'data-bs-scroll': 'true',
+    'data-bs-backdrop': 'static',
     style: 'max-width: 450px',
     tabindex: '-1',
     id: 'chat',

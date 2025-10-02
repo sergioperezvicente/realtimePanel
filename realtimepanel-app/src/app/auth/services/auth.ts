@@ -48,6 +48,7 @@ export class AuthService {
     sessionStorage.removeItem('token');
     sessionStorage.removeItem('lastUrl');
     this._currentUser.set(null);
+    this.ws.deleteChatIncomings();
     this.ws.disconnect();
     this._authStatus.set(AuthStatus.notAuthenticated);
   }

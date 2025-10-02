@@ -12,14 +12,23 @@ export class SettingsService {
   private readonly http = inject(HttpClient);
   private readonly auths = inject(AuthService);
 
+
+
   // ** GENERAL SETTINGS ** //
   private readonly _developerMode = signal<boolean>(false);
+  private readonly _playSounds = signal<boolean>(true)
 
   getDeveloperMode = computed(() => this._developerMode());
+  getPlaySounds = computed(()=> this._playSounds())
 
   setDeveloperMode(mode: boolean) {
     this._developerMode.set(mode);
   }
+  setPlaySounds(mode:boolean) {
+    this._playSounds.set(mode)
+  }
+
+
 
   // ** VISUAL SETTINGS ** //
   private readonly _theme = signal<'dark' | 'light'>('dark');
@@ -40,6 +49,8 @@ export class SettingsService {
     this._rgbColorTheme.set(color);
   }
 
+
+
   //** ADMIN SETTINGS */
   private readonly _showServer = signal<boolean>(false);
 
@@ -48,6 +59,10 @@ export class SettingsService {
   setShowServer(mode: boolean) {
     this._showServer.set(mode);
   }
+
+
+
+
 
   onThemeChangeffect = effect(() => {
     const value = this.getTheme();
@@ -77,6 +92,7 @@ export class SettingsService {
   private loadSettings(settings: UserSettings) {
     //** AJUSTES GENERALES */
     this._developerMode.set(settings.developerMode);
+    this._playSounds.set(settings.playSounds)
     //** AJUSTES VISUALES */
     this._theme.set(settings.theme);
     this._showHelpAlways.set(settings.helpAlways);
@@ -92,6 +108,7 @@ export class SettingsService {
   private makeJson(): UserSettings {
     const json: UserSettings = {
       developerMode: this._developerMode(),
+      playSounds: this._playSounds(),
       theme: this._theme(),
       helpAlways: this._showHelpAlways(),
       themeColor: this._rgbColorTheme(),
