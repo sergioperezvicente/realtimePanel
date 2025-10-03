@@ -71,6 +71,7 @@ export class AuthService {
         ...userData,
       });
       await this.userRepository.save(user);
+      this.filesService.createDefaultSettings(user.id)
       this.wsService.publishDBUpdated(`user-created: ${user.email}`)
       const { password: _, ...userWithoutPassword } = user;
 
