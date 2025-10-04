@@ -4,12 +4,10 @@ services:
     restart: always
     environment:
       POSTGRES_USER: root
-      POSTGRES_PASSWORD: rEaLtImEpAnEl
+      POSTGRES_PASSWORD: [tu_pass_root_aqui]
       POSTGRES_DB: realtimepanel
     volumes:
       - db_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
 
   api:
     build: ./realtimepanel-api
@@ -17,14 +15,12 @@ services:
     env_file: ./realtimepanel-api/.env.docker
     depends_on:
       - db
-    ports:
-      - "3001:3001"
 
   app:
     build: ./realtimepanel-app
     restart: always
     ports:
-      - "4201:80"
+      - "4201:4201"
     depends_on:
       - api
 
